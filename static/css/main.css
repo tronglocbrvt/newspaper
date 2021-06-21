@@ -1,0 +1,39 @@
+.subnav-link{
+    color: white;
+    display: block;
+    padding: .1rem .5rem;
+}
+
+.subnav-link:hover{
+    color: white;
+}
+
+.nav-link2{
+    color: gray;
+    display: block;
+    padding: .5rem .5rem;
+}
+
+.nav-link2:hover {
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+}
+
+.nav-link1{
+    color: white;
+    display: block;
+    padding: .5rem .5rem;
+}
+
+.nav-link1:hover{
+    color: white;
+    text-decoration: none;
+}
+
+.nav-link1:active{
+    background-color: white;
+    color: #2596be;
+    display: block;
+    padding: .5rem .5rem;
+}
