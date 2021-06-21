@@ -16,5 +16,5 @@ require('./middlewares/routers.mdw')(app);
 
 const PORT = 3000
 app.listen(PORT, function(){
-    console.log('Server listening at port 3000');
+    console.log('Server listening at port ' + PORT);
 })

@@ -1,10 +1,4 @@
 const db = require('../utils/db')
-// const list = [
-//     {catID: 1, catName:'Mobile'},
-//     {catID: 2, catName: 'Laptop'},
-//     {catID: 3, catName: 'Clothes'}
-// ]
-
 
 module.exports={
     all(){
@@ -18,7 +12,7 @@ module.exports={
     get_sub_cats(){
         const sql = `select *
         from categories
-        where parent_cat is not null`;
+        where parent_category_id is not null`;
         sub_cats = db.raw(sql);
         return sub_cats;
     }

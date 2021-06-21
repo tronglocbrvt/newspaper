@@ -1,1 +1,2 @@
 # newspaper
+npm install 
