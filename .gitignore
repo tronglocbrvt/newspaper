@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Temporary ignore db.js because using local db
+utils/db.js
