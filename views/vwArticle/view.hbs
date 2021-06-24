@@ -5,9 +5,9 @@
     
     <!-- category -->
     <div id = "category" class = "container text-uppercase">
-        <a href="https://thanhnien.vn/the-gioi/">Giải trí</a>
+        <a href={{this.article.maincate_ref}}>{{this.article.main_category}}</a>
         /
-        <a href="https://thanhnien.vn/the-gioi/chuyen-la/">Truyền hình</a>
+        <a href={{this.article.subcate_ref}}>{{this.article.sub_category}}</a>
     </div> 
 
     <!-- thoi gian dang -->
@@ -98,10 +98,9 @@
 
         <!-- tag -->
         <div id = "tag" class = "container">
-        <a href="/hua-minh-dat/" class = "btn btn-secondary my-1">#Hứa Minh Đạt</a>
-        <a href="/cat-tuong/" class = "btn btn-secondary my-1">#Cát Tường</a>
-        <a href="/ghep-doi-than-toc/" class = "btn btn-secondary my-1">#Ghép đôi thần tốc</a>
-        <a href="/show-hen-ho/" class = "btn btn-secondary my-1">#show hẹn hò</a>
+            {{#each this.tags}}
+               <a href="{{tag_link}}" class = "btn btn-secondary my-1">{{tag_name}}</a>
+            {{/each}}
         </div>
 
     </div>
@@ -194,3 +193,8 @@
         <h3>CÓ THỂ BẠN QUAN TÂM</h3>
     </div>
 </div>
+
+
+{{#section 'js'}}
+<script src="/static/js/article/view.js"></script>
+{{/section}}
