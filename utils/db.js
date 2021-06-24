@@ -6,8 +6,6 @@ const knex = require('knex')({
       password : 'LinhLocPhuc11122000@gmail.com',
       database : 'LLPWebDatabase',
       port: 3306
-    },
-    pool: { min: 0, max: 50 }
+    }
   });
-
   module.exports = knex;
