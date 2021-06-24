@@ -2,7 +2,6 @@ const categoryModel = require('../models/category.model')
 module.exports = function(app){
     app.use(async function (req, res, next) {
     categories = await categoryModel.all();
-    console.log(categories)
     main_cat = categories.filter(category => category.parent_category_id === null);
     sub_cat = categories.filter(category => category.parent_category_id !== null);
     main_cat = main_cat.map(cat => {
