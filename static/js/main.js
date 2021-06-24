@@ -1,7 +1,7 @@
 $(document).ready(function(){
     console.log("ready");
     $.ajax({
-        url: 'categories/getsubcats'
+        url: '/categories/getsubcats'
     }).done(function(data){
         $('.nav-link2').hover(
             function(){
