@@ -22,6 +22,7 @@
 
 .nav-link1{
     color: white;
+    background-color: #2596be;
     display: block;
     padding: .5rem .5rem;
 }
@@ -36,4 +37,11 @@
     color: #2596be;
     display: block;
     padding: .5rem .5rem;
+}
+
+#sub-nav{
+    position: absolute;
+    top: 120;
+    width: 100%;
+    z-index: 1
 }

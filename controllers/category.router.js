@@ -16,8 +16,8 @@ router.get('/add', function(req, res){
 
 router.post('/add', async function(req, res){
     const new_obj = {
-        cat_name: req.body.catName,
-        parent_cat: +req.body.parentCat
+        category_name: req.body.catName,
+        parent_category_id: +req.body.parentCat
     };
     await categoryModel.add(new_obj);
     res.redirect('/categories')
