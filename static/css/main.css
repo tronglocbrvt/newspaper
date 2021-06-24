@@ -11,7 +11,7 @@
 .nav-link2{
     color: gray;
     display: block;
-    padding: .5rem .5rem;
+    padding: .6rem .5rem;
 }
 
 .nav-link2:hover {
@@ -40,8 +40,12 @@
 }
 
 #sub-nav{
+    height: 37px;
     position: absolute;
     top: 120;
     width: 100%;
     z-index: 1
+}
+#nav-bar2{
+    padding: 0;
 }
