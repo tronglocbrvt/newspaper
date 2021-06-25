@@ -12,18 +12,20 @@ module.exports=
         return db.raw(sql_query,id);
     },
 
-    find_by_cat_id (cat_id) {
+    find_by_cat_id (cat_id, offset) {
         //  return db.select('*')
         //     .from('articles').join('categories', function() {
         //     this.on('articles.category_id', '=', 'categories.category_id').onIn('categories.parent_category_id', [cat_id])
         //   })
+        var params = {id : cat_id, offset : offset};
         const sql = `select articles.*, p.time_published, categories.category_name, c.category_name as name
         from articles, categories, categories as c, published_articles as p
-        where categories.parent_category_id = ?
+        where categories.parent_category_id = :id
             and categories.category_id = articles.category_id
             and c.category_id = categories.parent_category_id
-            and p.article_id = articles.article_id`;
-        return db.raw(sql, cat_id);    
+            and p.article_id = articles.article_id
+        limit 10 offset :offset`;
+        return db.raw(sql, params);    
     },
 
     find_tags_by_article_id(art_id) {
@@ -32,5 +34,18 @@ module.exports=
       where tl.article_id = ?
           and tl.tag_id = tags.tag_id`;
       return db.raw(sql, art_id);    
-    }
+    },
+
+    count_by_cat_id (cat_id) {
+        //  return db.select('*')
+        //     .from('articles').join('categories', function() {
+        //     this.on('articles.category_id', '=', 'categories.category_id').onIn('categories.parent_category_id', [cat_id])
+        //   })
+        const sql = `select count(*) as total
+        from articles, categories
+        where categories.parent_category_id = ?
+            and categories.category_id = articles.category_id
+        `;
+        return db.raw(sql, cat_id);    
+    },
 }
