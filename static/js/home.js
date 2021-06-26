@@ -14,18 +14,18 @@ function currentSlide(n) {
 function showSlides(n) {
   var i;
   var slides = document.getElementsByClassName("mySlides");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
+  if (n > slides.length) { slideIndex = 1 }
+  if (n < 1) { slideIndex = slides.length }
   for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
+    slides[i].style.display = "none";
   }
-  slides[slideIndex-1].style.display = "block";
+  slides[slideIndex - 1].style.display = "block";
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
   // setInterval(function(){ plusSlides(1) }, 5000);
 
-  $('#most-article').click(function(){
+  $('#most-article').click(function () {
     $(this).addClass('active');
     $('#latest-article').removeClass('active');
 

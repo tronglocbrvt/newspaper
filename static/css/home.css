@@ -127,15 +127,6 @@ img:hover{
   line-height: 125%;
 }
 
-.title-link{
-  color: #333333;
-  font-weight: 600;
-}
-
-.title-link:hover{
-  text-decoration: none;
-}
-
 .date{
   color: #666666;
   margin-left: 30px;
