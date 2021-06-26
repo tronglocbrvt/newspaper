@@ -3,5 +3,5 @@ module.exports=function(app){
         res.render('home')
     });
     app.use('/categories', require('../controllers/category.router'));
-    app.use('/article',require('../controllers/article.router'))
+    app.use('/articles',require('../controllers/article.router'))
 };
