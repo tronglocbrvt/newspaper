@@ -1,0 +1,124 @@
+{{#if this.empty}}
+<h5 class="card-title">Không có dữ liệu!</h5>
+ {{else}}
+<div class="col-12 text-center mt-4">
+  <div class="category-title">
+    <h1 class="h2 h1-md">Danh mục: {{this.articles.0.name}}</h1>
+    <hr style="border-top: 3px solid; height: 1px; width:5rem" />
+  </div>
+  <!-- sub category -->
+  <div class="tags-area my-4">
+    <div class="mb-2">
+      {{#each this.sub_cats}}
+      <a class="btn btn-sm border" href="#">{{category_name}}</a>
+      {{/each}}
+    </div>
+  </div>
+  <!-- end sub category -->
+</div>
+ 
+<div class="container" style="margin-top: 40px;">
+  <div class="row">
+    <!--left column-->
+    <div class="col-md-12">
+      <!-- block start -->
+      <div class="block-area">
+        <div class="border-bottom-last-0 first-pt-0">
+          <!--post start-->
+          {{#each this.articles}}
+          <article class="card card-full hover-a py-4">
+            <div class="row">
+              <div class="col-sm-6 col-md-12 col-lg-6">
+                <!--thumbnail-->
+                <div class="ratio_360-202 image-wrapper">
+                  <a href="#">
+                    <img
+                      class="img-fluid lazy loaded"
+                      src="https://image.thanhnien.vn/2048/uploaded/hongquan.qc/2021_06_23/danhkhoi/3_hlal.jpg"
+                      data-src="https://image.thanhnien.vn/2048/uploaded/hongquan.qc/2021_06_23/danhkhoi/3_hlal.jpg"
+                      alt="Image description"
+                      data-was-processed="true"
+                    />
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-12 col-lg-6">
+                <div class="card-body pt-3 pt-sm-0 pt-md-3 pt-lg-0">
+                  <!--title-->
+                  <h3 class="card-title h2 h3-sm h2-md">
+                    <a href="#">{{article_title}}</a>
+                  </h3>
+                  <!--author and date-->
+                  <div class="card-text mb-2 text-muted small">
+                    <span class="d-none d-sm-inline me-1">
+                      <a class="fw-bold" href="#">{{category_name}}</a>
+                    </span>
+                    <time datetime={{time_published}}>{{time_published}}</time>
+                  </div>
+                  <!--description-->
+                  <p class="card-text">{{article_abstract}}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+          {{/each}}
+        </div>
+      </div>
+      <!-- End block -->
+      <!--Pagination-->
+      <div class="clearfix my-4 d-flex justify-content-center">
+        <nav class="float-start" aria-label="Page navigation">
+          <!--page number-->
+          <ul class="pagination">
+            <li class="page-item active"><span class="page-link">1</span></li>
+            <li class="page-item"><a
+                class="page-link"
+                href="category2.html"
+              >2</a></li>
+            <li class="page-item"><a
+                class="page-link"
+                href="category3.html"
+              >3</a></li>
+            <li class="page-item"><a
+                class="page-link"
+                href="category2.html"
+              >4</a></li>
+            <li class="page-item"><span
+                class="page-link disabled"
+              >....</span></li>
+            <li class="page-item"><a
+                class="page-link"
+                href="category3.html"
+              >12</a></li>
+            <li class="page-item">
+              <a
+                class="page-link"
+                href="category2.html"
+                aria-label="Next"
+                title="Next page"
+              >
+                <span aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1.2rem"
+                    height="1.2rem"
+                    fill="currentColor"
+                    viewBox="0 0 512 512"
+                  ><polyline
+                      points="184 112 328 256 184 400"
+                      style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"
+                    ></polyline></svg>
+                </span>
+                <span class="visually-hidden">Next</span>
+              </a>
+            </li>
+          </ul>
+          <!--end page number-->
+        </nav>
+      </div>
+      <!--end pagination-->
+    </div>
+    <!--end content-->
+{{/if}}
+  </div>
+</div>
