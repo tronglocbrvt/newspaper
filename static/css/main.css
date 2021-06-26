@@ -49,3 +49,25 @@
 #nav-bar2{
     padding: 0;
 }
+
+.btn-primary {
+    background-color: #2596be;
+}
+
+.btn-sm:hover, .btn-sm:focus, .btn-sm:active {
+    background-color: #00b3db;
+}
+
+.page-item.active .page-link{
+    background-color: #2596be;
+    border-color: #2596be
+}
+
+.page-link {
+    color: #212529;
+}
+
+.page-link:hover {
+    background-color: #00b3db;
+    color: #212529;
+}

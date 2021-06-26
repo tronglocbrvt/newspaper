@@ -1,0 +1,102 @@
+<div class="col-12 text-center mt-0">
+  <div class="category-title">
+    <h1 class="h2 h1-md">{{this.name_cat.0.name}}</h1>
+    <hr style="border-top: 3px solid; height: 1px; width:5rem" />
+  </div>
+  <!-- sub category -->
+  <div class="tags-area my-2">
+    <div class="mb-2">
+      {{#each this.sub_cats}}
+      <a class="btn btn-sm border" href="/categories/{{../name_cat.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
+      {{/each}}
+    </div>
+  </div>
+  <!-- end sub category -->
+</div>
+ 
+<div class="container" style="margin-top: 30px; margin-bottom: 30px">
+  <div class="row">
+    <!--left column-->
+    <div class="col-md-12">
+      <!-- block start -->
+      <div class="block-area">
+        <div class="border-bottom-last-0 first-pt-0">
+          <!--post start-->
+          {{#if this.empty}}  
+          <h5 class="card-title">Không có dữ liệu!</h5>
+          {{else}}
+          {{#each this.articles}}
+          <article class="card card-full hover-a py-4">
+            <div class="row">
+              <div class="col-sm-6 col-md-12 col-lg-6">
+                <!--thumbnail-->
+                <div class="ratio_360-202 image-wrapper">
+                  <a href="#">
+                    <img
+                      class="img-fluid lazy loaded"
+                      src="{{avatar_url}}"
+                      data-src="{{avatar_url}}"
+                      alt="{{avatar_caption}}"
+                      data-was-processed="true"
+                    />
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-12 col-lg-6">
+                <div class="card-body pt-3 pt-sm-0 pt-md-3 pt-lg-0">
+                  <!--title-->
+                  <h3 class="card-title h2 h3-sm h2-md">
+                    <a href="#">{{article_title}}</a>
+                  </h3>
+                  <!--author and date-->
+                  <div class="card-text mb-2 text-muted small">
+                    <span class="d-none d-sm-inline me-1">
+                      <a class="fw-bold" href="/categories/{{../name_cat.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
+                    </span>                 
+                    <time datetime={{time_published}}>{{date_format time_published}}</time>
+                  </div>
+                  <!--description-->
+                  <p class="card-text">{{article_abstract}}</p>
+                  <!--tags-->
+                  <div class="tags-area">
+                    <div class="mb-2">
+                      {{#each (lookup ../tags @index)}}
+                      <a class="btn btn-sm border" href="#">{{tag_name}}</a>
+                      {{/each}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          {{/each}}
+        </div>
+      </div>
+      <!-- End block -->
+      <!--Pagination-->
+      <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
+      <ul class="pagination">
+        <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+          <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Previous</a>
+        </li>
+        {{#each this.page_numbers}}
+        {{#if isCurrent}}
+        <li class="page-item {{#if isCurrent}}active{{/if}}">
+          <a class="page-link" href="javascript:;">{{value}}</a>
+        </li>
+        {{else}}
+        <li class="page-item">
+          <a class="page-link" href="?page={{value}}">{{value}}</a>
+        </li>
+        {{/if}}
+        {{/each}}
+        <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+          <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Next</a>
+        </li>
+      </ul>
+      </nav>
+    </div>
+    <!--end content-->
+{{/if}}
+  </div>
+</div>
