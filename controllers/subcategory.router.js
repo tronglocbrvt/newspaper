@@ -13,7 +13,6 @@ router.get('/subs/:id', async function(req, res) {
 
     const total = await articleModel.count_by_subcat_id(sub_id);
     let n_pages = Math.ceil(total[0][0].total / limit);
-    if (total % limit > 0) n_pages++;
 
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
