@@ -42,7 +42,7 @@ module.exports=
             p_id : published_article_id,
             lim : limit_length
         };
-        const sql_query = `select CONCAT('/article/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url
+        const sql_query = `select CONCAT('/articles/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url
         from articles as a, published_articles as p, published_articles as p_ref, articles as a_ref
         where
             p_ref.article_id = :p_id

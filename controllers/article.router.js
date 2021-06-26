@@ -2,7 +2,6 @@
  * Controller for article related requests
  */
 
-
 const express = require('express');
 const { createConnection } = require('mysql2/promise');
 const article_model = require('../models/article.model')
@@ -51,10 +50,8 @@ router.get('/:id', async function(req, res)
         tags : tags,
         similar_articles : similar_articles
     }
-
     // Render 
     res.render('vwArticle/view',view_inputs);
 });
-
 
 module.exports = router
