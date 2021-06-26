@@ -1,196 +1,173 @@
-<div class="col-sm-12" style="font-size:19px;">
-<!-- Page body start here -->
+{{!-- HBS VIEW for view a single article  --}}
 
-<div class = "container mt-5 p-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
-    
-    <!-- category -->
-    <div id = "category" class = "container text-uppercase">
-        <a href="https://thanhnien.vn/the-gioi/">Giải trí</a>
-        /
-        <a href="https://thanhnien.vn/the-gioi/chuyen-la/">Truyền hình</a>
-    </div> 
+<div class="container-fluid col-sm-12 align-middle" style="font-size:19px;">
 
-    <!-- thoi gian dang -->
-    <div id = "date_published" class = "container">
-    {{this.article.time_published}}
-    </div>
+    <div class = "container mt-5 p-5 mb-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+        
+        <!-- category -->
+        <div id = "category" class = "container text-uppercase">
+            <a href={{this.article.maincate_ref}}>{{this.article.main_category}}</a>
+            /
+            <a href={{this.article.subcate_ref}}>{{this.article.sub_category}}</a>
+        </div> 
 
-    <hr>
-
-    <div class = "jumbotron py-4 mt-3 mb-4">
-            <!-- Tieu de -->
-        <h1 id = "headlines" class = "container">
-            <b>{{this.article.article_title}}</b>
-        </h1>
-            <!-- Tom tat -->
-        <div id = "abstract" class = "container">
-            {{this.article.article_abstract}}
+        <!-- thoi gian dang -->
+        <div id = "date_published" class = "container">
+        {{this.article.time_published}}
         </div>
-    </div>
-    
 
-    <!-- Anh dai dien -->
-    <div id = "article_avatar" class = "container">
-        <figure class="figure">
-        <img class="img-fluid rounded mx-auto d-block" src="https://image.thanhnien.vn/2048/uploaded/hienth/2021_06_21/11copy_jqlg.jpg" alt="Cát Tường muốn bỏ nghề mai mối trước cô gái không chịu làm dâu, đòi bạn trai cho tiền khi hẹn hò">
-        <figcaption class="figure-caption my-2 text-md-center">Cát Tường muốn bỏ nghề mai mối trước cô gái không chịu làm dâu, đòi bạn trai cho tiền khi hẹn hò</figcaption>
-        </figure>
-    </div>
+        <hr>
 
-    <hr>
-    
-    <!-- noi dung -->
-    <div id = "main_details" class = "mx-5 my-5">
-
-        <div class="my-3">
-            Trong tập 9 chương trình Ghép đôi thần tốc vừa lên sóng, Hứa Minh Đạt - Cát Tường đã “dự ghép” cho người tham gia gồm thầy giáo Đỗ Trung Thành (27 tuổi) và nữ nhân viên văn phòng Võ Thị Cẩm Tiên (27 tuổi) ngồi ở ghế xanh, còn chàng kỹ thuật viên sửa ôtô Trương Văn Quý (27 tuổi) và nữ nhân viên văn phòng Trần Ngọc Đoan Minh (26 tuổi) ở ghế đỏ. 
-            Ngay từ phần giới thiệu, cô gái Đoan Minh gây ấn tượng mạnh bởi vẻ ngoài cá tính, khả năng hoạt ngôn. Nhưng càng lắng nghe những chia sẻ của Đoan Minh, bà mối Cát Tường không khỏi ngỡ ngàng, có phần khó chịu vì loạt tiêu chí chọn bạn trai khó hiểu do cô gái đặt ra.
+        <div class = "jumbotron py-4 mt-3 mb-4">
+                <!-- Tieu de -->
+            <h1 id = "headlines" class = "container">
+                <b>{{this.article.article_title}}</b>
+            </h1>
+                <!-- Tom tat -->
+            <div id = "abstract" class = "container">
+                {{this.article.article_abstract}}
+            </div>
         </div>
         
-        <div class="my-3">
-            <figure class="figure">
-                <img class="img-fluid rounded mx-auto d-block" alt="Thái độ và cách nói chuyện của Đoan Minh làm mất điểm không chỉ với hai chàng trai mà còn khiến Cát Tường ngán ngẩm" src="https://image.thanhnien.vn/2048/uploaded/hienth/2021_06_21/10_svtr.jpg">
-                <figcaption class="figure-caption my-2 text-md-center">Thái độ và cách nói chuyện của Đoan Minh làm mất điểm không chỉ với hai chàng trai mà còn khiến Cát Tường ngán ngẩm.</figcaption>
-                </figure>
+
+        <!-- Anh dai dien -->
+        <div id = "article_avatar" class = "container">
+            <figure class="text-center">
+            <img class="figure-img img-fluid rounded" src="{{this.article.avatar_url}}" alt="{{this.article.avatar_caption}}">
+            <figcaption class="figure-caption my-2">{{this.article.avatar_caption}}</figcaption>
+            </figure>
         </div>
 
-        <div class="my-3">
-            Nói về tình trường của mình, Đoan Minh tự tin cho biết đã trải qua 12 mối tình. Cô khẳng định bản thân là người độc lập, không phụ thuộc bạn nam, nhưng lại đưa ra tiêu chí khá khó hiểu. “Em có 12 mối tình, có 4 mối là sâu sắc còn lại chỉ dừng ở mức tìm hiểu, cao nhất là 1 năm còn thấp nhất là một ngày. Đẹp trai là tiêu chí, và em muốn bạn nam cho tiền để em mua đồ, đầu tư chứng khoán, bất động sản... Trai cho tiền mình đi đầu tư, rồi minh chia tiền lại cho trai. Đi ăn nếu bạn trai quên bóp thì em có thể cà thẻ trả rồi đợt sau bạn cà lại, nhưng quên lần hai là thôi "bái bai" luôn”, Minh Đoan chia sẻ.
-        </div>
+        <hr>
         
-        <div class="my-3">
-            Bên cạnh đó, khi lắng nghe chàng trai được dự ghép với Đoan Minh là  Văn Quý chia sẻ về hoàn cảnh anh hai mất, hiện đang một mình chăm lo cho ba mẹ, bà mối Cát Tường không khỏi thương xót, còn ngỏ ý hỏi cô chuyện làm dâu, cơm nước cho nhà chồng để “vớt vát” điểm. Nhưng Đoan Minh vẫn thẳng thừng chia sẻ: “Em sẽ kiếm bạn trai khác. Tư tưởng của em là khi có chồng sẽ dọn ra ở riêng. Em thích nấu ăn nhưng sẽ không bao giờ nấu cho bạn nam đâu, vì ảnh phải chiều em chứ". 
+        <!-- noi dung -->
+        <div id = "main_details" class = "mx-5 my-5">
+            {{{this.article.article_content}}}
         </div>
 
-        <div class="my-3">
-            <figure class="figure">
-                <img class="img-fluid rounded mx-auto d-block" alt="Văn Quý (trái) và Trung Thành vô cùng hoang mang khi lắng nghe những chia sẻ của Đoan Minh" src="https://image.thanhnien.vn/2048/uploaded/hienth/2021_06_21/vanquycopy_mqrf.jpg">
-                <figcaption class="figure-caption my-2 text-md-center">Văn Quý (trái) và Trung Thành vô cùng hoang mang khi lắng nghe những chia sẻ của Đoan Minh</figcaption>
-                </figure>
+            <!-- tag -->
+            <div id = "tag" class = "container">
+                {{#each this.tags}}
+                <a href="{{tag_link}}" class = "btn btn-secondary my-1">{{tag_name}}</a>
+                {{/each}}
+            </div>
+
         </div>
 
 
-        <div class="my-3">
-            Lắng nghe những quan điểm khi yêu của Đoan Minh, Văn Quý ngồi phía bên kia cũng toát hết mồ hôi, sự bối rối thể hiện rõ trên khuôn mặt. Bà mối cũng “bất lực” nói thẳng với Đoan Minh: “Hy vọng sau hôm nay em có “người đầu tư” nha, chứ chị hoang mang muốn bỏ nghiệp rồi đó. Chị làm mai làm mối nhiều ca lắm rồi mà ca này thấy hơi căng rồi đó. Em cũng nên bớt bớt lại chút”.
+    <div class = "container mt-3 p-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+
+        <!-- comments -->
+        <div id = "comment" class = "container pb-3">
+        <h3 class="text-uppercase"> Bình luận </h3>
         </div>
 
-        <div class="my-3">
-            Trái ngược với cá tính mạnh của Đoan Minh, cô gái Cẩm Tiên có phần dịu dàng, đằm thắm rất nhanh đã lấy được thiện cảm của mọi người. Đến buổi hẹn hò, cô còn khiến bầu không khí thêm vui vẻ khi tự tin thể hiện bản “rap thả thính” cực ngọt, “đốn tim” nhà trai.
+
+            <!-- writecomment -->
+        <div id = "write_comment" class = "container d-flex">
+            <i class="fa fa-comment px-2" style="font-size:48px;"></i>
+            
+            <div class="input-group">
+            <textarea class="form-control" aria-label="With textarea"></textarea>
+            </div>
         </div>
 
-        <div class="my-3">
-            Cùng một vấn đề tài chính khi yêu và làm dâu, nhưng quan điểm của Cẩm Tiên rất khác với bạn gái còn lại. “Việc nấu ăn em thích cả hai có thể cùng chia sẻ. Còn kinh tế em nghĩ mỗi người nên độc lập vì em không thích bạn nam đưa hết tiền cho mình. Em cũng không ngại việc làm dâu. Quan điểm của em là tôn trọng người thân của đối phương", cô bày tỏ.
+        <div class= "d-flex flex-row-reverse">
+            <button class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
         </div>
 
-        <div class="my-3">
-            <figure class="figure">
-                <img class="img-fluid rounded mx-auto d-block" alt="Trong khi đó, Cẩm Tiên chiếm được thiện cảm của mọi người nhờ cách nói chuyện nhẹ nhàng, đằm thắm" src="https://image.thanhnien.vn/2048/uploaded/hienth/2021_06_21/camtien_bsfc.jpg">
-                <figcaption class="figure-caption my-2 text-md-center">Trong khi đó, Cẩm Tiên chiếm được thiện cảm của mọi người nhờ cách nói chuyện nhẹ nhàng, đằm thắm</figcaption>
-                </figure>
+        <hr>
+        
+        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
+            <div class="card-body">
+                <div class="d-flex d-flex justify-content-between">
+                    <div class="text-primary">Nguyễn Thị Hiền</div>
+                    <div>18:55 19/06</div>
+                </div>
+                <hr>
+                <div>
+                    Có chỉ thị 16 ngay từ đầu toàn thành phố như năm ngoái biết đâu dịch ko bùng phát vậy,dân đỡ khổ.
+                </div>
+            </div>
         </div>
 
-        <div class="my-3">
-            Cách nhìn chu đáo của Cẩm Tiên đã "đốn tim" thầy giáo Trung Thành. Được biết, anh là con trai trưởng nên rất hy vọng nàng dâu tương lai của ba mẹ có thể lễ phép, hiểu chuyện. Cặp đôi Trung Thành - Cẩm Tiên rất nhanh đã “bắt nhịp” cảm xúc của nhau, đến quà gặp mặt cả hai cũng tâm ý tương thông mà chọn giống quà đối phương. Sự dễ thương của cặp đôi khiến ông mai bà mối tích cực “đẩy thuyền” không ngừng.
+        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
+            <div class="card-body">
+                <div class="d-flex d-flex justify-content-between">
+                    <div class="text-primary">Nguyễn Thị Hiền</div>
+                    <div>18:55 19/06</div>
+                </div>
+                <hr>
+                <div>
+                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
+                </div>
+            </div>
         </div>
 
+        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
+            <div class="card-body">
+                <div class="d-flex d-flex justify-content-between">
+                    <div class="text-primary">Nguyễn Thị Hiền</div>
+                    <div>18:55 19/06</div>
+                </div>
+                <hr>
+                <div>
+                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
+                </div>
+            </div>
+        </div>
+        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
+            <div class="card-body">
+                <div class="d-flex d-flex justify-content-between">
+                    <div class="text-primary">Nguyễn Thị Hiền</div>
+                    <div>18:55 19/06</div>
+                </div>
+                <hr>
+                <div>
+                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
+                </div>
+            </div>
+        </div>
+
+        
+        
 
     </div>
 
-        <!-- tag -->
-        <div id = "tag" class = "container">
-        <a href="/hua-minh-dat/" class = "btn btn-secondary my-1">#Hứa Minh Đạt</a>
-        <a href="/cat-tuong/" class = "btn btn-secondary my-1">#Cát Tường</a>
-        <a href="/ghep-doi-than-toc/" class = "btn btn-secondary my-1">#Ghép đôi thần tốc</a>
-        <a href="/show-hen-ho/" class = "btn btn-secondary my-1">#show hẹn hò</a>
+
+    <div class = "container mt-3 mb-5 px-5 py-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+        <!-- bai viet cung chuyen muc-->
+        <div id = "same_category_article" class = "container mb-4">
+            <h3>CÓ THỂ BẠN QUAN TÂM</h3>
         </div>
+        <hr>
+               
+        
+        {{#each this.similar_articles}}
+        <div class="row my-3 mx-5 pb-4 border-bottom">
+            <div class="col-md-3">
+            <a class = "text-dark" href="{{ref}}">
+            <img style="width:100%" src="{{avatar_url}}" alt="{{avatar_caption}}">
+            </a>
+            </div>
+
+            <div class ="col-md-9">
+                <a class = "title-link text-dark" href = "{{ref}}">
+                <h4>{{article_title}}</h4>
+                </a>
+                <div>{{article_abstract}}</div>
+            </div>
+        </div>
+        {{/each}}
 
     </div>
 
 </div>
 
-<div class = "container mt-2 p-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+{{#section 'js'}}
+<script src="/static/js/article/view.js"></script>
+{{/section}}
 
-    <!-- comments -->
-    <div id = "comment" class = "container">
-    <h3 class="text-uppercase"> Bình luận </h3>
-    </div>
-
-
-        <!-- writecomment -->
-    <div id = "write_comment" class = "container d-flex">
-        <i class="fa fa-comment px-2" style="font-size:48px;"></i>
-        
-        <div class="input-group">
-        <textarea class="form-control" aria-label="With textarea"></textarea>
-        </div>
-    </div>
-
-    <div class= "d-flex flex-row-reverse">
-        <button class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
-    </div>
-
-    <hr>
-
-    
-    <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-        <div class="card-body">
-            <div class="d-flex d-flex justify-content-between">
-                <div class="text-primary">Nguyễn Thị Hiền</div>
-                <div>18:55 19/06</div>
-            </div>
-            <hr>
-            <div>
-                Có chỉ thị 16 ngay từ đầu toàn thành phố như năm ngoái biết đâu dịch ko bùng phát vậy,dân đỡ khổ.
-            </div>
-        </div>
-    </div>
-
-    <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-        <div class="card-body">
-            <div class="d-flex d-flex justify-content-between">
-                <div class="text-primary">Nguyễn Thị Hiền</div>
-                <div>18:55 19/06</div>
-            </div>
-            <hr>
-            <div>
-                Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
-            </div>
-        </div>
-    </div>
-
-    <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-        <div class="card-body">
-            <div class="d-flex d-flex justify-content-between">
-                <div class="text-primary">Nguyễn Thị Hiền</div>
-                <div>18:55 19/06</div>
-            </div>
-            <hr>
-            <div>
-                Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
-            </div>
-        </div>
-    </div>
-    <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-        <div class="card-body">
-            <div class="d-flex d-flex justify-content-between">
-                <div class="text-primary">Nguyễn Thị Hiền</div>
-                <div>18:55 19/06</div>
-            </div>
-            <hr>
-            <div>
-                Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
-            </div>
-        </div>
-    </div>
-
-    
-    
-
-</div>
-
-<div class = "container mt-2 mb-5 p-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
-    <!-- bai viet cung chuyen muc-->
-    <div id = "same_category_article" class = "container">
-        <h3>CÓ THỂ BẠN QUAN TÂM</h3>
-    </div>
-</div>
+{{#section 'css'}}
+<script src="/static/css/main.css"></script>
+{{/section}}
