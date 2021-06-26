@@ -1,42 +1,16 @@
 const express = require('express');
-const categoryModel = require('../models/category.model')
+const categoryModel = require('../models/tag.model')
 const articleModel = require('../models/article.model')
 const router = express.Router();
 
-router.get('/', async function(req, res){
-    const list = await categoryModel.all()
-    res.render('vwCategories/about', {
-        categories: list
-    });
-});
-
-router.get('/add', function(req, res){
-    res.render('vwCategories/add');
-});
-
-router.post('/add', async function(req, res){
-    const new_obj = {
-        category_name: req.body.catName,
-        parent_category_id: +req.body.parentCat
-    };
-    await categoryModel.add(new_obj);
-    res.redirect('/categories')
-});
-
-router.get('/getsubcats', async function(req, res){
-    sub_cats = await categoryModel.get_sub_cats();
-    sub_cats = sub_cats[0];
-    res.json(sub_cats);
-});
-
-router.get('/:category_id', async function(req, res) {
-    const cat_id = req.params.category_id || 0;
+router.get('/:tag_id', async function(req, res) {
+    const tag_id = req.params.tag_id || 0;
 
     const limit = 10;
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
-    const total = await articleModel.count_by_cat_id(cat_id);
+    const total = await articleModel.count_by_tag_id(tag_id);
     let n_pages = Math.ceil(total[0][0].total / limit);
     if (total % limit > 0) n_pages++;
 
@@ -51,8 +25,16 @@ router.get('/:category_id', async function(req, res) {
     const offset = (page - 1) * limit;
   
     const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
-    const list = await articleModel.find_by_cat_id(cat_id, offset);
-    const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
+    const list = await articleModel.find_by_subcat_id(sub_id, offset);
+
+    for (i = 0; i < sub_cats[0].length; i++) {
+        if (sub_cats[0][i].category_id === +sub_id) {
+            sub_cats[0][i].is_active = true;
+        }
+        else {
+            sub_cats[0][i].is_active = false;
+        }
+    }
     var tags = new Array();
     if (list[0].length !== 0) {
         for (let i = 0; i < list[0].length; i++) {
@@ -61,10 +43,9 @@ router.get('/:category_id', async function(req, res) {
         }
     }
 
-    res.render('vwCategories/article_category', {
+    res.render('vwCategories/article_subcategory', {
         articles: list[0],
         tags,
-        sub_cats: sub_cats[0],
         page_numbers,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
