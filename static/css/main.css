@@ -49,3 +49,12 @@
 #nav-bar2{
     padding: 0;
 }
+
+.title-link{
+    color: #333333;
+    font-weight: 600;
+  }
+  
+.title-link:hover{
+    text-decoration: none;
+}
