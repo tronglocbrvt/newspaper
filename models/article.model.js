@@ -67,4 +67,12 @@ module.exports=
         limit 10 offset :offset`;
         return db.raw(sql, params);    
     },
+
+    async count_by_tag_id(tag_id) {
+        const rows = await db('products')
+          .where('tag_id', tag_id)
+          .count('*', { as: 'total' });
+    
+        return rows[0].total;
+      },
 }

@@ -8,4 +8,5 @@ module.exports=function(app){
         next();
     }, require('../controllers/subcategory.router'));
     app.use('/article',require('../controllers/article.router'))
+    //app.use('/tags', require('../controllers/tag.router'));
 };
