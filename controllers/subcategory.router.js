@@ -28,6 +28,15 @@ router.get('/subs/:id', async function(req, res) {
     const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
     const list = await articleModel.find_by_subcat_id(sub_id, offset);
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
+
+    for (i = 0; i < sub_cats[0].length; i++) {
+        if (sub_cats[0][i].category_id === +sub_id) {
+            sub_cats[0][i].is_active = true;
+        }
+        else {
+            sub_cats[0][i].is_active = false;
+        }
+    }
     var tags = new Array();
     if (list[0].length !== 0) {
         for (let i = 0; i < list[0].length; i++) {
