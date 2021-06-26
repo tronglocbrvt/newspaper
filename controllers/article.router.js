@@ -3,7 +3,6 @@
  */
 
 const express = require('express');
-const { createConnection } = require('mysql2/promise');
 const article_model = require('../models/article.model')
 const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
