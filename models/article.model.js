@@ -32,5 +32,41 @@ module.exports=
       where tl.article_id = ?
           and tl.tag_id = tags.tag_id`;
       return db.raw(sql, art_id);    
+    },
+
+    hot_news(){
+        const sql=`select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        from articles a, categories c, published_articles pa
+        where a.category_id = c.category_id
+        and a.category_id = pa.article_id
+        limit 3`;
+        return db.raw(sql); 
+    },
+
+    latest_news(){
+        const sql=`select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        from articles a, categories c, published_articles pa
+        where a.category_id = c.category_id
+        and a.category_id = pa.article_id
+        limit 10`;
+        return db.raw(sql); 
+    },
+
+    most_news(){
+        const sql=`select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        from articles a, categories c, published_articles pa
+        where a.category_id = c.category_id
+        and a.category_id = pa.article_id
+        limit 10`;
+        return db.raw(sql); 
+    },
+
+    hot_categories(){
+        const sql=`select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        from articles a, categories c, published_articles pa
+        where a.category_id = c.category_id
+        and a.category_id = pa.article_id
+        limit 10`;
+        return db.raw(sql); 
     }
 }
