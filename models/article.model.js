@@ -48,4 +48,23 @@ module.exports=
         `;
         return db.raw(sql, cat_id);    
     },
+
+    count_by_subcat_id (subcat_id) {
+        const sql = `select count(*) as total
+        from articles, categories
+        where categories.category_id = articles.category_id
+            and categories.category_id = ?`;
+        return db.raw(sql, subcat_id);    
+    },
+
+    find_by_subcat_id (sub_id, offset) {
+        var params = {id : sub_id, offset : offset};
+        const sql = `select articles.*, p.time_published, categories.category_name
+        from articles, categories, published_articles as p
+        where categories.category_id = :id
+            and articles.category_id = categories.category_id
+            and p.article_id = articles.article_id
+        limit 10 offset :offset`;
+        return db.raw(sql, params);    
+    },
 }
