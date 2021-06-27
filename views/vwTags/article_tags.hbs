@@ -1,17 +1,11 @@
-<div class="col-12 text-center mt-0">
+<div class="col-12 text-center mt-4">
   <div class="category-title">
-    <h1 class="h2 h1-md">Danh mục: {{this.name_cat.0.name}}</h1>
+    {{#if this.empty}}  
+        <h5 class="card-title">Không có dữ liệu!</h5>
+    {{else}}
+    <h1 class="h2 h1-md">{{this.articles.0.tag_name}}</h1>
     <hr style="border-top: 3px solid; height: 1px; width:5rem" />
   </div>
-  <!-- sub category -->
-  <div class="tags-area my-2">
-    <div class="mb-2">
-      {{#each this.sub_cats}}
-      <a class="btn btn-sm border" href="/categories/{{../name_cat.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
-      {{/each}}
-    </div>
-  </div>
-  <!-- end sub category -->
 </div>
  
 <div class="container" style="margin-top: 30px; margin-bottom: 30px">
@@ -22,16 +16,13 @@
       <div class="block-area">
         <div class="border-bottom-last-0 first-pt-0">
           <!--post start-->
-          {{#if this.empty}}  
-          <h5 class="card-title">Không có dữ liệu!</h5>
-          {{else}}
           {{#each this.articles}}
           <article class="card card-full hover-a py-4">
             <div class="row">
               <div class="col-sm-6 col-md-12 col-lg-6">
                 <!--thumbnail-->
                 <div class="ratio_360-202 image-wrapper">
-                  <a href="#">
+                  <a href="/articles/{{published_article_id}}">
                     <img
                       class="img-fluid lazy loaded"
                       src="{{avatar_url}}"
@@ -46,12 +37,12 @@
                 <div class="card-body pt-3 pt-sm-0 pt-md-3 pt-lg-0">
                   <!--title-->
                   <h3 class="card-title h2 h3-sm h2-md">
-                    <a href="#">{{article_title}}</a>
+                    <a href="/articles/{{published_article_id}}" class="title-link">{{article_title}}</a>
                   </h3>
                   <!--author and date-->
                   <div class="card-text mb-2 text-muted small">
                     <span class="d-none d-sm-inline me-1">
-                      <a class="fw-bold" href="/categories/{{../name_cat.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
+                      <a class="fw-bold" href="/categories/{{parent_category_id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>                 
                     <time datetime={{time_published}}>{{date_format time_published}}</time>
                   </div>
@@ -61,7 +52,7 @@
                   <div class="tags-area">
                     <div class="mb-2">
                       {{#each (lookup ../tags @index)}}
-                      <a class="btn btn-sm border" href="#">{{tag_name}}</a>
+                      <a class="btn btn-sm border" href="/tags/{{tag_id}}">{{tag_name}}</a>
                       {{/each}}
                     </div>
                   </div>

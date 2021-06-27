@@ -13,7 +13,6 @@ router.get('/subs/:id', async function(req, res) {
 
     const total = await articleModel.count_by_subcat_id(sub_id);
     let n_pages = Math.ceil(total[0][0].total / limit);
-    if (total % limit > 0) n_pages++;
 
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
@@ -25,7 +24,6 @@ router.get('/subs/:id', async function(req, res) {
 
     const offset = (page - 1) * limit;
   
-    const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
     const list = await articleModel.find_by_subcat_id(sub_id, offset);
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
 
@@ -54,7 +52,6 @@ router.get('/subs/:id', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages),
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
-        name_cat: name_cat[0],
         empty: list[0].length === 0 || sub_cats[0].length === 0
     })
 });

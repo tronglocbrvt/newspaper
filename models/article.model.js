@@ -59,7 +59,7 @@ module.exports =
         //     this.on('articles.category_id', '=', 'categories.category_id').onIn('categories.parent_category_id', [cat_id])
         //   })
         var params = { id: cat_id, offset: offset };
-        const sql = `select articles.*, p.time_published, categories.category_name, c.category_name as name
+        const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
             and categories.category_id = articles.category_id
@@ -70,7 +70,7 @@ module.exports =
     },
 
     find_tags_by_article_id(art_id) {
-        const sql = `select distinct tags.tag_name
+        const sql = `select distinct tags.tag_name, tags.tag_id
       from tag_links as tl, tags
       where tl.article_id = ?
           and tl.tag_id = tags.tag_id`;
@@ -100,21 +100,35 @@ module.exports =
 
     find_by_subcat_id(sub_id, offset) {
         var params = { id: sub_id, offset: offset };
-        const sql = `select articles.*, p.time_published, categories.category_name
-        from articles, categories, published_articles as p
+        const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
+        from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id
             and articles.category_id = categories.category_id
             and p.article_id = articles.article_id
+            and categories.parent_category_id = c.category_id
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
 
     async count_by_tag_id(tag_id) {
-        const rows = await db('products')
+        const rows = await db('tag_links')
             .where('tag_id', tag_id)
             .count('*', { as: 'total' });
 
         return rows[0].total;
+    },
+
+    find_by_tag_id(tag_id, offset) {
+        var params = { id: tag_id, offset: offset };
+        const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id
+        from articles, tag_links as tl, published_articles as p, tags, categories as c
+        where tl.tag_id = :id
+            and tl.tag_id = tags.tag_id
+            and tl.article_id = p.article_id
+            and articles.article_id = p.article_id
+            and c.category_id = articles.category_id
+        limit 10 offset :offset`;
+        return db.raw(sql, params);
     },
 
     hot_news() {
