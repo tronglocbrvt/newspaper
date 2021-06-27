@@ -30,7 +30,6 @@ router.get('/:tag_id', async function(req, res) {
             tags[i] = tags_article[0];
         }
     }
-    console.log(list[0]);
     res.render('vwTags/article_tags', {
         articles: list[0],
         tags,

@@ -24,7 +24,6 @@ router.get('/subs/:id', async function(req, res) {
 
     const offset = (page - 1) * limit;
   
-    const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
     const list = await articleModel.find_by_subcat_id(sub_id, offset);
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
 
@@ -53,7 +52,6 @@ router.get('/subs/:id', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages),
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
-        name_cat: name_cat[0],
         empty: list[0].length === 0 || sub_cats[0].length === 0
     })
 });
