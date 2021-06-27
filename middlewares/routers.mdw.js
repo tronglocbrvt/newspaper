@@ -6,4 +6,5 @@ module.exports = function (app) {
         req.cat_id = req.params.category_id;
         next();
     }, require('../controllers/subcategory.router'));
+    app.use('/tags', require('../controllers/tag.router'));
 }
