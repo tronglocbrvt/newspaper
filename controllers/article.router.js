@@ -34,23 +34,29 @@ router.get('/:id', async function(req, res)
     const db_data_tags = await article_model.load_tags_by_published_article_id(article_id);
     const db_data_similar_articles = await article_model.load_random_published_articles_with_same_category(article_id,LIMIT_SIMILAR_ARTICLE)
 
-    // Generate input for views
-    var article = db_data_article[0][0];
-    article.time_published = formatTime(article.time_published);
+    if (db_data_article[0][0])
+    {
+        // Generate input for views
+        var article = db_data_article[0][0];
+        article.time_published = formatTime(article.time_published);
 
-    var tags = db_data_tags[0];
+        var tags = db_data_tags[0];
 
-    var similar_articles = db_data_similar_articles[0];
+        var similar_articles = db_data_similar_articles[0];
 
-    console.log(similar_articles)
-    var view_inputs=
-    { 
-        article: article,
-        tags : tags,
-        similar_articles : similar_articles
+        var view_inputs=
+        { 
+            article: article,
+            tags : tags,
+            similar_articles : similar_articles
+        }
+        // Render 
+        res.render('vwArticle/view',view_inputs);
     }
-    // Render 
-    res.render('vwArticle/view',view_inputs);
+    else
+    {
+        res.render('vwArticle/viewBlankArticle');
+    }
 });
 
 module.exports = router
