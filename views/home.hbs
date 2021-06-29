@@ -7,16 +7,16 @@
       <div class="mySlides card" style="padding-bottom: 20px;">
         <span class="badge badge-danger week-point">ĐIỂM TUẦN</span>
         <div class="img-containter">
-          <img src="/static/images/img4.jpg" width="100%">
+          <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}" width="100%">
         </div>
         <div class="big-title">
-          <a href="#" class="title-link">{{article_title}}</a>
+          <a href="/articles/{{article_id}}" class="title-link">{{article_title}}</a>
         </div>
         <div style="font-size: large;">
-          <span class="date"><i class="fa fa-clock-o"></i>&nbsp;{{time_published}}</span>
-          <span class="badge badge-secondary article-category">
-            <a href="#" class="cat-link text-uppercase">{{category_name}}</a>
+          <span class="d-none d-sm-inline me-1" style="margin-left: 30px;">
+            <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
           </span>
+          <span class="date">&nbsp;{{date_format time_published}}</span>
         </div>
       </div>
       {{/each}}
@@ -29,16 +29,16 @@
 
   </div>
   <div class="col-sm-5">
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-pills" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" id="tab-javascript" data-toggle="tab" href="#content-javascript" role="tab"
-          aria-controls="content-javascript" aria-selected="false">
+        <a class="nav-link active" id="tab-javascript" data-toggle="tab" href="#content-javascript" role="tab"
+          aria-controls="content-javascript">
           MỚI NHẤT
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="tab-css" data-toggle="tab" href="#content-css" role="tab"
-          aria-controls="content-css" aria-selected="true">
+        <a class="nav-link" id="tab-css" data-toggle="tab" href="#content-css" role="tab"
+          aria-controls="content-css">
           ĐỌC NHIỀU
         </a>
       </li>
@@ -50,13 +50,15 @@
           {{#each latest_news}}
           <div class="card" style="height: 100px; margin: 10px 0px">
             <div class="card-horizontal">
-              <img src="/static/images/img1.jpg" alt="Card image cap" width="150" height="100px">
-              <a href="#" class="title-link h-card-content">{{article_title}}</a>
+              <a href="/articles/{{article_id}}">
+                <img src="{{avatar_url}}" alt="Card image cap" height="100px" width="150px">
+              </a>
+              <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
-                <i class="fa fa-clock-o"></i>12/8/2021
-                <span class="badge badge-secondary article-category">
-                  <a href="#" class="cat-link text-uppercase">{{category_name}}</a>
+                <span class="d-none d-sm-inline me-1">
+                  <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
                 </span>
+                <span class="date">&nbsp;{{date_format time_published}}</span>
               </div>
             </div>
           </div>
@@ -68,13 +70,15 @@
           {{#each most_news}}
           <div class="card" style="height: 100px; margin: 10px 0px">
             <div class="card-horizontal">
-              <img src="/static/images/img1.jpg" alt="Card image cap" width="150" height="100px">
-              <a href="#" class="title-link h-card-content">{{article_title}}</a>
+              <a href="/articles/{{article_id}}">
+                <img src="{{avatar_url}}" alt="Card image cap" height="100px" width="150px">
+              </a>
+              <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
-                <i class="fa fa-clock-o"></i>12/8/2021
-                <span class="badge badge-secondary article-category">
-                  <a href="#" class="cat-link text-uppercase">{{category_name}}</a>
+                <span class="d-none d-sm-inline me-1">
+                  <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
                 </span>
+                <span class="date">&nbsp;{{date_format time_published}}</span>
               </div>
             </div>
           </div>
@@ -91,14 +95,13 @@
 <div class="row" style="margin-bottom: 20px;">
   {{#each hot_categories}}
   <div class="col-sm-2 v-article">
-    <span class="badge badge-secondary article-category" style="margin-bottom: 10px">
-      <a href="#" class="cat-link text-uppercase" style="font-size: medium;">{{category_name}}</a>
-    </span>
+    <a href="#" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
+      style="font-size: medium;">{{category_name}}</a>
     <div class="card v-card">
-      <img class="card-img-top" src="/static/images/img1.jpg" alt="Card image cap" width="180px" height="120px">
+      <img class="card-img-top" src="{{avatar_url}}" alt="Card image cap" width="180px" height="120px">
       <a href="#" class="title-link v-card-content">{{article_title}}</a>
       <div class="v-time">
-        <i class="fa fa-clock-o"></i>12/8/2021
+        {{date_format time_published}}
       </div>
     </div>
   </div>
