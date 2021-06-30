@@ -12,17 +12,18 @@
     color: gray;
     display: block;
     padding: .6rem .5rem;
+    font-weight: 600;
 }
 
 .nav-link2:hover {
     font-weight: 600;
-    color: black;
+    color: #2596be  ;
     text-decoration: none;
 }
 
 .nav-link1{
     color: white;
-    background-color: #2596be;
+    background-color: c;
     display: block;
     padding: .5rem .5rem;
 }
@@ -39,13 +40,20 @@
     padding: .5rem .5rem;
 }
 
+#search-bar{
+    position: absolute;
+    top: 200;
+    width: 100%;
+    z-index: 1;
+}
+
 #sub-nav{
     height: 37px;
     position: absolute;
-    top: 120;
     width: 100%;
     z-index: 1
 }
+
 #nav-bar2{
     padding: 0;
 }

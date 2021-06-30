@@ -10,7 +10,7 @@ $(document).ready(function(){
                 sub_cats = data.filter(cat => cat.parent_category_id === +id);
                 for (let i = 0; i < sub_cats.length; i++) {
                     var element = $('<li></li>').addClass('nav-item')
-                    var link = $('<a></a>').addClass('subnav-link').attr('href', '#').text(sub_cats[i].category_name);
+                    var link = $('<a></a>').addClass('subnav-link').attr('href', '/categories/'+id+'/subs/'+sub_cats[i].category_id).text(sub_cats[i].category_name);
                     element.append(link);
                     $('#ul-sub-nav').append(element);
                 }
@@ -26,5 +26,9 @@ $(document).ready(function(){
     },
     function(){
         $('#sub-nav').attr('hidden', true);
+    });
+
+    $('#search').click(function(){
+        $('#search-bar').toggle();
     });
 });

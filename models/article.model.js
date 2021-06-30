@@ -132,7 +132,8 @@ module.exports =
     },
 
     hot_news() {
-        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published,
+        a.avatar_url as avatar_url
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
         and a.category_id = pa.article_id
@@ -141,7 +142,8 @@ module.exports =
     },
 
     latest_news() {
-        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published,
+        a.avatar_url as avatar_url
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
         and a.category_id = pa.article_id
@@ -150,7 +152,8 @@ module.exports =
     },
 
     most_news() {
-        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published,
+        a.avatar_url as avatar_url
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
         and a.category_id = pa.article_id
@@ -159,7 +162,8 @@ module.exports =
     },
 
     hot_categories() {
-        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published
+        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published,
+        a.avatar_url as avatar_url
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
         and a.category_id = pa.article_id

@@ -25,7 +25,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link1 text-center" href="#"><i class="fa fa-search fa-lg"></i><br><span>TÌM
+                    <a class="nav-link1 text-center" id="search"><i class="fa fa-search fa-lg"></i><br><span>TÌM
                             KIẾM</span></a>
                     <div class="justify-content-md-center">
                     <form class="form-inline my-2 my-lg-0 my-lg-0" action="/search">
@@ -50,6 +50,18 @@
             </ul>
         </div>
     </nav>
+
+    <nav class="navbar navbar-expand-lg" id="search-bar" style="background-color: #EEEEEE; display: none; padding: 12px">
+        <form action="" method="POST" style="width: 100%">
+            <div class="input-group">
+                <input type="text" class="form-control input-lg" style="height: 45px" placeholder="Tìm kiếm">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </nav>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow d-none d-xl-block" id="nav-bar2">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mx-auto">
@@ -80,7 +92,8 @@
             </ul>
         </div>
     </nav>
-    
+
+
     <div class="container mt-4">
         <div class="row">
             <div class="col-sm-12">

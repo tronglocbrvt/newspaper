@@ -16,6 +16,7 @@
 
 img{
   transition: opacity 0.2s;
+  object-fit: cover;
 }
 
 img:hover{
@@ -129,7 +130,6 @@ img:hover{
 
 .date{
   color: #666666;
-  margin-left: 30px;
 }
 
 .article-category:hover{ 
@@ -181,13 +181,13 @@ img:hover{
 }
 
 .v-card{
-  width: 180px;
+  width: 200px;
   height: 245px;
   margin-right: 30px
 }
 
 .v-article{
-  margin-right: 35px;
+  margin-right: 30px;
   margin-bottom: 35px;
 }
 
