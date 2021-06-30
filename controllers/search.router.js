@@ -3,7 +3,7 @@ const searchModel = require('../models/search.model')
 const articleModel = require('../models/article.model')
 const router = express.Router();
 
-router.post('/', async function(req, res) {
+router.get('/', async function(req, res) {
     const keyword = req.query.keyword || '';
     const criteria = req.query.criteria || 0;
 

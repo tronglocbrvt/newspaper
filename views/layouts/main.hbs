@@ -27,17 +27,6 @@
                 <li class="nav-item">
                     <a class="nav-link1 text-center" id="search"><i class="fa fa-search fa-lg"></i><br><span>TÌM
                             KIẾM</span></a>
-                    <div class="justify-content-md-center">
-                    <form class="form-inline my-2 my-lg-0 my-lg-0" action="/search">
-                        <input class="form-control mr-sm-2" type="hidden" name="criteria"
-                            placeholder="Tìm kiếm..." aria-label="Search" style="width: 400px;" value = "1">
-                        <input class="form-control mr-sm-2" type="text" name="keyword"
-                            placeholder="Tìm kiếm..." aria-label="Search" style="width: 400px;" value = "">
-
-                        <button type="submit" class="search-button"> 
-                            <i class="fa fa-search"></i> </button>
-                    </form>
-                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link1 text-center" href="#"><i class="fa fa-user-plus fa-lg"></i><br><span>ĐĂNG
@@ -52,9 +41,10 @@
     </nav>
 
     <nav class="navbar navbar-expand-lg" id="search-bar" style="background-color: #EEEEEE; display: none; padding: 12px">
-        <form action="" method="POST" style="width: 100%">
+        <form action="/search" style="width: 100%">
             <div class="input-group">
-                <input type="text" class="form-control input-lg" style="height: 45px" placeholder="Tìm kiếm">
+                <input type="hidden" class="form-control input-lg" style="height: 45px" name="criteria" value="0">
+                <input type="text" class="form-control input-lg" style="height: 45px" placeholder="Tìm kiếm..." name="keyword">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
                 </div>
