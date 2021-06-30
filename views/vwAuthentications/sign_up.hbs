@@ -1,0 +1,101 @@
+<div class="col-sm-12">
+    <div class="container m-5 p-5 bg-light shadow">
+
+        <form id="frmRegister" method="post">
+
+            <div class="form-group">
+                <label for="name">Họ và tên</label>
+                <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name" maxlength="100">
+                <div id="name_invalid" class="invalid-feedback">
+                    Tên không hợp lệ.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Giới tính: </label>
+                <select class="form-select" id="gender" name="gender">
+                    <option selected value="-1">Khác</option>
+                    <option value="1">Nam</option>
+                    <option value="0">Nữ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Ngày sinh: </label>
+                <input id="date_of_birth" width="276" name="raw_date_of_birth"  placeholder="mm/dd/yyyy" >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input class="form-control" id="email" type="text" name="email" placeholder="abc@example.com"
+                    maxlength="100" />
+                <div id="email_invalid" class="invalid-feedback">
+                    Email không hợp lệ.
+                </div>
+                <div id="email_duplicate" class="invalid-feedback">
+                    Email đã tồn tại.
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="username">Tài khoản</label>
+                <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" maxlength="32"
+                    name="user_name">
+                <div id="username_invalid" class="invalid-feedback">
+                    Tài khoản không hợp lệ.
+                </div>
+                <div id="username_duplicate" class="invalid-feedback">
+                    Tài khoản đã tồn tại.
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">Mật khẩu</label>
+                <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" maxlength="32"
+                    name="raw_password">
+                <div id="pswmeter"></div>
+
+                <div id="password_invalid" class="invalid-feedback">
+                    Mật khẩu quá đơn giản.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="password_confirm" placeholder="Nhập lại mật khẩu"
+                    maxlength="32">
+                <div id="password_confirm_invalid" class="invalid-feedback">
+                    Mật khẩu nhập lại không khớp.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+
+        </form>
+
+    </div>
+</div>
+
+{{#section 'js'}}
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/static/js/auth/pswmeter.js" type = "text/javascript"></script>
+<script src="/static/js/auth/authenticate.js" type="text/javascript"></script>
+
+<script>
+    $('#date_of_birth').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+    $('#name').focus();
+    const myPassMeter = passwordStrengthMeter({
+        containerElement: '#pswmeter',
+        passwordInput: '#password',
+        height: 6,
+        borderRadius: 0,
+        pswMinLength: 8
+    });
+</script>
+
+{{/section}}
