@@ -3,17 +3,30 @@ const categoryModel = require('../models/category.model')
 const articleModel = require('../models/article.model')
 const router = express.Router();
 
+/*
+ * API get Articles by subcategoryID
+ * Input URL: 
+    * id: subcategory id (only subcategory)
+    * cat_id: get from routers middleware
+ * Render page view contains list articles of subcategory 
+ */
 router.get('/subs/:id', async function(req, res) {
+    // get param cat_id (from router middleware) and sub_id
     const cat_id = req.cat_id || 0;
     const sub_id = req.params.id || 0;
 
+    // number of articels on 1 page
     const limit = 10;
+
+    // get current page, default 1
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
+    // get total articles by subcat_id
     const total = await articleModel.count_by_subcat_id(sub_id);
     let n_pages = Math.ceil(total[0][0].total / limit);
 
+    // status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
     page_numbers.push({
@@ -22,11 +35,16 @@ router.get('/subs/:id', async function(req, res) {
     });
     }
 
+    // set offset that pass to query in database
     const offset = (page - 1) * limit;
   
+    // list articles by subcat_id
     const list = await articleModel.find_by_subcat_id(sub_id, offset);
+
+    // get sub_cats to display
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
 
+    // set status of current sub-cat is TRUE
     for (i = 0; i < sub_cats[0].length; i++) {
         if (sub_cats[0][i].category_id === +sub_id) {
             sub_cats[0][i].is_active = true;
@@ -35,6 +53,8 @@ router.get('/subs/:id', async function(req, res) {
             sub_cats[0][i].is_active = false;
         }
     }
+
+    // get tags of each article
     var tags = new Array();
     if (list[0].length !== 0) {
         for (let i = 0; i < list[0].length; i++) {

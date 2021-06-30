@@ -3,25 +3,43 @@ const searchModel = require('../models/search.model')
 const articleModel = require('../models/article.model')
 const router = express.Router();
 
+/*
+ * API get Articles by Search Keyword
+ * Input URL: query: 
+    * criteria (0: title; 1: abstract; 2: content)
+    * keyword
+    * page_number (if needed)
+ * Render page view contains list articles based on keyword & criteria (use full-text-search)
+ */
 router.get('/', async function(req, res) {
+    // get keyword and criteria
     const keyword = req.query.keyword || '';
     const criteria = req.query.criteria || 0;
 
+    // number of articles on 1 page
     const limit = 10;
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
     var type = 'article_title';
-    if (criteria === 1) {
+
+    // criteria search
+    if (+criteria === 1) {
         type = 'article_abstract';
     }
-    else if (criteria === 2){
-        type = "article_content";
+    else if (+criteria === 2){
+        type = 'article_content';
     }
 
-    const total = await searchModel.count_result_from_search(keyword, type);
-    let n_pages = Math.ceil(total[0][0].total / limit);
+    // set status of current criteria is TRUE
+    cur_criteria = [false, false, false];
+    cur_criteria[criteria] = true;
 
+    // count articles based on keyword & criteria
+    const total = await searchModel.count_result_from_search(keyword, type);
+    let n_pages = Math.ceil(total[0][0].total / limit); // total page
+
+    // set status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
     page_numbers.push({
@@ -30,10 +48,13 @@ router.get('/', async function(req, res) {
     });
     }
 
+    // set offset that pass to query in database
     const offset = (page - 1) * limit;
   
+    // get list articles based on keyword and criteria
     const list_articles = await searchModel.get_articles_from_search(keyword, type, offset);
 
+    // get tags each article
     var tags = new Array();
     if (list_articles[0].length !== 0) {
         for (let i = 0; i < list_articles[0].length; i++) {
@@ -44,6 +65,8 @@ router.get('/', async function(req, res) {
 
     res.render('vwSearch/search', {
         keyword,
+        criteria,
+        cur_criteria,
         articles: list_articles[0],
         tags,
         page_numbers,
