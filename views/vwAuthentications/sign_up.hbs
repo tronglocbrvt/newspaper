@@ -1,0 +1,260 @@
+<div class="col-sm-12">
+    <div class="container m-5 p-5 bg-light shadow">
+
+        <form id="frmRegister" method="post">
+
+            <div class="form-group">
+                <label for="name">Họ và tên</label>
+                <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name" maxlength="100">
+                <div id="name_invalid" class="invalid-feedback">
+                    Tên không hợp lệ.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Giới tính: </label>
+                <select class="form-select" id="gender" name="gender">
+                    <option selected value="-1">Khác</option>
+                    <option value="1">Nam</option>
+                    <option value="0">Nữ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Ngày sinh: </label>
+                <input id="date_of_birth" width="276" name="raw_date_of_birth"  placeholder="mm/dd/yyyy" >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input class="form-control" id="email" type="text" name="email" placeholder="abc@example.com"
+                    maxlength="100" />
+                <div id="email_invalid" class="invalid-feedback">
+                    Email không hợp lệ.
+                </div>
+                <div id="email_duplicate" class="invalid-feedback">
+                    Email đã tồn tại.
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="username">Tài khoản</label>
+                <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" maxlength="32"
+                    name="username">
+                <div id="username_invalid" class="invalid-feedback">
+                    Tài khoản không hợp lệ.
+                </div>
+                <div id="username_duplicate" class="invalid-feedback">
+                    Tài khoản đã tồn tại.
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">Mật khẩu</label>
+                <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" maxlength="32"
+                    name="raw_password">
+                <div id="pswmeter"></div>
+
+                <div id="password_invalid" class="invalid-feedback">
+                    Mật khẩu quá đơn giản.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="password_confirm" placeholder="Nhập lại mật khẩu"
+                    maxlength="32">
+                <div id="password_confirm_invalid" class="invalid-feedback">
+                    Mật khẩu nhập lại không khớp.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+
+        </form>
+
+    </div>
+</div>
+
+{{#section 'js'}}
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/auth/pswmeter.js"></script>
+
+<script>
+    $('#date_of_birth').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+
+    $('#name').focus();
+
+    console.log("hello");
+
+    const myPassMeter = passwordStrengthMeter({
+        containerElement: '#pswmeter',
+        passwordInput: '#password',
+        height: 6,
+        borderRadius: 0,
+        pswMinLength: 8
+    });
+
+</script>
+
+<script>
+
+    /**
+    Check whether username or email is duplicate. Show bug if duplicate. Submit if not
+    **/
+    async function checkDuplicateAndSubmit(username, email) 
+    {
+        function getJsonFromServer(api) {
+            return new Promise(function (fn_done, fn_fail) {
+                $.getJSON(api, function (data) { fn_done(data); });
+            );
+        }
+        }
+
+        const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
+        const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
+        if (is_email_avail === false) {
+            $('#email_duplicate').show();
+            $('#email').addClass("border border-danger");
+        }
+        
+        else {
+            $('#email_duplicate').hide()
+            $('#email').removeClass("border border-danger");
+        }
+
+        if (is_username_avail === false) {
+            $('#username_duplicate').show();
+            $('#username').addClass("border border-danger");
+        }
+        else {
+            $('#username_duplicate').hide()
+            $('#username').removeClass("border border-danger");
+        }
+
+        if (is_email_avail && is_username_avail) {
+            console.log("submit");
+            $('#frmRegister').off('submit').submit();
+        }
+    }
+
+
+    // Check Attributes are Valid or not? 
+    function checkEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    function checkUsername(username) {
+        return (username.length > 0);
+    }
+
+    // Check Attributes are Valid or not? 
+    function checkPassword() {
+        if (parseInt(myPassMeter.getScore()) >= 3)
+            return true;
+        return false;
+    }
+
+    // Check Attributes are Valid or not? 
+    function checkName(name) {
+        return (name.length > 0);
+    }
+
+    // Check Attributes are Valid or not? 
+    function checkConfirmPassword(password, password_confirm) {
+        return (password === password_confirm);
+    }
+
+    // Submit Form
+    $('#frmRegister').on('submit', function (e) {
+
+        e.preventDefault();
+        validTestPassed = true;
+
+        ///////////////////////////////////////////////////
+
+        const name = $('#name').val();
+        if (!checkName(name)) {
+            $('#name_invalid').show();
+            $('#name').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#name_invalid').hide()
+            $('#name').removeClass("border border-danger");
+        }
+
+
+        ///////////////////////////////////////////////////
+
+        const email = $('#email').val()
+        if (!checkEmail(email)) {
+            $('#email_invalid').show();
+            $('#email').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#email_invalid').hide()
+            $('#email').removeClass("border border-danger");
+        }
+
+        ///////////////////////////////////////////////////
+
+        const username = $('#username').val();
+        if (!checkUsername(username)) {
+            $('#username_invalid').show();
+            $('#username').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#username_invalid').hide()
+            $('#username').removeClass("border border-danger");
+        }
+
+        ///////////////////////////////////////////////////
+
+        if (!checkPassword()) {
+            $('#password_invalid').show();
+            $('#password').addClass("border border-danger");
+            $("#password").val("");
+            $("#password_confirm").val("");
+            validTestPassed = false;
+            myPassMeter.checkPasswordAgain("");
+        }
+        else {
+            $('#password_invalid').hide()
+            $('#password').removeClass("border border-danger");
+        }
+
+        ///////////////////////////////////////////////////
+
+        const password = $('#password').val();
+        const password_confirm = $('#password_confirm').val();
+
+        if (!checkConfirmPassword(password, password_confirm)) {
+            $('#password_confirm_invalid').show();
+            $('#password_confirm').addClass("border border-danger");
+            $("#password").val("");
+            $("#password_confirm").val("");
+            validTestPassed = false;
+            myPassMeter.checkPasswordAgain("");
+        }
+        else {
+            $('#password_confirm_invalid').hide();
+            $('#password_confirm').removeClass("border border-danger");
+        }
+
+        // Check duplicate with Server DBs and submit()
+        if (validTestPassed) {
+            checkDuplicateAndSubmit(username, email);
+        }
+    });
+</script>
+{{/section}}

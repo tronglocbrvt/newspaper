@@ -72,8 +72,13 @@
             </div>
         </div>
 
+        
         <div class= "d-flex flex-row-reverse">
-            <button class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
+            {{#if auth}}
+                <button class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
+            {{else}}
+                <a class = "btn btn-warning mx-4 my-2" href="/auth/log-in">Đăng nhập để gửi bình luận.</a>
+            {{/if}}
         </div>
 
         <hr>

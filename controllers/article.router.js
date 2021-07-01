@@ -48,8 +48,11 @@ router.get('/:id', async function(req, res)
         { 
             article: article,
             tags : tags,
-            similar_articles : similar_articles
+            similar_articles : similar_articles,
+            auth: res.locals.auth,
+            authUser:res.locals.authUser
         }
+        console.log(view_inputs);
         // Render 
         res.render('vwArticle/view',view_inputs);
     }
