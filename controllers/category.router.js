@@ -8,7 +8,7 @@ router.get('/', async function(req, res){
     res.render('vwCategories/about', {
         categories: list
     });
-});
+}); 
 
 router.get('/add', function(req, res){
     res.render('vwCategories/add');
