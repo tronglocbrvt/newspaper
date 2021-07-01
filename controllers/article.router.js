@@ -66,7 +66,7 @@ router.post('/add/hello', function (req, res) {
     const storage = multer.diskStorage({
         destination(req, file, cb) {
             console.log(path.dirname(require.main.filename));
-            cb(null, path.join(__dirname+'../static/images'))
+            cb(null, path.join(__dirname+'/static/images'))
         },
         filename(req, file, cb) {
             cb(null, file.originalname)
