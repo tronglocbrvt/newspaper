@@ -53,6 +53,20 @@ module.exports =
         return db.raw(sql_query, params)
     },
 
+     /**
+     * @param {published_article_id} int id of the published article
+     * @Return return lists of comments òf the published_article_id
+     */
+    load_comments_of_published_articles_by_id(published_article_id)
+    {
+        const sql_query = `select c.*, u.name
+        from comments as c,users as u
+        where c.published_article_id = ? and u.user_id = c.user_id
+        order by c.time_comment asc;
+        `;
+        return db.raw(sql_query,published_article_id);
+    },
+
     /**
      * @param {cat_id} int id of the parent category
      * @param {offset} int 

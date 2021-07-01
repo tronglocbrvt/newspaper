@@ -3,7 +3,8 @@
  */
 const N_HASHING_TIMES = 10;
 const express = require('express');
-const authenticate_model = require('../models/authenticate.model')
+const authenticate_model = require('../models/authenticate.model');
+const auth = require('../middlewares/auth.mdw');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
@@ -32,7 +33,6 @@ router.post('/log-in',async function (req,res)
     const data = await authenticate_model.findByUsername(username);
     if (data.length===0) 
     {
-      console.log("TK SAI");
       return res.render('vwAuthentications/sign_in', {
         err_message: 'Sai Tài Khoản!'
       })
@@ -46,7 +46,6 @@ router.post('/log-in',async function (req,res)
 
     if (ret === false) 
     {
-      console.log("MK SAI");
       return res.render('vwAuthentications/sign_in', {
         err_message: 'Sai mật khẩu'
       })
@@ -57,7 +56,9 @@ router.post('/log-in',async function (req,res)
     console.log(user.user_name + "Dang nhap thanh cong")
     req.session.auth = true;
     req.session.authUser = user;
+
     const url = req.session.retUrl || '/';
+    console.log('url');
     res.redirect(url);
 });
 
@@ -105,7 +106,7 @@ router.post('/sign-up',async function (req,res)
     }
     console.log(new_user);
     await authenticate_model.add_new_user(new_user);
-    res.render('vwAuthentications/sign_up');
+    res.redirect("log-in");
 }
 );
 
@@ -114,8 +115,24 @@ router.post('/sign-up',async function (req,res)
  * view for quên mật khẩu
  * **/
 
- router.get('/forget-password', async function (req, res) {
+router.get('/forget-password', async function (req, res) {
     res.render('vwAuthentications/forget_password');
 });
 
+router.post('/log-out' , auth, async function (req,res)
+{
+if (req.session) {
+    req.session.destroy(function (err) {
+      if (err) {
+        res.status(400).send('Unable to log out')
+      } else {
+        const url = req.headers.referer || '/';
+        res.redirect(url);
+      }
+    });
+    ;
+  } else {
+    res.end()
+  }
+});
 module.exports = router

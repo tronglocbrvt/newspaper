@@ -64,76 +64,44 @@
 
 
             <!-- writecomment -->
+        
+        <form id="frmComment" method="post">
+
         <div id = "write_comment" class = "container d-flex">
             <i class="fa fa-comment px-2" style="font-size:48px;"></i>
             
             <div class="input-group">
-            <textarea class="form-control" aria-label="With textarea"></textarea>
+            <textarea class="form-control" id = "comment" name = "comment" aria-label="With textarea"></textarea>
             </div>
         </div>
 
         
         <div class= "d-flex flex-row-reverse">
             {{#if auth}}
-                <button class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
+                <button type = "submit" class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
             {{else}}
-                <a class = "btn btn-warning mx-4 my-2" href="/auth/log-in">Đăng nhập để gửi bình luận.</a>
+                <a class = "btn btn-danger mx-4 my-2" href="/auth/log-in">Đăng nhập để gửi bình luận.</a>
             {{/if}}
         </div>
 
+        </form>
+
         <hr>
-        
-        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-            <div class="card-body">
-                <div class="d-flex d-flex justify-content-between">
-                    <div class="text-primary">Nguyễn Thị Hiền</div>
-                    <div>18:55 19/06</div>
-                </div>
-                <hr>
-                <div>
-                    Có chỉ thị 16 ngay từ đầu toàn thành phố như năm ngoái biết đâu dịch ko bùng phát vậy,dân đỡ khổ.
-                </div>
-            </div>
-        </div>
 
+        {{#each this.comments}}
         <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
             <div class="card-body">
                 <div class="d-flex d-flex justify-content-between">
-                    <div class="text-primary">Nguyễn Thị Hiền</div>
-                    <div>18:55 19/06</div>
+                    <div class="text-primary">{{name}}</div>
+                    <div>{{time_comment}}</div>
                 </div>
                 <hr>
                 <div>
-                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
+                    {{content}}
                 </div>
             </div>
         </div>
-
-        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-            <div class="card-body">
-                <div class="d-flex d-flex justify-content-between">
-                    <div class="text-primary">Nguyễn Thị Hiền</div>
-                    <div>18:55 19/06</div>
-                </div>
-                <hr>
-                <div>
-                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
-                </div>
-            </div>
-        </div>
-        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
-            <div class="card-body">
-                <div class="d-flex d-flex justify-content-between">
-                    <div class="text-primary">Nguyễn Thị Hiền</div>
-                    <div>18:55 19/06</div>
-                </div>
-                <hr>
-                <div>
-                    Tp.HCM ơi quyết nhanh lên - hy sinh mọi hoạt động 15 ngày thôi (đúng ra làm luôn đợt rồi, chắc bây giờ đã ổn), toàn TP thực hiện một nhiệm vụ thôi là tập trung toàn lực chống dịch - cứ lây lấc như hiện nay, không ổn một chút nào !
-                </div>
-            </div>
-        </div>
-
+        {{/each}}
         
         
 
