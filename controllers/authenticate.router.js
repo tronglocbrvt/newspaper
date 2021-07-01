@@ -9,8 +9,8 @@ const bcrypt = require('bcryptjs');
 const moment = require('moment');
 
 /**
- * API Get Sign In Page
- * Render page view for sign-in
+ * API Get log-in In Page
+ * Render page view for log-in
  */
 router.get('/log-in', async function (req, res) {
     if (res.locals.auth === false)
@@ -62,7 +62,7 @@ router.post('/log-in',async function (req,res)
 });
 
 /**
- * API Get Sign In Page
+ * API Get Sign up Page
  * Render page view for sign-up
  */
 router.get('/sign-up', async function (req, res) {
@@ -109,5 +109,13 @@ router.post('/sign-up',async function (req,res)
 }
 );
 
+
+/** 
+ * view for quên mật khẩu
+ * **/
+
+ router.get('/forget-password', async function (req, res) {
+    res.render('vwAuthentications/forget_password');
+});
 
 module.exports = router

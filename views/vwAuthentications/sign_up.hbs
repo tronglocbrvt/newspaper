@@ -22,7 +22,10 @@
 
             <div class="form-group">
                 <label for="date_of_birth">Ngày sinh: </label>
-                <input id="date_of_birth" width="276" name="raw_date_of_birth"  placeholder="mm/dd/yyyy" >
+                <input id="date_of_birth" width="276" name="raw_date_of_birth" placeholder="mm/dd/yyyy">
+                <div id="date_of_birth_invalid" class="invalid-feedback">
+                    Ngày sinh không hợp lệ.
+                </div>
             </div>
 
             <div class="form-group">
@@ -108,22 +111,19 @@
     /**
     Check whether username or email is duplicate. Show bug if duplicate. Submit if not
     **/
-    async function checkDuplicateAndSubmit(username, email) 
-    {
+    async function checkDuplicateAndSubmit(username, email) {
         function getJsonFromServer(api) {
             return new Promise(function (fn_done, fn_fail) {
                 $.getJSON(api, function (data) { fn_done(data); });
+            }
             );
         }
-        }
-
         const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
         const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
         if (is_email_avail === false) {
             $('#email_duplicate').show();
             $('#email').addClass("border border-danger");
         }
-        
         else {
             $('#email_duplicate').hide()
             $('#email').removeClass("border border-danger");
@@ -144,6 +144,34 @@
         }
     }
 
+
+    // Check Attributes are Valid or not? 
+    function checkDate(dateString) {
+        if (dateString.length === 0) return false;
+
+        // First check for the pattern
+        if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("/");
+        var day = parseInt(parts[1], 10);
+        var month = parseInt(parts[0], 10);
+        var year = parseInt(parts[2], 10);
+
+        // Check the ranges of month and year
+        if (year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+
+        var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // Adjust for leap years
+        if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+
+        // Check the range of the day
+        if (!(day > 0 && day <= monthLength[month - 1])) return false;
+    }
 
     // Check Attributes are Valid or not? 
     function checkEmail(email) {
@@ -203,6 +231,21 @@
         else {
             $('#email_invalid').hide()
             $('#email').removeClass("border border-danger");
+        }
+
+
+        ///////////////////////////////////////////////////
+
+        const date = $('#date_of_birth').val()
+        if (!checkDate(date)) {
+            $('#date_of_birth_invalid').show();
+            $('#date_of_birth').addClass("border border-danger");
+            validTestPassed = false;
+        }
+
+        else {
+            $('#date_of_birth_invalid').hide()
+            $('#date_of_birth').removeClass("border border-danger");
         }
 
         ///////////////////////////////////////////////////

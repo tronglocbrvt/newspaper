@@ -43,7 +43,7 @@ module.exports =
         const sql_query = `select CONCAT('/articles/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url
         from articles as a, published_articles as p, published_articles as p_ref, articles as a_ref
         where
-            p_ref.article_id = :p_id
+            p_ref.published_article_id = :p_id
             and a_ref.article_id = p_ref.article_id
             and a_ref.category_id = a.category_id
             and p.article_id = a.article_id
