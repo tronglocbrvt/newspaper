@@ -127,3 +127,5 @@ function passwordStrengthMeter(opts) {
   }
 
 }
+
+

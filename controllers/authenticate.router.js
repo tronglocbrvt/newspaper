@@ -13,9 +13,53 @@ const moment = require('moment');
  * Render page view for sign-in
  */
 router.get('/log-in', async function (req, res) {
-    res.render('vwAuthentications/sign_in');
+    if (res.locals.auth === false)
+    {
+        res.render('vwAuthentications/sign_in');
+    }
+    else
+    {
+        const url = req.session.retUrl || '/';
+        res.redirect(url);
+    }
 });
 
+router.post('/log-in',async function (req,res)
+{
+    const username = req.body.username;
+    console.log(username);
+
+    const data = await authenticate_model.findByUsername(username);
+    if (data.length===0) 
+    {
+      console.log("TK SAI");
+      return res.render('vwAuthentications/sign_in', {
+        err_message: 'Sai Tài Khoản!'
+      })
+    }
+  
+    user = data[0];
+    
+    console.log(user);
+
+    const ret = bcrypt.compareSync(req.body.password, user.password);
+
+    if (ret === false) 
+    {
+      console.log("MK SAI");
+      return res.render('vwAuthentications/sign_in', {
+        err_message: 'Sai mật khẩu'
+      })
+    }
+
+    delete user.password;
+    
+    console.log(user.user_name + "Dang nhap thanh cong")
+    req.session.auth = true;
+    req.session.authUser = user;
+    const url = req.session.retUrl || '/';
+    res.redirect(url);
+});
 
 /**
  * API Get Sign In Page
@@ -48,7 +92,7 @@ router.post('/sign-up',async function (req,res)
     const dob = moment(req.body.raw_date_of_birth,"MM/DD,YYYY").format("YYYY-MM-DD");
     const new_user = 
     {
-        user_name : req.body.user_name,
+        user_name : req.body.username,
         gender: req.body.gender,
         password : hash,
         date_of_birth : dob,
