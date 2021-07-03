@@ -3,6 +3,7 @@
  */
 
 const express = require('express');
+const puppeteer = require("puppeteer");
 const article_model = require('../models/article.model');
 const comment_model = require('../models/comment_model');
 const router = express.Router();
@@ -89,5 +90,34 @@ router.post('/:id', async function(req, res)
     res.redirect('back');
 }
 );
+
+router.get('/:id/download', async function(req, res) {
+    const published_article_id = req.params.id || 0;
+    const browser = await puppeteer.launch( {
+        headless: true
+    });
+    const web_page = await browser.newPage();
+    const url = "http://localhost:3000/articles/" + published_article_id;
+    await web_page.goto(url, {
+    waitUntil: "networkidle0"
+    });
+
+    const pdf = await web_page.pdf({
+        printBackground: true,
+        path: "newspaper.pdf",
+        format: "Letter",
+        margin: {
+            top: "40px",
+            bottom: "40px",
+            left: "40px",
+            right: "40px"
+        }
+    });
+    
+    await browser.close();
+
+    res.contentType("application/pdf");
+    res.send(pdf);
+  });
 
 module.exports = router
