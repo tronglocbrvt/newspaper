@@ -44,8 +44,20 @@ router.get('/', async function(req, res) {
     for (i = 1; i <= n_pages; i++) {
     page_numbers.push({
       value: i,
-      isCurrent: i === +page
+      isCurrent: i === +page,
+      hide: true
     });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5; 
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
     }
 
     // set offset that pass to query in database
@@ -74,6 +86,7 @@ router.get('/', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages),
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
+        n_pages,
         empty: list_articles[0].length === 0
     })
 });

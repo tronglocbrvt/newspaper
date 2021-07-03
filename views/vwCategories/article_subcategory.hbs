@@ -76,8 +76,11 @@
       <!--Pagination-->
       <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
       <ul class="pagination">
+         <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+          <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
+        </li>
         <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Previous</a>
+          <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang trước</a>
         </li>
         {{#each this.page_numbers}}
         {{#if isCurrent}}
@@ -85,13 +88,16 @@
           <a class="page-link" href="javascript:;">{{value}}</a>
         </li>
         {{else}}
-        <li class="page-item">
+        <li class="page-item {{#if hide}}hide{{/if}}">
           <a class="page-link" href="?page={{value}}">{{value}}</a>
         </li>
         {{/if}}
         {{/each}}
         <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Next</a>
+          <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang tiếp</a>
+        </li>
+        <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+          <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
         </li>
       </ul>
       </nav>

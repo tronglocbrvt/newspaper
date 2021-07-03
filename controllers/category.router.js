@@ -48,13 +48,25 @@ router.get('/:category_id', async function(req, res) {
     const total = await articleModel.count_by_cat_id(cat_id);
     let n_pages = Math.ceil(total[0][0].total / limit); // get total page
 
-    // status of current page is TRUE
+    // set status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
     page_numbers.push({
       value: i,
-      isCurrent: i === +page
+      isCurrent: i === +page,
+      hide: true
     });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5; 
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
     }
 
     // set offset that pass to query in database
@@ -80,6 +92,7 @@ router.get('/:category_id', async function(req, res) {
         tags,
         sub_cats: sub_cats[0],
         page_numbers,
+        n_pages,
         page_first: parseInt(page) === 1, // check first page 
         page_last: parseInt(page) === parseInt(n_pages), // check last page
         next_page: parseInt(page) + 1 ,
