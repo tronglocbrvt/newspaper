@@ -10,6 +10,7 @@ app.use(express.urlencoded({
 
 app.use('/static', express.static('static'));
 
+require('./middlewares/session.mdw')(app);
 require('./middlewares/view.mdw')(app);
 require('./middlewares/locals.mdw')(app); 
 require('./middlewares/routers.mdw')(app);

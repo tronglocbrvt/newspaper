@@ -1,17 +1,20 @@
-<div class="col-12 text-center mt-0">
-  <div class="category-title">
-    {{#if this.empty}}  
-      <h5 class="card-title">Không có dữ liệu!</h5>
-    {{else}}
-    <h1 class="h2 h1-md">{{this.articles.0.name}}</h1>
-    <hr style="border-top: 3px solid; height: 1px; width:5rem" />
-  </div>
-  <!-- sub category -->
-  <div class="tags-area my-2">
+<div class="col-12 text-center mt-4">
+  <form action="/search" style="width: 100%">
+    <div class="input-group">
+      <input type="hidden" class="form-control input-lg" style="height: 45px" name="criteria" value="{{criteria}}"> 
+      <input type="text" class="form-control input-lg" style="height: 45px" placeholder="Tìm kiếm..." name="keyword" value="{{keyword}}"> 
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+  </form>
+  
+  <div class="tags-area my-4">
     <div class="mb-2">
-      {{#each this.sub_cats}}
-      <a class="btn btn-sm border {{#if is_active}} btn-primary {{/if}}" href="/categories/{{../articles.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
-      {{/each}}
+      <h4 style="padding-bottom: 15px;">Tìm kiếm theo</h4>
+        <a class="btn btn-sm border {{#if cur_criteria.[0]}} btn-primary {{/if}}" href="/search?criteria=0&keyword={{keyword}}">Tiêu đề</a>
+        <a class="btn btn-sm border {{#if cur_criteria.[1]}} btn-primary {{/if}}" href="/search?criteria=1&keyword={{keyword}}">Nội dung tóm tắt</a>
+        <a class="btn btn-sm border {{#if cur_criteria.[2]}} btn-primary {{/if}}" href="/search?criteria=2&keyword={{keyword}}">Nội dung</a>
     </div>
   </div>
   <!-- end sub category -->
@@ -25,6 +28,9 @@
       <div class="block-area">
         <div class="border-bottom-last-0 first-pt-0">
           <!--post start-->
+          {{#if this.empty}}  
+            <h5 class="card-title">Không có dữ liệu!</h5>
+          {{else}}
           {{#each this.articles}}
           <article class="card card-full hover-a py-4">
             <div class="row">
@@ -51,7 +57,7 @@
                   <!--author and date-->
                   <div class="card-text mb-2 text-muted small">
                     <span class="d-none d-sm-inline me-1">
-                      <a class="fw-bold" href="/categories/{{id}}/subs/{{category_id}}">{{category_name}}</a>
+                      <a class="fw-bold" href="/categories/{{parent_category_id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>                 
                     <time datetime={{time_published}}>{{date_format time_published}}</time>
                   </div>
@@ -76,11 +82,11 @@
       <!--Pagination-->
       <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
       <ul class="pagination">
-         <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
+        <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+          <a class="page-link" href="/search?criteria={{criteria}}&keyword={{keyword}}&page=1" aria-disabled="true">Trang đầu</a>
         </li>
         <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang trước</a>
+          <a class="page-link" href="/search?criteria={{criteria}}&keyword={{keyword}}&page={{this.previous_page}}" aria-disabled="true">Trang trước</a>
         </li>
         {{#each this.page_numbers}}
         {{#if isCurrent}}
@@ -89,15 +95,15 @@
         </li>
         {{else}}
         <li class="page-item {{#if hide}}hide{{/if}}">
-          <a class="page-link" href="?page={{value}}">{{value}}</a>
+          <a class="page-link" href="/search?criteria={{../criteria}}&keyword={{../keyword}}&page={{value}}">{{value}}</a>
         </li>
         {{/if}}
         {{/each}}
         <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang tiếp</a>
+          <a class="page-link" href="/search?criteria={{criteria}}&keyword={{keyword}}&page={{this.next_page}}" aria-disabled="true">Trang tiếp</a>
         </li>
         <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
+          <a class="page-link" href="/search?criteria={{criteria}}&keyword={{keyword}}&page={{n_pages}}" aria-disabled="true">Trang cuối</a>
         </li>
       </ul>
       </nav>

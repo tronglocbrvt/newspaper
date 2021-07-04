@@ -19,63 +19,26 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link1 text-center" href="/"><i class="fa fa-bars fa-lg"></i><br><span>CHUYÊN
+                    <a class="nav-link1 text-center" href="#"><i class="fa fa-bars fa-lg"></i><br><span>CHUYÊN
                             MỤC</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link1 text-center" id="search"><i class="fa fa-search fa-lg"></i><br><span>TÌM
+                    <a class="nav-link1 text-center" href="#"><i class="fa fa-search fa-lg"></i><br><span>TÌM
                             KIẾM</span></a>
                 </li>
-
-
-                {{#if auth}}
-
                 <li class="nav-item">
-                    <a class="nav-link1 text-center" href="#"><i
-                            class="fa fa-user fa-lg"></i><br><span>PROFILES</span></a>
-                </li>
-
-                <li class="nav-item">
-                    <form id = "frmLogout" action="/auth/log-out" method="POST">
-                        <a class="nav-link1 text-center" href="javascript: $('#frmLogout').submit();"><i class="fa fa-sign-out fa-lg"></i><br><span>ĐĂNG XUẤT</span></a>
-                    </form>
-
-                </li>
-
-                {{else}}
-                <li class="nav-item">
-                    <a class="nav-link1 text-center" href="/auth/sign-up"><i
-                            class="fa fa-user-plus fa-lg"></i><br><span>ĐĂNG
+                    <a class="nav-link1 text-center" href="#"><i class="fa fa-user-plus fa-lg"></i><br><span>ĐĂNG
                             KÝ</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link1 text-center" href="/auth/log-in"><i
-                            class="fa fa-sign-in fa-lg"></i><br><span>ĐĂNG
+                    <a class="nav-link1 text-center" href="#"><i class="fa fa-sign-in fa-lg"></i><br><span>ĐĂNG
                             NHẬP</span></a>
                 </li>
-                {{/if}}
-
-
             </ul>
         </div>
     </nav>
-
-    <nav class="navbar navbar-expand-lg" id="search-bar"
-        style="background-color: #EEEEEE; display: none; padding: 12px">
-        <form action="/search" style="width: 100%">
-            <div class="input-group">
-                <input type="hidden" class="form-control input-lg" style="height: 45px" name="criteria" value="0">
-                <input type="text" class="form-control input-lg" style="height: 45px" placeholder="Tìm kiếm..."
-                    name="keyword">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
-        </form>
-    </nav>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow d-none d-xl-block" id="nav-bar2">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mx-auto">
@@ -106,13 +69,30 @@
             </ul>
         </div>
     </nav>
-
-
+    
     <div class="container mt-4">
         <div class="row">
+
             <div class="col-sm-12">
-                {{{body}}}
+                <div class="container m-5 p-5 bg-light shadow">
+
+                <form action="#" method="post">
+                    <div class="form-group">
+                      <label for="username">Tài khoản</label>
+                      <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản">
+                    </div>
+                
+                    <div class="form-group">
+                      <label for="password">Mật khẩu</label>
+                      <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                </form>
+
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -125,6 +105,7 @@
         crossorigin="anonymous"></script>
     <script src="/static/js/main.js"></script>
     {{{_sections.js}}}
+
 </body>
 
 </html>

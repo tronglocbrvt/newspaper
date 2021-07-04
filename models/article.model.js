@@ -43,7 +43,7 @@ module.exports =
         const sql_query = `select CONCAT('/articles/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url
         from articles as a, published_articles as p, published_articles as p_ref, articles as a_ref
         where
-            p_ref.article_id = :p_id
+            p_ref.published_article_id = :p_id
             and a_ref.article_id = p_ref.article_id
             and a_ref.category_id = a.category_id
             and p.article_id = a.article_id
@@ -53,11 +53,26 @@ module.exports =
         return db.raw(sql_query, params)
     },
 
+     /**
+     * @param {published_article_id} int id of the published article
+     * @Return return lists of comments òf the published_article_id
+     */
+    load_comments_of_published_articles_by_id(published_article_id)
+    {
+        const sql_query = `select c.*, u.name
+        from comments as c,users as u
+        where c.published_article_id = ? and u.user_id = c.user_id
+        order by c.time_comment asc;
+        `;
+        return db.raw(sql_query,published_article_id);
+    },
+
+    /**
+     * @param {cat_id} int id of the parent category
+     * @param {offset} int 
+     * @Return return lists of articles with the parent category and related
+     */
     find_by_cat_id(cat_id, offset) {
-        //  return db.select('*')
-        //     .from('articles').join('categories', function() {
-        //     this.on('articles.category_id', '=', 'categories.category_id').onIn('categories.parent_category_id', [cat_id])
-        //   })
         var params = { id: cat_id, offset: offset };
         const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, categories as c, published_articles as p
@@ -69,6 +84,10 @@ module.exports =
         return db.raw(sql, params);
     },
 
+    /**
+     * @param {art_id} int id of the published article
+     * @Return return lists of tags of the article
+     */
     find_tags_by_article_id(art_id) {
         const sql = `select distinct tags.tag_name, tags.tag_id
       from tag_links as tl, tags
@@ -77,11 +96,11 @@ module.exports =
         return db.raw(sql, art_id);
     },
 
+    /**
+     * @param {cat_id} int id of the parent category
+     * @Return return total of articles of parent category 
+     */
     count_by_cat_id(cat_id) {
-        //  return db.select('*')
-        //     .from('articles').join('categories', function() {
-        //     this.on('articles.category_id', '=', 'categories.category_id').onIn('categories.parent_category_id', [cat_id])
-        //   })
         const sql = `select count(*) as total
         from articles, categories
         where categories.parent_category_id = ?
@@ -90,6 +109,10 @@ module.exports =
         return db.raw(sql, cat_id);
     },
 
+    /**
+     * @param {cat_id} int id of the sub category
+     * @Return return total of articles of sub category 
+     */
     count_by_subcat_id(subcat_id) {
         const sql = `select count(*) as total
         from articles, categories
@@ -98,6 +121,11 @@ module.exports =
         return db.raw(sql, subcat_id);
     },
 
+    /**
+     * @param {sub_id} int id of the subcategory
+     * @param {offset} int 
+     * @Return return lists of articles with the subcategory and related
+     */
     find_by_subcat_id(sub_id, offset) {
         var params = { id: sub_id, offset: offset };
         const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
@@ -110,6 +138,10 @@ module.exports =
         return db.raw(sql, params);
     },
 
+    /**
+     * @param {tag_id} int id of the tag 
+     * @Return return total of articles with the tag
+     */
     async count_by_tag_id(tag_id) {
         const rows = await db('tag_links')
             .where('tag_id', tag_id)
@@ -118,6 +150,11 @@ module.exports =
         return rows[0].total;
     },
 
+    /**
+     * @param {tag_id} int id of the tag
+     * @param {offset} int 
+     * @Return return lists of articles with the tag and related
+     */
     find_by_tag_id(tag_id, offset) {
         var params = { id: tag_id, offset: offset };
         const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id

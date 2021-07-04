@@ -17,6 +17,7 @@ module.exports={
         return sub_cats;
     },
 
+    // get list sub-cat of parent category
     get_sub_cats_by_cat_id(cat_id) {
         const sql = `select distinct category_name, category_id
         from categories
