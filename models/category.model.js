@@ -25,4 +25,12 @@ module.exports={
         sub_cats = db.raw(sql, cat_id);
         return sub_cats;
     },
+
+    get_main_cats(){
+        const sql = `select *
+        from categories
+        where parent_category_id is null`;
+        main_cats = db.raw(sql);
+        return main_cats;
+    },
 }

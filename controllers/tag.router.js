@@ -1,6 +1,7 @@
 const express = require('express');
 const categoryModel = require('../models/category.model')
 const articleModel = require('../models/article.model')
+const tagModel = require('../models/tag.model')
 const router = express.Router();
 
 router.get('/:tag_id', async function(req, res) {
@@ -40,6 +41,11 @@ router.get('/:tag_id', async function(req, res) {
         previous_page: parseInt(page) - 1,
         empty: list[0].length === 0
     })
+});
+
+router.get('/', async function(req, res){
+    const tags = await tagModel.get_tags();
+    res.json(tags[0]);
 });
 
 module.exports = router

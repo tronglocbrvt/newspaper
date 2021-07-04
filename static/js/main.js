@@ -14,7 +14,7 @@ $(document).ready(function(){
                     element.append(link);
                     $('#ul-sub-nav').append(element);
                 }
-                $('#sub-nav').attr("hidden", false);    
+                $('#sub-nav').attr("hidden", false);
             },
             function(){
                 $('#sub-nav').attr("hidden", true);

@@ -5,8 +5,6 @@
 const express = require('express');
 const article_model = require('../models/article.model')
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
 
 
@@ -56,34 +54,5 @@ router.get('/:id', async function (req, res) {
         res.render('vwArticle/viewBlankArticle');
     }
 });
-
-router.get('/add/hello', function (req, res) {
-    res.render('vwArticle/add');
-})
-
-
-router.post('/add/hello', function (req, res) {
-    const storage = multer.diskStorage({
-        destination(req, file, cb) {
-            console.log(path.dirname(require.main.filename));
-            cb(null, path.join(__dirname+'/static/images'))
-        },
-        filename(req, file, cb) {
-            cb(null, file.originalname)
-        }
-    });
-    const upload = multer({
-        storage
-    });
-
-    upload.single('avatar')(req, res, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(req.body);
-            res.render('vwArticle/add');
-        }
-    })
-})
 
 module.exports = router
