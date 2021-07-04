@@ -11,4 +11,5 @@ module.exports = function (app) {
     app.use('/tags', require('../controllers/tag.router'));
 
     app.use('/search', require('../controllers/search.router'));
+    app.use('/writers', require('../controllers/writer.router'));
 }

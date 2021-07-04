@@ -7,7 +7,9 @@
       <div class="mySlides card" style="padding-bottom: 20px;">
         <span class="badge badge-danger week-point">ĐIỂM TUẦN</span>
         <div class="img-containter">
-          <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}" width="100%">
+          <a href="/articles/{{article_id}}">
+            <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}" width="100%">
+          </a>
         </div>
         <div class="big-title">
           <a href="/articles/{{article_id}}" class="title-link">{{article_title}}</a>
@@ -37,8 +39,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="tab-css" data-toggle="tab" href="#content-css" role="tab"
-          aria-controls="content-css">
+        <a class="nav-link" id="tab-css" data-toggle="tab" href="#content-css" role="tab" aria-controls="content-css">
           ĐỌC NHIỀU
         </a>
       </li>
@@ -95,10 +96,11 @@
 <div class="row" style="margin-bottom: 20px;">
   {{#each hot_categories}}
   <div class="col-sm-2 v-article">
-    <a href="#" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
+    <a href="/categories/{{category_id}}" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
       style="font-size: medium;">{{category_name}}</a>
     <div class="card v-card">
-      <img class="card-img-top" src="{{avatar_url}}" alt="Card image cap" width="180px" height="120px">
+      <a href="/articles/{{article_id}}">
+        <img class="card-img-top" src="{{avatar_url}}" alt="Card image cap" width="180px" height="120px"></a>
       <a href="#" class="title-link v-card-content">{{article_title}}</a>
       <div class="v-time">
         {{date_format time_published}}

@@ -206,5 +206,9 @@ module.exports =
         and a.category_id = pa.article_id
         limit 10`;
         return db.raw(sql);
+    },
+
+    add(article){
+        return db('articles').insert(article);
     }
 }

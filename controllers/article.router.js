@@ -14,8 +14,7 @@ const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
  * @param {s} String
  * @returns format time string
  */
-function formatTime(s)
-{
+function formatTime(s) {
     var date = new Date(s);
     return date.toLocaleString("en-US");
 }
@@ -26,8 +25,7 @@ function formatTime(s)
  * Input URL : id: published article id
  * Render page view a single paper
  */
-router.get('/:id', async function(req, res)
-{
+router.get('/:id', async function (req, res) {
     // Get id
     const article_id = req.params.id || 0;
 
@@ -38,8 +36,7 @@ router.get('/:id', async function(req, res)
     const db_data_comment = await article_model.load_comments_of_published_articles_by_id(article_id);
     
 
-    if (db_data_article[0][0])
-    {
+    if (db_data_article[0][0]) {
         // Generate input for views
         var article = db_data_article[0][0];
         article.time_published = formatTime(article.time_published);
@@ -62,10 +59,9 @@ router.get('/:id', async function(req, res)
         }
         console.log(view_inputs);
         // Render 
-        res.render('vwArticle/view',view_inputs);
+        res.render('vwArticle/view', view_inputs);
     }
-    else
-    {
+    else {
         res.render('vwArticle/viewBlankArticle');
     }
 },
