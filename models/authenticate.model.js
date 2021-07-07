@@ -25,10 +25,22 @@ module.exports =
 
         return db.raw(sql_query, params);
 
+    },
+
+
+    change_password_by_user_id(userid, hash) {
+        const params =
+        {
+            un: userid,
+            pw: hash
+        };
+        const sql_query = `UPDATE users
+                            SET password = :pw
+                            WHERE users.user_id = :un;`;
+        return db.raw(sql_query, params);
     }
     
     ,
-
 
     change_name(username, name) {
         const params =
@@ -73,6 +85,16 @@ module.exports =
 
         return db.raw(sql_query, params);
 
-    }
+    },
+    
+    insertToken(data)
+    {
+        return db('reset_password_commands').insert(data);
+    },
 
+    findToken(token, time)
+    {
+        return db('reset_password_commands').where('token', token).andWhere('expired_time','>',time);
+
+    }
 }
