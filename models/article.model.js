@@ -72,14 +72,16 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the parent category and related
      */
-    find_by_cat_id(cat_id, offset) {
-        var params = { id: cat_id, offset: offset };
+    find_by_cat_id(cat_id, offset, premium) {
+        var params = { id: cat_id, offset: offset, premium: premium};
         const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
             and categories.category_id = articles.category_id
             and c.category_id = categories.parent_category_id
             and p.article_id = articles.article_id
+            and articles.is_premium <= :premium
+        order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },

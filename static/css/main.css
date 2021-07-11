@@ -60,10 +60,12 @@
 
 .btn-primary {
     background-color: #2596be;
+    border: none;
 }
 
 .btn-sm:hover, .btn-sm:focus, .btn-sm:active {
     background-color: #00b3db;
+    border-color: #2596be;
 }
 
 .page-item.active .page-link{

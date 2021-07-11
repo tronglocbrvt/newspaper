@@ -4,6 +4,16 @@ const articleModel = require('../models/article.model')
 
 const router = express.Router();
 
+function get_time_now() {
+    var d = new Date();
+   return d.getTime();
+}
+
+function get_time_from_date(date) {
+    var d = new Date(date);
+   return d.getTime();
+}
+
 router.get('/', async function(req, res){
     const list = await categoryModel.all()
     res.render('vwCategories/about', {
@@ -77,8 +87,11 @@ router.get('/:category_id', async function(req, res) {
     const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
 
     // get list articles by parent categoryID
-    const list = await articleModel.find_by_cat_id(cat_id, offset);
-
+   
+    premium = (req.session.auth === true && get_time_now() <= get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+   
+    const list = await articleModel.find_by_cat_id(cat_id, offset, premium);
+    
     // get list sub-categories by parent categoryID
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
 
