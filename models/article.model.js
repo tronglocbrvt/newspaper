@@ -127,7 +127,7 @@ module.exports =
      * @Return return lists of articles with the subcategory and related
      */
     find_by_subcat_id(sub_id, offset) {
-        var params = { id: sub_id, offset: offset };
+        var params = { id: sub_id, offset: offset};
         const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id

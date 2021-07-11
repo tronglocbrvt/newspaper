@@ -73,6 +73,9 @@ router.get('/:category_id', async function(req, res) {
     // set offset that pass to query in database
     const offset = (page - 1) * limit;
   
+    // get name category by cat id
+    const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
+
     // get list articles by parent categoryID
     const list = await articleModel.find_by_cat_id(cat_id, offset);
 
@@ -88,9 +91,16 @@ router.get('/:category_id', async function(req, res) {
         }
     }
 
+    if  (name_cat[0].length === 0) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+    }
+
+    else {
     res.render('vwCategories/article_category', {
         articles: list[0],
         tags,
+        name_cat: name_cat[0],
         sub_cats: sub_cats[0],
         page_numbers,
         n_pages,
@@ -98,8 +108,9 @@ router.get('/:category_id', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages), // check last page
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
-        empty: list[0].length === 0 || sub_cats[0].length === 0 // check empty
+        empty_data: list[0].length === 0, // check empty data
     })
+    }
 });
 
 module.exports = router

@@ -58,12 +58,12 @@ router.get('/:id', async function (req, res) {
             similar_articles : similar_articles,
             comments: comments
         }
-        console.log(view_inputs);
         // Render 
-        res.render('vwArticle/view', view_inputs);
+        res.render('vwArticle/viewArticle', view_inputs);
     }
     else {
-        res.render('vwArticle/viewBlankArticle');
+        res.status(404);
+        res.render('vwError/viewNotFound');
     }
 },
 

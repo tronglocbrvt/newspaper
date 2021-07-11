@@ -11,8 +11,16 @@ const router = express.Router();
  */
 router.get('/:tag_id', async function(req, res) {
     // get tag_id from param url, default 0
-
     const tag_id = req.params.tag_id || 0;
+
+    // get name tag from tag_id
+    const name_tag = await tagModel.get_name_tag_by_tag_id(tag_id);
+    if (name_tag === undefined) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+
     // number of articels on 1 page
     const limit = 10;
 
@@ -50,6 +58,7 @@ router.get('/:tag_id', async function(req, res) {
     res.render('vwTags/article_tags', {
         articles: list[0],
         tags,
+        name_tag: name_tag.tag_name,
         page_numbers,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
