@@ -8,6 +8,7 @@ const article_model = require('../models/article.model');
 const comment_model = require('../models/comment_model');
 const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
+const auth = require('../middlewares/auth.mdw');
 
 
 /**
@@ -68,7 +69,7 @@ router.get('/:id', async function (req, res) {
 
 );
 
-router.post('/:id', async function(req, res)
+router.post('/:id', auth,async function(req, res)
 {
     const published_article_id = req.params.id || 0;
     const content = req.body.comment;

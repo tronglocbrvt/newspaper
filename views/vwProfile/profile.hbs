@@ -1,0 +1,340 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="/static/css/profile/profile.css">
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{{/section}}
+
+
+<div class="col-sm-12">
+    <div class="container m-5 p-5 bg-light shadow">
+        <h2>Thông tin cá nhân</h2>
+        <hr>
+        <br>
+        <div class="mb-4 ml-4">
+            <div class="d-flex justify-content-start">
+
+                <!-- profile -->
+                <div class="image-container">
+                    <img src="https://huyhoanhotel.com/wp-content/uploads/2016/05/765-default-avatar.png"
+                        id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                </div>
+
+                <!-- NAME and PREMIUM or NOT -->
+                <div class="userData ml-3">
+
+                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{username}}</h2>
+
+                    {{#if is_premium}}
+                    <span class="badge badge-success">premium</span>
+                    {{else}}
+                    <span class="badge badge-secondary">normal</span>
+                    {{/if}}
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="m-5" id="myTabContent">
+            <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+                <div class="row">
+
+                    <div class="col-3">
+                        <label style="font-weight:bold;">Họ và Tên</label>
+                    </div>
+
+                    <div class="col-8">
+                        {{name}}
+                    </div>
+
+                    <div class="col-1">
+                        <button class="btn btn-outline-info p-1"><i class="fa fa-edit fa-lg" data-toggle="collapse"
+                                data-target="#change-name"></i></button>
+                    </div>
+
+                </div>
+
+                <div class="row mt-3 collapse" id="change-name">
+                    <div class="col-3">
+                    </div>
+
+
+                    <div class="col-8">
+                        <form id="frmName" method="post" action="../auth/change-name">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name"
+                                    maxlength="100">
+                                <div id="name_invalid" class="invalid-feedback">
+                                    Tên không hợp lệ.
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="col-1">
+                        <button type="submit" form="frmName" value="Submit" class="btn btn-outline-success p-1"><i
+                                class="fa fa-check fa-lg"></i></button>
+                    </div>
+
+                </div>
+
+
+                <hr />
+
+                <div class="row">
+
+                    <div class="col-3">
+                        <label style="font-weight:bold;">Ngày sinh</label>
+                    </div>
+
+                    <div class="col-8">
+                        {{dob}}
+                    </div>
+
+                    <div class="col-1">
+                        <button class="btn btn-outline-info p-1"><i class="fa fa-edit fa-lg" data-toggle="collapse"
+                                data-target="#change-dob"></i></button>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row mt-3 collapse" id="change-dob">
+                    <div class="col-3">
+                    </div>
+
+                    <div class="col-8">
+                        <form id="frmDOB" method="post" action="../auth/change-dob">
+
+                            <div class="form-group">
+                                <label for="date_of_birth">Ngày sinh: </label>
+                                <input id="date_of_birth" width="276" name="raw_date_of_birth" placeholder="mm/dd/yyyy">
+                                <div id="date_of_birth_invalid" class="invalid-feedback">
+                                    Ngày sinh không hợp lệ.
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="col-1">
+                        <button type="submit" form="frmDOB" value="Submit" class="btn btn-outline-success p-1"><i
+                                class="fa fa-check fa-lg"></i></button>
+                    </div>
+                </div>
+
+
+
+                <hr />
+
+
+                <div class="row">
+
+                    <div class="col-3">
+                        <label style="font-weight:bold;">Giới tính</label>
+                    </div>
+
+                    <div class="col-8">
+                        {{gender}}
+                    </div>
+
+                    <div class="col-1">
+                        <button class="btn btn-outline-info p-1"><i class="fa fa-edit fa-lg" data-toggle="collapse"
+                                data-target="#change-gender"></i></button>
+                    </div>
+
+
+                </div>
+
+                <div class="row mt-3 collapse" id="change-gender">
+                    <div class="col-3">
+                    </div>
+
+                    <div class="col-8">
+                        <form id="frmGender" method="post" action="../auth/change-gender">
+                            <div class="form-group">
+                                <select class="form-select" id="gender" name="gender">
+                                    <option selected value="-1">Khác</option>
+                                    <option value="1">Nam</option>
+                                    <option value="0">Nữ</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-1">
+                        <button type="submit" form="frmGender" value="Submit" class="btn btn-outline-success p-1"><i
+                                class="fa fa-check fa-lg"></i></button>
+                    </div>
+
+
+                </div>
+
+
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-3">
+                        <label style="font-weight:bold;">Email</label>
+                    </div>
+
+                    <div class="col-8">
+                        {{email}}
+                    </div>
+
+
+                </div>
+
+                <hr />
+
+                <div class="row">
+
+                    <div class="col-3">
+                        <label style="font-weight:bold;">Thời hạn gói premium</label>
+                    </div>
+                    <div class="col-8">
+                        {{#if is_premium}}
+                        {{premium_date}}
+                        {{else}}
+                        <span class="badge badge-secondary">Tài khoản chưa đăng ký premium</span>
+                        {{/if}}
+                    </div>
+
+                </div>
+
+                <hr />
+
+            </div>
+
+            <div class="d-flex">
+                <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#change-pass-word">Đổi
+                    mật
+                    khẩu</button>
+
+                <button type="button" class="btn btn-success ml-2" data-toggle="collapse"
+                    data-target="#sign-up-premium">Đăng ký Premium</button>
+            </div>
+
+
+            {{#if err_message}}
+            <div id="change-pass-word" class="collapse show m-4 p-4 border border-light rounded shadow">
+                {{else}}
+                <div id="change-pass-word" class="collapse m-4 p-4 border border-light rounded shadow">
+                    {{/if}}
+
+                    <form id="frmChangePassword" action="../auth/change-password" method="post">
+
+                        <div class="form-group">
+                            <label for="old-password">Mật khẩu cũ</label>
+                            <input type="password" class="form-control" id="old-password" placeholder="Nhập mật khẩu cũ"
+                                name="password">
+
+                            {{#if err_message}}
+                            <div id="error_message" class="alert alert-danger">
+                                {{err_message}}
+                            </div>
+                            {{/if}}
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="password"
+                                placeholder="Nhập mật khẩu bạn muốn thay đổi" name="newpassword" maxlength="32">
+                            <div id="pswmeter"></div>
+                            <div id="password_invalid" class="invalid-feedback">
+                                Mật khẩu quá đơn giản.
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password_confirm">Nhập lại mật khẩu mới</label>
+
+                            <input type="password" class="form-control" id="password_confirm"
+                                placeholder="Nhập lại mật khẩu mới" maxlength="32">
+
+                            <div id="password_confirm_invalid" class="invalid-feedback">
+                                Mật khẩu nhập lại không khớp.
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Thay đổi mật khẩu</button>
+
+                    </form>
+                </div>
+
+
+                <div id="sign-up-premium" class="collapse m-4 p-4 border border-light rounded shadow">
+                    <div class="jumbotron py-3">
+                        Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534.
+                        <br>
+                        Nội dung chuyển khoản: "tên đăng nhập" - LLP News - premium. <br>
+                        Giá cước cho dịch vụ premium là 20.000/ tháng. <br>
+                        Bạn vui lòng điền thông tin chuyển khoản để chúng thôi kiểm tra và cập nhật tài
+                        khoản. <br>
+                    </div>
+
+
+                    <form id="frmSignUpPremium" action="#" method="post" class="mt-3">
+                        <div class="form-group">
+                            <label for="stk">Số tài khoản gửi tiền</label>
+                            <input type="text" class="form-control" id="stk" placeholder="Nhập số tài khoản">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ctk">Chủ tài khoản</label>
+                            <input type="text" class="form-control" id="ctk" placeholder="Nhập tên chủ tài khoản">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="chi-nhanh">Chi nhánh ngân hàng</label>
+                            <input type="text" class="form-control" id="chi-nhanh"
+                                placeholder="Nhập tên chi nhánh ngân hàng">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="so-tien">Số tiền đã gửi</label>
+                            <input type="text" class="form-control" id="so-tien" placeholder="Nhập số tiền đã gửi">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Đăng ký premium</button>
+
+                    </form>
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    {{#section 'js'}}
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="/static/js/auth/pswmeter.js"></script>
+    <script>
+        $('#date_of_birth').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+        const myPassMeter = passwordStrengthMeter({
+            containerElement: '#pswmeter',
+            passwordInput: '#password',
+            height: 6,
+            borderRadius: 0,
+            pswMinLength: 8
+        });
+    </script>
+    <script src="/static/js/profile/profile.js">
+    </script>
+    {{/section}}
