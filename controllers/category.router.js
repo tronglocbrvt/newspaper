@@ -1,6 +1,7 @@
 const express = require('express');
-const categoryModel = require('../models/category.model')
-const articleModel = require('../models/article.model')
+const categoryModel = require('../models/category.model');
+const articleModel = require('../models/article.model');
+const getTimeModule = require('../utils/get_time.js');
 
 const router = express.Router();
 
@@ -56,7 +57,8 @@ router.get('/:category_id', async function(req, res) {
     if (page < 1) page = 1;
 
     // count articles by cat_id
-    const total = await articleModel.count_by_cat_id(cat_id);
+    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_cat_id(cat_id, premium);
     let n_pages = Math.ceil(total[0][0].total / limit); // get total page
 
     // set status of current page is TRUE
@@ -86,10 +88,7 @@ router.get('/:category_id', async function(req, res) {
     // get name category by cat id
     const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
 
-    // get list articles by parent categoryID
-   
-    premium = (req.session.auth === true && get_time_now() <= get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
-   
+    // get list articles by parent categoryID   
     const list = await articleModel.find_by_cat_id(cat_id, offset, premium);
     
     // get list sub-categories by parent categoryID

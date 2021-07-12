@@ -50,10 +50,13 @@
                   </h3>
                   <!--author and date-->
                   <div class="card-text mb-2 text-muted small">
-                    <span class="d-none d-sm-inline me-1">
+                    <span class="d-none d-sm-inline me-1 mr-3">
                       <a class="fw-bold" href="/categories/{{id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>                 
                     <time datetime={{time_published}}>{{date_format time_published}}</time>
+                    {{#if is_premium}}
+                      <button type="button" class="btn-sm btn-primary ml-4"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</button>
+                    {{/if}}
                   </div>
                   <!--description-->
                   <p class="card-text">{{article_abstract}}</p>

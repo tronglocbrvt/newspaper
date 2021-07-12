@@ -19,8 +19,11 @@
         <hr>
 
         <div class = "jumbotron py-4 mt-3 mb-4">
-                <!-- Tieu de -->
+                <!-- Tieu de + Premium-->
             <h1 id = "headlines" class = "container">
+                {{#if this.article.is_premium}}
+                    <button type="button" class="btn btn-primary mb-2"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</button>
+                {{/if}}
                 <b>{{this.article.article_title}}</b>
             </h1>
                 <!-- Tom tat -->

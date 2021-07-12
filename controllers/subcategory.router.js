@@ -1,6 +1,7 @@
 const express = require('express');
-const categoryModel = require('../models/category.model')
-const articleModel = require('../models/article.model')
+const categoryModel = require('../models/category.model');
+const articleModel = require('../models/article.model');
+const getTimeModule = require('../utils/get_time.js');
 const router = express.Router();
 
 /*
@@ -23,7 +24,8 @@ router.get('/subs/:id', async function(req, res) {
     if (page < 1) page = 1;
 
     // get total articles by subcat_id
-    const total = await articleModel.count_by_subcat_id(sub_id);
+    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_subcat_id(sub_id, premium);
     let n_pages = Math.ceil(total[0][0].total / limit);
 
     // set status of current page is TRUE
@@ -60,7 +62,7 @@ router.get('/subs/:id', async function(req, res) {
     }
 
     // list articles by subcat_id
-    const list = await articleModel.find_by_subcat_id(sub_id, offset);
+    const list = await articleModel.find_by_subcat_id(sub_id, offset, premium);
 
     // get sub_cats to display
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);

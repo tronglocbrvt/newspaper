@@ -9,7 +9,7 @@ const comment_model = require('../models/comment_model');
 const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
 const auth = require('../middlewares/auth.mdw');
-
+const getTimeModule = require('../utils/get_time.js');
 
 /**
  * @param {s} String
@@ -40,6 +40,12 @@ router.get('/:id', async function (req, res) {
     if (db_data_article[0][0]) {
         // Generate input for views
         var article = db_data_article[0][0];
+
+        if (article.is_premium === 1 && (req.session.auth === false || getTimeModule.get_time_now() > getTimeModule.get_time_from_date(req.session.authUser.time_premium))) {
+            res.status(403);
+            return res.render('vwError/viewPremium');
+        }
+
         article.time_published = formatTime(article.time_published);
 
         var tags = db_data_tags[0];

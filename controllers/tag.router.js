@@ -1,7 +1,8 @@
 const express = require('express');
-const categoryModel = require('../models/category.model')
-const articleModel = require('../models/article.model')
-const tagModel = require('../models/tag.model')
+const categoryModel = require('../models/category.model');
+const articleModel = require('../models/article.model');
+const tagModel = require('../models/tag.model');
+const getTimeModule = require('../utils/get_time.js');
 const router = express.Router();
 
 /*
@@ -29,8 +30,9 @@ router.get('/:tag_id', async function(req, res) {
     if (page < 1) page = 1;
 
     // count articles based on tag_id
-    const total = await articleModel.count_by_tag_id(tag_id);
-    let n_pages = Math.ceil(total / limit);
+    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_tag_id(tag_id, premium);
+    let n_pages = Math.ceil(total[0][0].total / limit);
     
     // get current page, default 1
     const page_numbers = [];
@@ -43,9 +45,9 @@ router.get('/:tag_id', async function(req, res) {
 
     // set offset that pass to query in database
     const offset = (page - 1) * limit;
-  
+
     // list articles by tag_id
-    const list = await articleModel.find_by_tag_id(tag_id, offset);
+    const list = await articleModel.find_by_tag_id(tag_id, offset, premium);
 
     // get tags each article
     var tags = new Array();
