@@ -210,5 +210,5 @@ module.exports =
 
     add(article){
         return db('articles').insert(article);
-    }
+    },
 }

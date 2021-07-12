@@ -9,5 +9,13 @@ module.exports = {
 
     add_tag(tag) {
         return db('tag_links').insert(tag);
+    },
+    
+    get_tags_by_id(id){
+        const sql = `select t.tag_id as tag_id, t.tag_name as tag_name
+        from tag_links tl, tags t
+        where article_id = ?
+        and t.tag_id = tl.tag_id`;
+        return db.raw(sql, id);
     }
 }
