@@ -134,7 +134,6 @@ router.post('/sign-up', async function (req, res) {
     date_of_birth: dob,
     name: req.body.name,
     email: req.body.email,
-    is_premium: 0,
     is_writer: 0,
     is_editor: 0,
     is_admin: 0

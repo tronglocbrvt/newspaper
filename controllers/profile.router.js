@@ -21,6 +21,7 @@ function genderToString(gender)
 
 router.get('/', auth, async function (req, res) {
 
+    // TODO : fix premium
     res.render('vwProfile/profile', 
     { 
         err_message: req.session.change_password_error,
