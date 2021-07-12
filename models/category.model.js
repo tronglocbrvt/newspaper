@@ -34,4 +34,11 @@ module.exports={
         main_cats = db.raw(sql);
         return main_cats;
     },
+
+    get_parent_cat_by_id(cat_id){
+        const sql = `select parent_category_id
+        from categories
+        where category_id = ?`;
+        return db.raw(sql, cat_id);
+    }
 }

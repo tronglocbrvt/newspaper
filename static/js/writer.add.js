@@ -4,15 +4,7 @@ $(document).ready(function () {
         url: '/categories/getsubcats'
     }).done(function (data) {
         $('#category').on('change', function () {
-            $('#sub_category').empty();
-            const id = +this.value;
-            sub_cats = data.filter(cat => cat.parent_category_id === +id);
-            for (let i = 0; i < sub_cats.length; i++) {
-                var element = $('<option></option>').attr('value', sub_cats[i].category_id).text(sub_cats[i].category_name);
-                $('#sub_category').append(element);
-            }
-            const empty_element = $('<option></option>').attr('value', 0).text('---------');
-            $('#sub_category').append(empty_element);
+            set_sub_cats(+this.value, data);
         });
     })
 
@@ -70,3 +62,14 @@ $(document).ready(function () {
         return true;
     });
 });
+
+function set_sub_cats(id, data){
+    $('#sub_category').empty();
+    sub_cats = data.filter(cat => cat.parent_category_id === +id);
+    for (let i = 0; i < sub_cats.length; i++) {
+        var element = $('<option></option>').attr('value', sub_cats[i].category_id).text(sub_cats[i].category_name);
+        $('#sub_category').append(element);
+    }
+    const empty_element = $('<option></option>').attr('value', 0).text('---------');
+    $('#sub_category').append(empty_element);
+}
