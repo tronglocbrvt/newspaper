@@ -8,7 +8,7 @@ module.exports =
      */
     load_published_article_by_id(published_article_id) {
         const sql_query = `                
-        SELECT pa.time_published, a.article_title, a.article_abstract, a.article_content, c.category_id as subcate_id, c.category_name as sub_category, m_c.category_id as maincate_id, m_c.category_name as main_category, CONCAT('/categories/',m_c.category_id) as maincate_ref, CONCAT('/categories/',m_c.category_id,'/subs/',c.category_id) as subcate_ref, a.avatar_url,a.avatar_caption,a.is_premium
+        SELECT pa.time_published, a.article_title, a.article_abstract, a.article_content, c.category_id as subcate_id, c.category_name as sub_category, m_c.category_id as maincate_id, m_c.category_name as main_category, CONCAT('/categories/',m_c.category_id) as maincate_ref, CONCAT('/categories/',m_c.category_id,'/subs/',c.category_id) as subcate_ref, a.avatar_url,a.avatar_caption,a.is_premium, a.article_id
         from published_articles as pa, articles as a, categories as c, categories as m_c
         where pa.published_article_id=? and pa.article_id = a.article_id and a.category_id = c.category_id and c.parent_category_id = m_c.category_id;
         `
@@ -72,14 +72,16 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the parent category and related
      */
-    find_by_cat_id(cat_id, offset) {
-        var params = { id: cat_id, offset: offset };
+    find_by_cat_id(cat_id, offset, premium) {
+        var params = { id: cat_id, offset: offset, premium: premium};
         const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
             and categories.category_id = articles.category_id
             and c.category_id = categories.parent_category_id
             and p.article_id = articles.article_id
+            and articles.is_premium <= :premium
+        order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
@@ -100,25 +102,27 @@ module.exports =
      * @param {cat_id} int id of the parent category
      * @Return return total of articles of parent category 
      */
-    count_by_cat_id(cat_id) {
+    count_by_cat_id(cat_id, premium) {
         const sql = `select count(*) as total
         from articles, categories
-        where categories.parent_category_id = ?
+        where categories.parent_category_id = ${cat_id}
             and categories.category_id = articles.category_id
+            and articles.is_premium <= ${premium}
         `;
-        return db.raw(sql, cat_id);
+        return db.raw(sql);
     },
 
     /**
      * @param {cat_id} int id of the sub category
      * @Return return total of articles of sub category 
      */
-    count_by_subcat_id(subcat_id) {
+    count_by_subcat_id(subcat_id, premium) {
         const sql = `select count(*) as total
         from articles, categories
         where categories.category_id = articles.category_id
-            and categories.category_id = ?`;
-        return db.raw(sql, subcat_id);
+            and categories.category_id = ${subcat_id}
+            and articles.is_premium <= ${premium}`;
+        return db.raw(sql);
     },
 
     /**
@@ -126,14 +130,16 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the subcategory and related
      */
-    find_by_subcat_id(sub_id, offset) {
-        var params = { id: sub_id, offset: offset };
+    find_by_subcat_id(sub_id, offset, premium) {
+        var params = { id: sub_id, offset: offset, premium: premium};
         const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id
             and articles.category_id = categories.category_id
             and p.article_id = articles.article_id
             and categories.parent_category_id = c.category_id
+            and articles.is_premium <= :premium
+        order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
@@ -142,12 +148,17 @@ module.exports =
      * @param {tag_id} int id of the tag 
      * @Return return total of articles with the tag
      */
-    async count_by_tag_id(tag_id) {
-        const rows = await db('tag_links')
-            .where('tag_id', tag_id)
-            .count('*', { as: 'total' });
-
-        return rows[0].total;
+    async count_by_tag_id(tag_id, premium) {
+        const sql = `select count(*) as total
+        from articles, tag_links as tl, published_articles as p, tags, categories as c
+        where tl.tag_id = ${tag_id}
+            and tl.tag_id = tags.tag_id
+            and tl.article_id = p.article_id
+            and articles.article_id = p.article_id
+            and c.category_id = articles.category_id
+            and articles.is_premium <= ${premium}`;
+        
+        return db.raw(sql, params);
     },
 
     /**
@@ -155,8 +166,8 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the tag and related
      */
-    find_by_tag_id(tag_id, offset) {
-        var params = { id: tag_id, offset: offset };
+    find_by_tag_id(tag_id, offset, premium) {
+        var params = { id: tag_id, offset: offset, premium};
         const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id
         from articles, tag_links as tl, published_articles as p, tags, categories as c
         where tl.tag_id = :id
@@ -164,6 +175,8 @@ module.exports =
             and tl.article_id = p.article_id
             and articles.article_id = p.article_id
             and c.category_id = articles.category_id
+            and articles.is_premium <= :premium
+        order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },

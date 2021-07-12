@@ -1,6 +1,7 @@
 const express = require('express');
-const searchModel = require('../models/search.model')
-const articleModel = require('../models/article.model')
+const searchModel = require('../models/search.model');
+const articleModel = require('../models/article.model');
+const getTimeModule = require('../utils/get_time.js');
 const router = express.Router();
 
 /*
@@ -36,7 +37,8 @@ router.get('/', async function(req, res) {
     cur_criteria[criteria] = true;
 
     // count articles based on keyword & criteria
-    const total = await searchModel.count_result_from_search(keyword, type);
+    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await searchModel.count_result_from_search(keyword, type, premium);
     let n_pages = Math.ceil(total[0][0].total / limit); // total page
 
     // set status of current page is TRUE
@@ -64,7 +66,7 @@ router.get('/', async function(req, res) {
     const offset = (page - 1) * limit;
   
     // get list articles based on keyword and criteria
-    const list_articles = await searchModel.get_articles_from_search(keyword, type, offset);
+    const list_articles = await searchModel.get_articles_from_search(keyword, type, offset, premium);
 
     // get tags each article
     var tags = new Array();

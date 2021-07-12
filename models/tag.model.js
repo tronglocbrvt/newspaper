@@ -17,5 +17,10 @@ module.exports = {
         where article_id = ?
         and t.tag_id = tl.tag_id`;
         return db.raw(sql, id);
+    },
+
+    async get_name_tag_by_tag_id(id) {
+        const name = await db('tags').where({"tag_id": id}).select('tag_name');
+        return name[0];
     }
 }

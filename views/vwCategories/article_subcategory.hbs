@@ -1,16 +1,13 @@
 <div class="col-12 text-center mt-0">
   <div class="category-title">
-    {{#if this.empty}}  
-      <h5 class="card-title">Không có dữ liệu!</h5>
-    {{else}}
-    <h1 class="h2 h1-md">{{this.articles.0.name}}</h1>
+    <h1 class="h2 h1-md">{{name_cat.0.name}}</h1>
     <hr style="border-top: 3px solid; height: 1px; width:5rem" />
   </div>
   <!-- sub category -->
   <div class="tags-area my-2">
     <div class="mb-2">
       {{#each this.sub_cats}}
-      <a class="btn btn-sm border {{#if is_active}} btn-primary {{/if}}" href="/categories/{{../articles.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
+      <a class="btn btn-sm border {{#if is_active}} btn-primary {{/if}}" href="/categories/{{../name_cat.[0].id}}/subs/{{category_id}}">{{category_name}}</a>
       {{/each}}
     </div>
   </div>
@@ -25,6 +22,9 @@
       <div class="block-area">
         <div class="border-bottom-last-0 first-pt-0">
           <!--post start-->
+          {{#if this.empty}}  
+            <h5 class="card-title">Không có dữ liệu!</h5>
+          {{else}}
           {{#each this.articles}}
           <article class="card card-full hover-a py-4">
             <div class="row">
@@ -50,10 +50,13 @@
                   </h3>
                   <!--author and date-->
                   <div class="card-text mb-2 text-muted small">
-                    <span class="d-none d-sm-inline me-1">
+                    <span class="d-none d-sm-inline me-1 mr-3">
                       <a class="fw-bold" href="/categories/{{id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>                 
                     <time datetime={{time_published}}>{{date_format time_published}}</time>
+                    {{#if is_premium}}
+                      <button type="button" class="btn-sm btn-primary ml-4"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</button>
+                    {{/if}}
                   </div>
                   <!--description-->
                   <p class="card-text">{{article_abstract}}</p>

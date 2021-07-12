@@ -9,7 +9,7 @@ const comment_model = require('../models/comment_model');
 const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
 const auth = require('../middlewares/auth.mdw');
-
+const getTimeModule = require('../utils/get_time.js');
 
 /**
  * @param {s} String
@@ -40,6 +40,12 @@ router.get('/:id', async function (req, res) {
     if (db_data_article[0][0]) {
         // Generate input for views
         var article = db_data_article[0][0];
+
+        if (article.is_premium === 1 && (req.session.auth === false || getTimeModule.get_time_now() > getTimeModule.get_time_from_date(req.session.authUser.time_premium))) {
+            res.status(403);
+            return res.render('vwError/viewPremium');
+        }
+
         article.time_published = formatTime(article.time_published);
 
         var tags = db_data_tags[0];
@@ -56,14 +62,15 @@ router.get('/:id', async function (req, res) {
             article: article,
             tags : tags,
             similar_articles : similar_articles,
-            comments: comments
+            comments: comments,
+            premium: req.session.auth
         }
-        console.log(view_inputs);
         // Render 
-        res.render('vwArticle/view', view_inputs);
+        res.render('vwArticle/viewArticle', view_inputs);
     }
     else {
-        res.render('vwArticle/viewBlankArticle');
+        res.status(404);
+        res.render('vwError/viewNotFound');
     }
 },
 
@@ -89,6 +96,11 @@ router.post('/:id', auth,async function(req, res)
 );
 
 router.get('/:id/download', async function(req, res) {
+    if (req.session.auth === false || getTimeModule.get_time_now() > getTimeModule.get_time_from_date(req.session.authUser.time_premium)) {
+        res.status(403);
+        return res.render('vwError/viewPremium');
+    }
+
     const published_article_id = req.params.id || 0;
     const browser = await puppeteer.launch( {
         headless: true

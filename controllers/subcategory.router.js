@@ -1,6 +1,7 @@
 const express = require('express');
-const categoryModel = require('../models/category.model')
-const articleModel = require('../models/article.model')
+const categoryModel = require('../models/category.model');
+const articleModel = require('../models/article.model');
+const getTimeModule = require('../utils/get_time.js');
 const router = express.Router();
 
 /*
@@ -23,7 +24,8 @@ router.get('/subs/:id', async function(req, res) {
     if (page < 1) page = 1;
 
     // get total articles by subcat_id
-    const total = await articleModel.count_by_subcat_id(sub_id);
+    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_subcat_id(sub_id, premium);
     let n_pages = Math.ceil(total[0][0].total / limit);
 
     // set status of current page is TRUE
@@ -50,8 +52,17 @@ router.get('/subs/:id', async function(req, res) {
     // set offset that pass to query in database
     const offset = (page - 1) * limit;
   
+    // get name and id parent category by cat id
+    const name_cat = await categoryModel.get_name_by_cat_id(sub_id);
+
+    if (name_cat[0].length === 0 || +name_cat[0][0].id !== +cat_id) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+
     // list articles by subcat_id
-    const list = await articleModel.find_by_subcat_id(sub_id, offset);
+    const list = await articleModel.find_by_subcat_id(sub_id, offset, premium);
 
     // get sub_cats to display
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
@@ -78,6 +89,7 @@ router.get('/subs/:id', async function(req, res) {
     res.render('vwCategories/article_subcategory', {
         articles: list[0],
         tags,
+        name_cat: name_cat[0],
         sub_cats: sub_cats[0],
         page_numbers,
         n_pages,
@@ -85,7 +97,7 @@ router.get('/subs/:id', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages),
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
-        empty: list[0].length === 0 || sub_cats[0].length === 0
+        empty: list[0].length === 0
     })
 });
 
