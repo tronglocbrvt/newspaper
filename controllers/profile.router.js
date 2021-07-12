@@ -24,6 +24,7 @@ router.get('/', auth, async function (req, res) {
     res.render('vwProfile/profile', 
     { 
         err_message: req.session.change_password_error,
+        redirect_message : req.session.redirect_message,
         username: req.session.authUser.user_name,
         is_premium: req.session.authUser.is_premium,
         name: req.session.authUser.name,
@@ -33,6 +34,7 @@ router.get('/', auth, async function (req, res) {
         premium_date: formatTime(req.session.authUser.time_premium),
     }
     );
+    delete req.session.redirect_message;
     delete req.session.change_password_error;// remove from further requests
 })
 

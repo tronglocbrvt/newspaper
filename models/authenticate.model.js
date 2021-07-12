@@ -92,9 +92,8 @@ module.exports =
         return db('reset_password_commands').insert(data);
     },
 
-    findToken(token, time)
+    findToken(user_id, time)
     {
-        return db('reset_password_commands').where('token', token).andWhere('expired_time','>',time);
-
+        return db('reset_password_commands').where('user_id', user_id).andWhere('expired_time','>',time).orderBy('expired_time','desc');
     }
 }

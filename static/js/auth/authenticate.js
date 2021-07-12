@@ -13,6 +13,8 @@
         if (is_email_avail === false) {
             $('#email_duplicate').show();
             $('#email').addClass("border border-danger");
+            $("#password").val("");
+            $("#password_confirm").val("");
         }
         else {
             $('#email_duplicate').hide()
@@ -22,6 +24,8 @@
         if (is_username_avail === false) {
             $('#username_duplicate').show();
             $('#username').addClass("border border-danger");
+            $("#password").val("");
+            $("#password_confirm").val("");
         }
         else {
             $('#username_duplicate').hide()
@@ -190,5 +194,10 @@
         // Check duplicate with Server DBs and submit()
         if (validTestPassed) {
             checkDuplicateAndSubmit(username, email);
+        }
+        else
+        {
+            $("#password").val("");
+            $("#password_confirm").val("");
         }
     });

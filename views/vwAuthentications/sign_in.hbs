@@ -1,5 +1,10 @@
 <div class="col-sm-12">
     <div class="container m-5 p-5 bg-light shadow">
+        {{#if redirect_message}}
+        <div id="redirect_message" class="alert alert-info">
+            {{redirect_message}}
+        </div>
+         {{/if}}
         <h2>Đăng nhập</h2>
         <hr>
         <br>
