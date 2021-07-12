@@ -7,6 +7,11 @@
 
 <div class="col-sm-12">
     <div class="container m-5 p-5 bg-light shadow">
+        {{#if redirect_message}}
+        <div id="redirect_message" class="alert alert-info">
+            {{redirect_message}}
+        </div>
+        {{/if}}
         <h2>Thông tin cá nhân</h2>
         <hr>
         <br>
@@ -272,38 +277,44 @@
 
                 <div id="sign-up-premium" class="collapse m-4 p-4 border border-light rounded shadow">
                     <div class="jumbotron py-3">
-                        Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534.
-                        <br>
-                        Nội dung chuyển khoản: "tên đăng nhập" - LLP News - premium. <br>
-                        Giá cước cho dịch vụ premium là 20.000/ tháng. <br>
-                        Bạn vui lòng điền thông tin chuyển khoản để chúng thôi kiểm tra và cập nhật tài
+                        - Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534. Nội dung chuyển khoản: <br>
+                        "tên đăng nhập" - LLP News Premium - "tên gói đăng ký" <br>
+                        - Ví dụ: để đăng ký cho tài khoản ndhp2000 gói ba tháng, nội dung chuyển khoản sẽ là: <br>
+                        "ndhp2000 -LLP News Premium - 1" <br>
+                        - Bạn vui lòng điền thông tin chuyển khoản để chúng thôi kiểm tra và cập nhật tài
                         khoản. <br>
+                        - Trong quá trình kiểm tra, nếu có sai sót chúng tôi sẽ chủ động liên hệ quý khách và xử lý hoàn
+                        tiền. <br>
                     </div>
 
 
                     <form id="frmSignUpPremium" action="#" method="post" class="mt-3">
                         <div class="form-group">
                             <label for="stk">Số tài khoản gửi tiền</label>
-                            <input type="text" class="form-control" id="stk" placeholder="Nhập số tài khoản">
+                            <input type="text" class="form-control" id="stk" placeholder="6380205561534">
                         </div>
 
                         <div class="form-group">
                             <label for="ctk">Chủ tài khoản</label>
-                            <input type="text" class="form-control" id="ctk" placeholder="Nhập tên chủ tài khoản">
+                            <input type="text" class="form-control" id="ctk" placeholder="Nguyễn Đình Hoàng Phúc">
                         </div>
 
-
                         <div class="form-group">
-                            <label for="chi-nhanh">Chi nhánh ngân hàng</label>
+                            <label for="chi-nhanh">Tên ngân hàng và chi nhánh ngân hàng</label>
                             <input type="text" class="form-control" id="chi-nhanh"
-                                placeholder="Nhập tên chi nhánh ngân hàng">
+                                placeholder="Agribank - Chi nhánh Bình Thạnh">
                         </div>
 
 
                         <div class="form-group">
-                            <label for="so-tien">Số tiền đã gửi</label>
-                            <input type="text" class="form-control" id="so-tien" placeholder="Nhập số tiền đã gửi">
+                            <label for="goi-dangky">Chọn gói mà bạn muốn đăng ký</label>
+                            <select class="form-control" id="goi-dangky">
+                                <option value="1">1. Gói 3 tháng - 60.000đ</option>
+                                <option value="2">2. Gói 6 tháng - 100.000đ</option>
+                                <option value="3">3. Gói 12 tháng - 180.000đ</option>
+                            </select>
                         </div>
+
 
                         <button type="submit" class="btn btn-primary">Đăng ký premium</button>
 

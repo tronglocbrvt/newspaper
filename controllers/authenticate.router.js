@@ -40,7 +40,11 @@ otp.totp.options = totp_options;
  */
 router.get('/log-in', async function (req, res) {
   if (res.locals.auth === false) {
-    res.render('vwAuthentications/sign_in');
+    res.render('vwAuthentications/sign_in',
+      {
+        redirect_message: req.session.redirect_message
+      });
+    delete req.session.redirect_message;
   }
   else {
     const url = req.session.retUrl || '/';
@@ -137,6 +141,7 @@ router.post('/sign-up', async function (req, res) {
   }
   console.log(new_user);
   await authenticate_model.add_new_user(new_user);
+  req.session.redirect_message = "Chúc mừng quý khách đã đăng kí thành công. Quý khách có thể đăng nhập để sử dụng đầy đủ các chức năng của LLP Newspapers"
   res.redirect("log-in");
 }
 );
@@ -147,35 +152,37 @@ router.post('/sign-up', async function (req, res) {
  * **/
 
 router.get('/forget-password', async function (req, res) {
-  res.render('vwAuthentications/forget_password');
+  res.render('vwAuthentications/forget_password',
+    {
+      redirect_message: req.session.redirect_message
+    });
+  delete req.session.redirect_message;
 });
+
 
 router.post('/forget-password', async function (req, res) {
   data = await authenticate_model.findByEmail(req.body.email);
   if (data.length === 0) {
-    return res.render('vwAuthentications/forget_password', {
-      err_message: 'Email bạn vừa nhập không tồn tại!'
-    });
+    return res.render('vwAuthentications/forget_password',
+      {
+        err_message: 'Email bạn vừa nhập không tồn tại!'
+      });
   }
   else {
-    const secret = randomstring.generate(64);
-    const token = otp.totp.generate(secret);
+    const secret = randomstring.generate(128); // Secret Key
+    const token = otp.totp.generate(secret); // Token create by the Secret key
 
-    console.log(otp.totp.timeUsed());
-    console.log("S = " + secret);
-    console.log("T = " + token);
-    console.log("Secret Token valid = " + otp.totp.check(token,secret));
-    
-    console.log(typeof secret);
-    console.log(typeof token);
+    // Expired_time for the password is 5 minutes.
+    const expired_time = moment(Date.now() + 300000).format('YYYY-MM-DD HH:mm:ss');
 
-    const expired_time = moment(Date.now() + 360000).format('YYYY-MM-DD HH:mm:ss');
+
     const token_data =
     {
       user_id: data[0].user_id,
       token: secret,
       expired_time: expired_time
     };
+
     console.log(token_data);
     await authenticate_model.insertToken(token_data);
 
@@ -183,9 +190,10 @@ router.post('/forget-password', async function (req, res) {
     var mailOptions = {
       from: 'llp.newspapers@gmail.com',
       to: req.body.email,
-      subject: 'Reset password',
-      text: 'Your token is: ' + token + "."
+      subject: '[LLP Newspaper] - [Đặt lại mật khẩu]',
+      html: OTP_email_creator(token)
     };
+
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
@@ -194,61 +202,70 @@ router.post('/forget-password', async function (req, res) {
       }
     });
 
-    res.redirect("reset-password/" + secret);
+    // Temporary Save user_id to session.
+    req.session.forgetPasswordUserID = data[0].user_id;
+    console.log('session user_id = ' + req.session.forgetPasswordUserID);
+
+    // Redirect to Reset password page
+    res.redirect("reset-password/");
   }
 });
 
 
-router.get('/reset-password/:token', async function (req, res) {
-  const token = req.params.token || 0;
-  const expired_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-  console.log("token: " + token);
-  console.log("time: " + expired_time);
-  // check token and time
-  data = await authenticate_model.findToken(token, expired_time);
+router.get('/reset-password', async function (req, res) {
+  const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+  const user_id = req.session.forgetPasswordUserID || -1;
 
+
+  // check token and time
+  data = await authenticate_model.findToken(user_id, current_time);
+
+  // can not reset password
   if (data.length === 0)
     return res.redirect('../forget-password');
 
-  // token is avail  
-  console.log(token);
+  // username has request forget password.
   res.render('vwAuthentications/reset_password');
 });
 
 
 
 // Reset by Tokens
-router.post('/reset-password/:token', async function (req, res) {
-  
-  const token = req.params.token || 0;
-  const expired_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-  console.log("token: " + token);
-  console.log("time: " + expired_time);
+router.post('/reset-password/', async function (req, res) {
+
+  const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+  const user_id = req.session.forgetPasswordUserID || -1;
 
   // check token and time
-  data = await authenticate_model.findToken(token, expired_time);
+  data = await authenticate_model.findToken(user_id, current_time);
 
+  // can not reset password
   if (data.length === 0)
     return res.redirect('../forget-password');
 
 
+  // otp from client
   const key = req.body.otp;
-  console.log(key);
+  // secret key in db
+  const secret = data[0]['token'];
+  console.log('secret ' + secret);
+  console.log('key' + key);
+  const isValid = otp.totp.check(key, secret);
 
-  console.log("S = " + token);
-  console.log("T = " + key);
-  console.log(typeof token);
-  console.log(typeof key);
-  console.log("Secret Token valid = " + otp.totp.check(key,token));
-
-  const isValid = otp.totp.check( key, token );
-
+  // check secret key and otp
   if (!isValid)
+  {
+    req.session.redirect_message = 'Mã OTP bạn vừa nhập không đúng hoặc đã hết hạn sử dụng. Vui lòng thực hiện lại thao tác.';
     return res.redirect('../forget-password');
+  }
 
-
+  // change password
   const hash = bcrypt.hashSync(req.body.raw_password, N_HASHING_TIMES);
   await authenticate_model.change_password_by_user_id(data[0].user_id, hash);
+  delete req.session.forgetPasswordUserID;
+
+  // redirect to login
+  req.session.redirect_message = 'Chúc mừng bạn đã đổi mật khẩu thành công. Bạn có thể đăng nhập để sử dụng đầy đủ các tính năng của LLP Newspaper.';
   res.redirect('../log-in');
 });
 
@@ -303,7 +320,7 @@ router.post('/change-password', auth, async function (req, res) {
   }
 
   // password k luu ne khoi doi session
-
+  req.session.redirect_message = 'Chúc mừng bạn đã đổi mật khẩu thành công.';
   res.redirect("../profile");
 });
 
@@ -369,46 +386,25 @@ router.post('/log-out', auth, async function (req, res) {
 module.exports = router
 
 
+// utilities
+function OTP_email_creator(otp) {
+  return `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+  <div style="margin:50px auto;width:70%;padding:20px 0">
+    <div style="border-bottom:1px solid #eee">
+      <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">LLP News</a>
+    </div>
+    <p style="font-size:1.1em">Kính chào quý khách,</p>
+    <p>Cảm ơn quý khách đã sử dụng dịch vụ của LLP News. Quý khách vui lòng sử dụng mã OTP bên dưới để hoàn tất quá trình đặt lại mật khẩu. Quý khách lưu ý : mã OTP chỉ có giá trị sử dụng trong vòng <b>5 phút</b>.</p>
+    <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">`
+    + otp + `</h2>
+    <p style="font-size:0.9em;">Trân trọng cảm ơn,<br />LLP News</p>
+    <hr style="border:none;border-top:1px solid #eee" />
+    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+      <p>LLP News</p>
+      <p>18CNTN - Khoa Công Nghệ Thông Tin</p>
+      <p>Đại học Khoa học Tự nhiên - ĐHQG TPHCM</p>
+    </div>
+  </div>
+</div>`
+}
 
-
-// const secret = authenticator.authenticator.generateSecret();
-// const token = authenticator.authenticator.generate(secret);
-// console.log(secret);
-// console.log(token);
-// try 
-// {
-//   const isValid = authenticator.authenticator.verify({ token, secret });
-// } catch (err) 
-// {
-//   console.error(err);
-// }
-
-
-// // Test scripts
-// var nodemailer = require('nodemailer');
-
-
-// var transporter = nodemailer.createTransport({
-//     host: 'smtp.gmail.com',
-//     port: 587,
-//     auth: {
-//     user: 'llp.newspapers@gmail.com',
-//     pass: 'LinhLocPhuc123'
-//   }
-// });
-// transporter.verify().then(console.log).catch(console.error);
-
-// var mailOptions = {
-//   from: 'llp.newspapers@gmail.com',
-//   to: 'tronglocbrvt1611@gmail.com',
-//   subject: 'Reset password',
-//   text: 'Your token is: ' + token + "."
-// };
-
-// transporter.sendMail(mailOptions, function(error, info){
-//   if (error) {
-//     console.log(error);
-//   } else {
-//     console.log('Email sent: ' + info.response);
-//   }
-// }); 
