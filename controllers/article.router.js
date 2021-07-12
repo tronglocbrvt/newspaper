@@ -62,7 +62,8 @@ router.get('/:id', async function (req, res) {
             article: article,
             tags : tags,
             similar_articles : similar_articles,
-            comments: comments
+            comments: comments,
+            premium: req.session.auth
         }
         // Render 
         res.render('vwArticle/viewArticle', view_inputs);
@@ -95,6 +96,11 @@ router.post('/:id', auth,async function(req, res)
 );
 
 router.get('/:id/download', async function(req, res) {
+    if (req.session.auth === false || getTimeModule.get_time_now() > getTimeModule.get_time_from_date(req.session.authUser.time_premium)) {
+        res.status(403);
+        return res.render('vwError/viewPremium');
+    }
+
     const published_article_id = req.params.id || 0;
     const browser = await puppeteer.launch( {
         headless: true

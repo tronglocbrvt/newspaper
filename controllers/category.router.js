@@ -5,16 +5,6 @@ const getTimeModule = require('../utils/get_time.js');
 
 const router = express.Router();
 
-function get_time_now() {
-    var d = new Date();
-   return d.getTime();
-}
-
-function get_time_from_date(date) {
-    var d = new Date(date);
-   return d.getTime();
-}
-
 router.get('/', async function(req, res){
     const list = await categoryModel.all()
     res.render('vwCategories/about', {

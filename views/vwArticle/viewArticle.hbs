@@ -2,18 +2,26 @@
 
 <div class="container-fluid col-sm-12 align-middle" style="font-size:19px;">
 
-    <div class = "container mt-5 p-5 mb-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
-        
-        <!-- category -->
-        <div id = "category" class = "container text-uppercase">
-            <a href={{this.article.maincate_ref}}>{{this.article.main_category}}</a>
-            /
-            <a href={{this.article.subcate_ref}}>{{this.article.sub_category}}</a>
-        </div> 
+    <div id="content" class = "container mt-5 p-5 mb-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+        <div class="d-flex justify-content-between">
+            <div>
+            <!-- category -->
+                <div id = "category" class = "container text-uppercase">
+                    <a href={{this.article.maincate_ref}}>{{this.article.main_category}}</a>
+                    /
+                    <a href={{this.article.subcate_ref}}>{{this.article.sub_category}}</a>
+                </div> 
 
-        <!-- thoi gian dang -->
-        <div id = "date_published" class = "container">
-        {{this.article.time_published}}
+            <!-- thoi gian dang -->
+                <div id = "date_published" class = "container">
+                    {{this.article.time_published}}
+                </div>
+            </div>
+            {{#if this.premium}}
+                <div>
+                    <button id="btnDownload" type="button" class="btn-sm btn-primary mt-3"><i class="fa fa-download" aria-hidden="true"></i> Tải xuống</button>
+                </div>
+            {{/if}} 
         </div>
 
         <hr>
@@ -141,6 +149,7 @@
 </div>
 
 {{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 <script src="/static/js/article/view.js"></script>
 {{/section}}
 
