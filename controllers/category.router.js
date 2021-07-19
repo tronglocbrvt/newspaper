@@ -93,7 +93,9 @@ router.get('/:category_id', async function(req, res) {
         }
     }
 
-    if  (name_cat[0].length === 0) {
+    parent_id = await categoryModel.get_parent_cat_by_id(cat_id)
+    console.log(parent_id[0])
+    if (parent_id[0][0] === undefined || (parent_id[0][0].parent_category_id !== null && parent_id[0][0].parent_category_id !== cat_id)) {
         res.status(404);
         res.render('vwError/viewNotFound');
     }
