@@ -23,9 +23,12 @@ router.get('/subs/:id', async function(req, res) {
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
+    // get time now (milisecond)
+    time_now = getTimeModule.get_time_now();
+
     // get total articles by subcat_id
-    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
-    const total = await articleModel.count_by_subcat_id(sub_id, premium);
+    premium = (req.session.auth === true && time_now <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_subcat_id(sub_id, premium, time_now/1000);
     let n_pages = Math.ceil(total[0][0].total / limit);
 
     // set status of current page is TRUE
@@ -62,7 +65,7 @@ router.get('/subs/:id', async function(req, res) {
     }
 
     // list articles by subcat_id
-    const list = await articleModel.find_by_subcat_id(sub_id, offset, premium);
+    const list = await articleModel.find_by_subcat_id(sub_id, offset, premium, time_now/1000);
 
     // get sub_cats to display
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);

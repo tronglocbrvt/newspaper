@@ -72,8 +72,8 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the parent category and related
      */
-    find_by_cat_id(cat_id, offset, premium) {
-        var params = { id: cat_id, offset: offset, premium: premium};
+    find_by_cat_id(cat_id, offset, premium, time) {
+        var params = { id: cat_id, offset: offset, premium: premium, time: time};
         const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
@@ -81,6 +81,7 @@ module.exports =
             and c.category_id = categories.parent_category_id
             and p.article_id = articles.article_id
             and articles.is_premium <= :premium
+            and unix_timestamp(p.time_published) <= :time
         order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
@@ -102,12 +103,14 @@ module.exports =
      * @param {cat_id} int id of the parent category
      * @Return return total of articles of parent category 
      */
-    count_by_cat_id(cat_id, premium) {
+    count_by_cat_id(cat_id, premium, time) {
         const sql = `select count(*) as total
-        from articles, categories
+        from articles, categories, published_articles as p
         where categories.parent_category_id = ${cat_id}
             and categories.category_id = articles.category_id
             and articles.is_premium <= ${premium}
+            and articles.article_id = p.article_id
+            and unix_timestamp(p.time_published) <= ${time}
         `;
         return db.raw(sql);
     },
@@ -116,12 +119,14 @@ module.exports =
      * @param {cat_id} int id of the sub category
      * @Return return total of articles of sub category 
      */
-    count_by_subcat_id(subcat_id, premium) {
+    count_by_subcat_id(subcat_id, premium, time) {
         const sql = `select count(*) as total
-        from articles, categories
+        from articles, categories, published_articles as p
         where categories.category_id = articles.category_id
             and categories.category_id = ${subcat_id}
-            and articles.is_premium <= ${premium}`;
+            and articles.is_premium <= ${premium}
+            and articles.article_id = p.article_id
+            and unix_timestamp(p.time_published) <= ${time}`;
         return db.raw(sql);
     },
 
@@ -130,8 +135,8 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the subcategory and related
      */
-    find_by_subcat_id(sub_id, offset, premium) {
-        var params = { id: sub_id, offset: offset, premium: premium};
+    find_by_subcat_id(sub_id, offset, premium, time) {
+        var params = { id: sub_id, offset: offset, premium: premium, time: time};
         const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
         from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id
@@ -139,6 +144,7 @@ module.exports =
             and p.article_id = articles.article_id
             and categories.parent_category_id = c.category_id
             and articles.is_premium <= :premium
+            and unix_timestamp(p.time_published) <= :time
         order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
@@ -148,7 +154,7 @@ module.exports =
      * @param {tag_id} int id of the tag 
      * @Return return total of articles with the tag
      */
-    async count_by_tag_id(tag_id, premium) {
+    async count_by_tag_id(tag_id, premium, time) {
         const sql = `select count(*) as total
         from articles, tag_links as tl, published_articles as p, tags, categories as c
         where tl.tag_id = ${tag_id}
@@ -156,9 +162,10 @@ module.exports =
             and tl.article_id = p.article_id
             and articles.article_id = p.article_id
             and c.category_id = articles.category_id
-            and articles.is_premium <= ${premium}`;
+            and articles.is_premium <= ${premium}
+            and unix_timestamp(p.time_published) <= ${time}`;
         
-        return db.raw(sql, params);
+        return db.raw(sql);
     },
 
     /**
@@ -166,8 +173,8 @@ module.exports =
      * @param {offset} int 
      * @Return return lists of articles with the tag and related
      */
-    find_by_tag_id(tag_id, offset, premium) {
-        var params = { id: tag_id, offset: offset, premium};
+    find_by_tag_id(tag_id, offset, premium, time) {
+        var params = { id: tag_id, offset: offset, premium: premium, time: time};
         const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id
         from articles, tag_links as tl, published_articles as p, tags, categories as c
         where tl.tag_id = :id
@@ -176,6 +183,7 @@ module.exports =
             and articles.article_id = p.article_id
             and c.category_id = articles.category_id
             and articles.is_premium <= :premium
+            and unix_timestamp(p.time_published) <= :time
         order by articles.is_premium DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
@@ -224,4 +232,11 @@ module.exports =
     add(article){
         return db('articles').insert(article);
     },
+
+    update_views(article_id) {
+        const sql = `update published_articles 
+        set views_numbers = views_numbers + 1 
+        where published_article_id = ?`;
+        return db.raw(sql, article_id);
+    }
 }

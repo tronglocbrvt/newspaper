@@ -36,7 +36,6 @@ router.get('/:id', async function (req, res) {
     const db_data_similar_articles = await article_model.load_random_published_articles_with_same_category(article_id,LIMIT_SIMILAR_ARTICLE);
     const db_data_comment = await article_model.load_comments_of_published_articles_by_id(article_id);
     
-
     if (db_data_article[0][0]) {
         // Generate input for views
         var article = db_data_article[0][0];
@@ -65,6 +64,9 @@ router.get('/:id', async function (req, res) {
             comments: comments,
             premium: req.session.auth
         }
+
+        await article_model.update_views(article_id)
+
         // Render 
         res.render('vwArticle/viewArticle', view_inputs);
     }
