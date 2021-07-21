@@ -452,7 +452,6 @@ router.get("/facebook/callback",not_auth,
       await authenticate_model.insertFacebookUser(facebook_id);
       var data = await authenticate_model.findByFacebookID(facebook_id);
     }
-
     // Log-in
     user = data[0][0];
     user.facebook_id = facebook_id;

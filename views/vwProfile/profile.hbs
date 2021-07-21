@@ -193,7 +193,7 @@
                         {{email}}
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 {{/unless}}
 
 
@@ -218,12 +218,11 @@
 
             <div class="d-flex">
                 {{#unless is_log_in_by_third_party}}
-                <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#change-pass-word">Đổi
-                    mật
-                    khẩu</button>
+                <button id="change-password-btn" type="button" class="btn btn-danger">Đổi mật khẩu</button>
                 {{/unless}}
-                <button type="button" class="btn btn-success ml-2" data-toggle="collapse"
-                    data-target="#sign-up-premium">Đăng ký Premium</button>
+
+                <button id="sign-up-premium-btn" type="button" class="btn btn-success ml-2">Đăng ký Premium</button>
+
             </div>
 
 
@@ -233,7 +232,7 @@
                 <div id="change-pass-word" class="collapse m-4 p-4 border border-light rounded shadow">
                     {{/if}}
 
-                    {{#if is_log_in_by_third_party}}
+                    {{#unless is_log_in_by_third_party}}
                     <form id="frmChangePassword" action="../auth/change-password" method="post">
 
                         <div class="form-group">
@@ -275,14 +274,15 @@
                         <button type="submit" class="btn btn-primary">Thay đổi mật khẩu</button>
 
                     </form>
-                    {{/if}}
+                    {{/unless}}
 
                 </div>
 
 
                 <div id="sign-up-premium" class="collapse m-4 p-4 border border-light rounded shadow">
                     <div class="jumbotron py-3">
-                        - Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534. Nội dung chuyển khoản: <br>
+                        - Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534. Nội dung
+                        chuyển khoản: <br>
                         "tên đăng nhập" - LLP News Premium - "tên gói đăng ký" <br>
                         - Ví dụ: để đăng ký cho tài khoản ndhp2000 gói ba tháng, nội dung chuyển khoản sẽ là: <br>
                         "ndhp2000 -LLP News Premium - 1" <br>
@@ -293,27 +293,27 @@
                     </div>
 
 
-                    <form id="frmSignUpPremium" action="#" method="post" class="mt-3">
+                    <form id="frmSignUpPremium" action="/profile/sign-up-premium" method="post" class="mt-3">
                         <div class="form-group">
                             <label for="stk">Số tài khoản gửi tiền</label>
-                            <input type="text" class="form-control" id="stk" placeholder="6380205561534">
+                            <input type="text" class="form-control" id="stk" placeholder="6380205561534" name ="stk">
                         </div>
 
                         <div class="form-group">
                             <label for="ctk">Chủ tài khoản</label>
-                            <input type="text" class="form-control" id="ctk" placeholder="Nguyễn Đình Hoàng Phúc">
+                            <input type="text" class="form-control" id="ctk" placeholder="Nguyễn Đình Hoàng Phúc" name ="ctk">
                         </div>
 
                         <div class="form-group">
                             <label for="chi-nhanh">Tên ngân hàng và chi nhánh ngân hàng</label>
-                            <input type="text" class="form-control" id="chi-nhanh"
+                            <input type="text" class="form-control" id="chi-nhanh" name ="chinhanh"
                                 placeholder="Agribank - Chi nhánh Bình Thạnh">
                         </div>
 
 
                         <div class="form-group">
-                            <label for="goi-dangky">Chọn gói mà bạn muốn đăng ký</label>
-                            <select class="form-control" id="goi-dangky">
+                            <label for="goi-dang-ky">Chọn gói mà bạn muốn đăng ký</label>
+                            <select class="form-control" id="goi-dang-ky" name ="goi">
                                 <option value="1">1. Gói 3 tháng - 60.000đ</option>
                                 <option value="2">2. Gói 6 tháng - 100.000đ</option>
                                 <option value="3">3. Gói 12 tháng - 180.000đ</option>
@@ -340,6 +340,21 @@
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="/static/js/auth/pswmeter.js"></script>
     <script>
+        $('#change-password-btn').click(function () {
+            console.log("change password button clicked. ");
+            $('#sign-up-premium').collapse('hide');
+            console.log("collapse");
+            $('#change-pass-word').collapse('toggle');
+        }
+        );
+        $('#sign-up-premium-btn').click(function () {
+            console.log("change password button clicked. ");
+            $('#change-pass-word').collapse('hide');
+            console.log("collapse");
+            $('#sign-up-premium').collapse('toggle');
+        }
+        );
+
         $('#date_of_birth').datepicker({
             uiLibrary: 'bootstrap4'
         });
