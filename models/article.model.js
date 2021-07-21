@@ -157,7 +157,6 @@ module.exports =
             and articles.article_id = p.article_id
             and c.category_id = articles.category_id
             and articles.is_premium <= ${premium}`;
-        
         return db.raw(sql, params);
     },
 

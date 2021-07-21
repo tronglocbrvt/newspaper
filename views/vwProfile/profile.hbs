@@ -182,6 +182,8 @@
 
                 <hr />
 
+
+                {{#unless is_log_in_by_third_party}}
                 <div class="row">
                     <div class="col-3">
                         <label style="font-weight:bold;">Email</label>
@@ -190,11 +192,10 @@
                     <div class="col-8">
                         {{email}}
                     </div>
-
-
                 </div>
+                <hr/>
+                {{/unless}}
 
-                <hr />
 
                 <div class="row">
 
@@ -216,10 +217,11 @@
             </div>
 
             <div class="d-flex">
+                {{#unless is_log_in_by_third_party}}
                 <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#change-pass-word">Đổi
                     mật
                     khẩu</button>
-
+                {{/unless}}
                 <button type="button" class="btn btn-success ml-2" data-toggle="collapse"
                     data-target="#sign-up-premium">Đăng ký Premium</button>
             </div>
@@ -231,6 +233,7 @@
                 <div id="change-pass-word" class="collapse m-4 p-4 border border-light rounded shadow">
                     {{/if}}
 
+                    {{#if is_log_in_by_third_party}}
                     <form id="frmChangePassword" action="../auth/change-password" method="post">
 
                         <div class="form-group">
@@ -272,6 +275,8 @@
                         <button type="submit" class="btn btn-primary">Thay đổi mật khẩu</button>
 
                     </form>
+                    {{/if}}
+
                 </div>
 
 

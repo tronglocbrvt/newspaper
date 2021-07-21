@@ -81,13 +81,13 @@ router.post('/:id', auth,async function(req, res)
     const published_article_id = req.params.id || 0;
     const content = req.body.comment;
     const time_comment = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
+    console.log(req.session.authUser);
     const new_comment = 
     {
         content:content,
         published_article_id : published_article_id,
         time_comment:time_comment,
-        user_id : res.locals.authUser.user_id
+        user_id : req.session.authUser.user_id
     };
     console.log(new_comment);
     await comment_model.add_new_comment(new_comment);
