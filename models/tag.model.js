@@ -10,6 +10,14 @@ module.exports = {
     add_tag(tag) {
         return db('tag_links').insert(tag);
     },
+
+    delete_tag(tag){
+        return db('tag_links')
+            .where({
+                'tag_id': tag.tag_id,
+                'article_id': tag.article_id})
+            .del()
+    },
     
     get_tags_by_id(id){
         const sql = `select t.tag_id as tag_id, t.tag_name as tag_name

@@ -5,15 +5,16 @@ const N_HASHING_TIMES = 10;
 const express = require('express');
 const authenticate_model = require('../models/authenticate.model');
 const auth = require('../middlewares/auth.mdw');
+const not_auth = require('../middlewares/not_auth.mdw')
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const otp = require('otplib');
 const nodemailer = require('nodemailer');
 const randomstring = require("randomstring");
+var passport = require('passport');
 const { clearCustomQueryHandlers } = require('puppeteer');
 const { findByEmail } = require('../models/authenticate.model');
-
 // Mailer
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -23,22 +24,21 @@ const transporter = nodemailer.createTransport({
     pass: 'LinhLocPhuc123'
   }
 });
-
-
 // 6 phut
 const totp_options = {
   window: 20,
 };
-
-
 otp.totp.options = totp_options;
 
+
+
+//----------------------------------------------------------------------------------
 
 /**
  * API Get log-in In Page
  * Render page view for log-in
  */
-router.get('/log-in', async function (req, res) {
+router.get('/log-in',not_auth, async function (req, res) {
   if (res.locals.auth === false) {
     res.render('vwAuthentications/sign_in',
       {
@@ -52,10 +52,7 @@ router.get('/log-in', async function (req, res) {
   }
 });
 
-
-
-
-router.post('/log-in', async function (req, res) {
+router.post('/log-in',not_auth,async function (req, res) {
   const username = req.body.username;
   console.log(username);
 
@@ -91,18 +88,17 @@ router.post('/log-in', async function (req, res) {
 
 
 
+//----------------------------------------------------------------------------------
+
 /**
  * API Get Sign up Page
  * Render page view for sign-up
  */
-router.get('/sign-up', async function (req, res) {
+router.get('/sign-up',not_auth, async function (req, res) {
   res.render('vwAuthentications/sign_up');
 });
 
-
-
-
-router.get('/is-username-available', async function (req, res) {
+router.get('/is-username-available', not_auth,async function (req, res) {
   const username = req.query.username;
   const user = await authenticate_model.findByUsername(username);
   if (user.length === 0)
@@ -110,9 +106,7 @@ router.get('/is-username-available', async function (req, res) {
   return res.json(false);
 });
 
-
-
-router.get('/is-email-available', async function (req, res) {
+router.get('/is-email-available', not_auth,async function (req, res) {
   const email = req.query.email;
   const user = await authenticate_model.findByEmail(email);
   if (user.length === 0)
@@ -120,10 +114,7 @@ router.get('/is-email-available', async function (req, res) {
   return res.json(false);
 });
 
-
-
-
-router.post('/sign-up', async function (req, res) {
+router.post('/sign-up', not_auth,async function (req, res) {
   const hash = bcrypt.hashSync(req.body.raw_password, N_HASHING_TIMES);
   const dob = moment(req.body.raw_date_of_birth, "MM/DD,YYYY").format("YYYY-MM-DD");
   const new_user =
@@ -145,19 +136,21 @@ router.post('/sign-up', async function (req, res) {
 }
 );
 
+//----------------------------------------------------------------------------------
+
+
 
 /** 
  * view for quên mật khẩu
+ * TODO: Chua log-in moi cho dung
  * **/
-
-router.get('/forget-password', async function (req, res) {
+router.get('/forget-password',not_auth, async function (req, res) {
   res.render('vwAuthentications/forget_password',
     {
       redirect_message: req.session.redirect_message
     });
   delete req.session.redirect_message;
 });
-
 
 router.post('/forget-password', async function (req, res) {
   data = await authenticate_model.findByEmail(req.body.email);
@@ -173,7 +166,6 @@ router.post('/forget-password', async function (req, res) {
 
     // Expired_time for the password is 5 minutes.
     const expired_time = moment(Date.now() + 300000).format('YYYY-MM-DD HH:mm:ss');
-
 
     const token_data =
     {
@@ -208,14 +200,14 @@ router.post('/forget-password', async function (req, res) {
     // Redirect to Reset password page
     res.redirect("reset-password/");
   }
-});
+}
+);
 
 
-router.get('/reset-password', async function (req, res) {
+
+router.get('/reset-password', not_auth,async function (req, res) {
   const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   const user_id = req.session.forgetPasswordUserID || -1;
-
-
   // check token and time
   data = await authenticate_model.findToken(user_id, current_time);
 
@@ -230,7 +222,7 @@ router.get('/reset-password', async function (req, res) {
 
 
 // Reset by Tokens
-router.post('/reset-password/', async function (req, res) {
+router.post('/reset-password/',not_auth, async function (req, res) {
 
   const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   const user_id = req.session.forgetPasswordUserID || -1;
@@ -252,8 +244,7 @@ router.post('/reset-password/', async function (req, res) {
   const isValid = otp.totp.check(key, secret);
 
   // check secret key and otp
-  if (!isValid)
-  {
+  if (!isValid) {
     req.session.redirect_message = 'Mã OTP bạn vừa nhập không đúng hoặc đã hết hạn sử dụng. Vui lòng thực hiện lại thao tác.';
     return res.redirect('../forget-password');
   }
@@ -268,42 +259,48 @@ router.post('/reset-password/', async function (req, res) {
   res.redirect('../log-in');
 });
 
+// /**
+// HINH NHU K CO XAI NEN CMT XOA SAU
+//  * Check password-is correct.
+//  */
+// router.get('/is-password-correct', auth, async function (req, res) {
+//   // Get username from session.
+//   const username = req.session.authUser.user_name;
+//   console.log(username);
+
+//   // Get user by user-name  
+//   const data = await authenticate_model.findByUsername(username);
+//   user = data[0];
+
+//   // Compare Password.
+//   const ret = bcrypt.compareSync(req.body.password, user.password);
+//   return res.json(ret);
+// });
 
 
-
-
-/**
- * Check password-is correct - Ajax.
- */
-router.get('/is-password-correct', auth, async function (req, res) {
-  // Get username from session.
-  const username = req.session.authUser.user_name;
-  console.log(username);
-
-  // Get user by user-name  
-  const data = await authenticate_model.findByUsername(username);
-  user = data[0];
-
-  // Compare Password.
-  const ret = bcrypt.compareSync(req.body.password, user.password);
-  return res.json(ret);
-});
+//----------------------------------------------------------------------------------
 
 
 /**
  * Change-password API => must sign-in
+ * TODO: Chan login google facebook doi mk.
  */
 router.post('/change-password', auth, async function (req, res) {
-  // Get username from session.
-  const username = req.session.authUser.user_name;
-  console.log(username);
+  const is_log_in_by_third_party = req.session.authUser.facebook_id || req.session.authUser.google_id;
+
+  if (is_log_in_by_third_party)
+  {
+    res.redirect("../profile");
+    return;
+  }
+
+  // Get user_id from session.
+  const user_id = req.session.authUser.user_id;
 
   // Get user by user-name  
-  const data = await authenticate_model.findByUsername(username);
+  const data = await authenticate_model.findByUserID(user_id);
   user = data[0];
 
-  // console.log(user);
-  // console.log(req.body.password);
   // Compare Password.
   const ret = bcrypt.compareSync(req.body.password, user.password);
 
@@ -312,13 +309,12 @@ router.post('/change-password', auth, async function (req, res) {
     const raw_password = req.body.newpassword
     const hash = bcrypt.hashSync(raw_password, N_HASHING_TIMES);
     // console.log(hash);
-    await authenticate_model.change_password(user.user_name, hash);
+    await authenticate_model.change_password_by_user_id(user_id, hash);
   }
   else {
     req.session.change_password_error = 'Mật khẩu cũ không đúng.';
   }
-
-  // password k luu ne khoi doi session
+  // password k luu nen khoi doi session
   req.session.redirect_message = 'Chúc mừng bạn đã đổi mật khẩu thành công.';
   res.redirect("../profile");
 });
@@ -326,8 +322,8 @@ router.post('/change-password', auth, async function (req, res) {
 
 router.post('/change-name', auth, async function (req, res) {
   // Get username from session.
-  const username = req.session.authUser.user_name;
-  await authenticate_model.change_name(username, req.body.name);
+  const user_id = req.session.authUser.user_id;
+  await authenticate_model.change_name_by_user_id(user_id, req.body.name);
 
   // change session
   req.session.authUser.name = req.body.name;
@@ -335,12 +331,13 @@ router.post('/change-name', auth, async function (req, res) {
   res.redirect("../profile");
 });
 
+
 router.post('/change-dob', auth, async function (req, res) {
   // Get username from session.
-  const username = req.session.authUser.user_name;
+  const user_id = req.session.authUser.user_id;
   const dob = moment(req.body.raw_date_of_birth, "MM/DD,YYYY").format("YYYY-MM-DD");
 
-  await authenticate_model.change_DOB(username, dob);
+  await authenticate_model.change_DOB_by_user_id(user_id, dob);
 
   // change session
   req.session.authUser.date_of_birth = dob;
@@ -348,12 +345,10 @@ router.post('/change-dob', auth, async function (req, res) {
   res.redirect("../profile");
 });
 
-
-
 router.post('/change-gender', auth, async function (req, res) {
   // Get username from session.
-  const username = req.session.authUser.user_name;
-  await authenticate_model.change_gender(username, req.body.gender);
+  const user_id = req.session.authUser.user_id;
+  await authenticate_model.change_gender_by_user_id(user_id, req.body.gender);
 
   // change session
   req.session.authUser.gender = req.body.gender;
@@ -363,9 +358,12 @@ router.post('/change-gender', auth, async function (req, res) {
 });
 
 
+//----------------------------------------------------------------------------------
 
 
-
+/** 
+ * Log-out
+*/
 router.post('/log-out', auth, async function (req, res) {
   if (req.session) {
     req.session.destroy(function (err) {
@@ -382,9 +380,95 @@ router.post('/log-out', auth, async function (req, res) {
   }
 });
 
+
+//----------------------------------------------------------------------------------
+
+/**
+ * Sign in with google handler
+ */
+router.get('/google',not_auth,
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback',not_auth,
+  passport.authenticate('google',
+    {
+      failureRedirect: '/log-in'
+    }),
+  async function (req, res) {
+    const google_id = req.user.id;
+    var data = await authenticate_model.findByGoogleID(google_id);
+
+    // Create new users.
+    if (data[0].length === 0) {
+      console.log("create new google users")
+      const new_user =
+      {
+        name: req.user.displayName
+      }
+      await authenticate_model.add_new_user(new_user); // add new users to db
+      await authenticate_model.insertGoogleUser(google_id);
+      var data = await authenticate_model.findByGoogleID(google_id);
+    }
+
+    // Log-in
+    user = data[0][0];
+    user.google_id = google_id;
+    delete user.password;
+    console.log(user.google_id + " - Dang nhap thanh cong")
+    req.session.auth = true;
+    req.session.authUser = user;
+    const url = req.session.retUrl || '/';
+    console.log('url');
+    res.redirect(url);
+  }
+);
+
+
+
+
+/**
+ * Sign in with facebook handler
+ */
+router.get("/facebook", not_auth,passport.authenticate("facebook"));
+router.get("/facebook/callback",not_auth,
+  passport.authenticate("facebook",
+    {
+      failureRedirect: "/log-in"
+    }),
+  async function (req, res) 
+  {
+    const facebook_id = req.user.id;
+    console.log(facebook_id);
+    var data = await authenticate_model.findByFacebookID(facebook_id);
+
+    // Create new users.
+    if (data[0].length === 0) {
+      console.log("create new facebook users")
+      const new_user =
+      {
+        name: req.user.displayName
+      }
+      await authenticate_model.add_new_user(new_user); // add new users to db
+      await authenticate_model.insertFacebookUser(facebook_id);
+      var data = await authenticate_model.findByFacebookID(facebook_id);
+    }
+    // Log-in
+    user = data[0][0];
+    user.facebook_id = facebook_id;
+    delete user.password;
+    console.log(user.facebook_id + " - Dang nhap thanh cong")
+    req.session.auth = true;
+    req.session.authUser = user;
+    const url = req.session.retUrl || '/';
+    console.log(req.session.authUser);
+    res.redirect(url);
+  }
+);
+
 module.exports = router
 
 
+//------------------------------------------
 // utilities
 function OTP_email_creator(otp) {
   return `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">

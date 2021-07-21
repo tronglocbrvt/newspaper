@@ -36,7 +36,7 @@
                                     {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
                                     <td class="text-center">{{#if (is_editable status)}}
                                         <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                            href="#" title="Chỉnh sửa"><i class="fa fa-pencil"></i> Chỉnh
+                                            href="/writers/{{writer_id}}/articles/{{article_id}}" title="Chỉnh sửa"><i class="fa fa-pencil"></i> Chỉnh
                                             sửa</a>
                                         {{else}}
                                         <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"

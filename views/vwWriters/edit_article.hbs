@@ -1,4 +1,11 @@
-<form method="post" enctype="multipart/form-data" id="form">
+<form method="post" enctype="multipart/form-data" id="form1">
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium" {{#if
+            article.is_premium}}checked{{/if}}>
+        <label class="form-check-label" for="is_premium">
+            PREMIUM
+        </label>
+    </div>
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
         <input type="text" class="form-control" name="article_title" id="title" maxlength="75"
@@ -26,10 +33,6 @@
         <label for="avatar_caption">MÔ TẢ ẢNH BÌA</label>
         <input type="text" class="form-control" name="avatar_caption" id="avatar_caption"
             value="{{article.avatar_caption}}" required>
-    </div>
-    <div class="form-group">
-        <label for="content">NỘI DUNG</label>
-        <textarea id="content" name="article_content" required></textarea>
     </div>
     <div class="row">
         <div class="form-group col-md-5">
@@ -66,20 +69,19 @@
         <div class="col-md-5" id="alert-area" style="color: red;"></div>
     </div>
     <div class="mb-2" id="tag-area"></div>
-    <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium" {{#if
-            article.is_premium}}checked{{/if}}>
-        <label class="form-check-label" for="is_premium">
-            PREMIUM
-        </label>
+</form>
+<form method="POST" id="form2" action="/writers/{{article.writer_id}}/articles/{{article.article_id}}/content">
+    <div class="form-group">
+        <label for="content">NỘI DUNG</label>
+        <textarea id="content" name="article_content" required></textarea>
     </div>
-    <button type="submit" class="btn btn-success" id="submit">
+</form>
+<div class="text-center">
+    <button class="btn btn-success" id="submit">
         <i class="fa fa-check" aria-hidden="true"></i>
         Hoàn tất
     </button>
-</form>
-
-<div id="display"></div>
+</div>
 
 
 {{#section 'js'}}
@@ -94,14 +96,6 @@
             height: 300
         });
     });
-
-    {
-        {
-            !--$('#submit').click(function (e) {
-                var messageData = $('#content').summernote('code');
-                $('#display').html(messageData);
-            }) --}
-    }
 </script>
 {{/section}}
 
