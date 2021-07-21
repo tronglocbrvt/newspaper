@@ -37,5 +37,19 @@ module.exports = {
         where article_id = ?`;
 
         return content_cat = db.raw(sql_content_cat, article_id);
+    },
+
+    patch_article(article){
+        const id = article.article_id;
+        delete article.article_id;
+        return db('articles')
+            .where('article_id', id)
+            .update(article);
+    },
+
+    patch_article_content(article_id, content){
+        return db('articles')
+            .where('article_id', article_id)
+            .update({article_content: content})
     }
 }
