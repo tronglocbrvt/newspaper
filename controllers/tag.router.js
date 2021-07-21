@@ -29,9 +29,12 @@ router.get('/:tag_id', async function(req, res) {
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
+    // get time now (milisecond)
+    time_now = getTimeModule.get_time_now();
+
     // count articles based on tag_id
-    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
-    const total = await articleModel.count_by_tag_id(tag_id, premium);
+    premium = (req.session.auth === true && time_now <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_tag_id(tag_id, premium, time_now / 1000);
     let n_pages = Math.ceil(total[0][0].total / limit);
     
     // get current page, default 1
@@ -47,7 +50,7 @@ router.get('/:tag_id', async function(req, res) {
     const offset = (page - 1) * limit;
 
     // list articles by tag_id
-    const list = await articleModel.find_by_tag_id(tag_id, offset, premium);
+    const list = await articleModel.find_by_tag_id(tag_id, offset, premium, time_now/1000);
 
     // get tags each article
     var tags = new Array();

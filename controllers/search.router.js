@@ -36,11 +36,14 @@ router.get('/', async function(req, res) {
     cur_criteria = [false, false, false];
     cur_criteria[criteria] = true;
 
-    // count articles based on keyword & criteria
-    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
-    const total = await searchModel.count_result_from_search(keyword, type, premium);
-    let n_pages = Math.ceil(total[0][0].total / limit); // total page
+    // get time now (milisecond)
+    time_now = getTimeModule.get_time_now();
 
+    // count articles based on keyword & criteria
+    premium = (req.session.auth === true && time_now <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await searchModel.count_result_from_search(keyword, type, premium, time_now/1000);
+    let n_pages = Math.ceil(total[0][0].total / limit); // total page
+    console.log(total[0][0].total);
     // set status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
@@ -66,7 +69,7 @@ router.get('/', async function(req, res) {
     const offset = (page - 1) * limit;
   
     // get list articles based on keyword and criteria
-    const list_articles = await searchModel.get_articles_from_search(keyword, type, offset, premium);
+    const list_articles = await searchModel.get_articles_from_search(keyword, type, offset, premium, time_now/1000);
 
     // get tags each article
     var tags = new Array();

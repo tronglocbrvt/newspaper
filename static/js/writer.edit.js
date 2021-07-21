@@ -24,14 +24,21 @@ $(document).ready(function () {
         $.ajax({
             url: '/tags'
         }).done(function (data3) {
+
             data3.map(function (tag) {
                 tags.push(tag.tag_name);
             });
 
-            data1.tags.map(function(tag){
+            data1.tags.map(function (tag) {
                 add_tag(tag.tag_name);
                 tag_list.push(tag.tag_name);
             })
+
+            const ori_tags = tag_list.toString();
+            $("<input />").attr("type", "hidden")
+                .attr("name", "original_tags")
+                .attr("value", ori_tags)
+                .appendTo("#form1");
 
             $('#title').focus();
         });
@@ -42,16 +49,7 @@ $(document).ready(function () {
         add_tag(input_tag)
     });
 
-    $('#submit').click(function (e) {
-        const tags = tag_list.toString();
-        $("<input />").attr("type", "hidden")
-            .attr("name", "tags")
-            .attr("value", tags)
-            .appendTo("#form");
-        return true;
-    });
-
-    $("#btn_edit_avatar").click(function(){
+    $("#btn_edit_avatar").click(function () {
         $("#upload_conainter").attr('hidden', false);
         $("#avatar").fileinput({
             allowedFileExtensions: ['jpg', 'jpeg', 'png'],
@@ -71,8 +69,8 @@ $(document).ready(function () {
         const empty_element = $('<option></option>').attr('value', 0).text('---------');
         $('#sub_category').append(empty_element);
     }
-    
-    
+
+
     function add_tag(input_tag) {
         $('#alert-area').empty();
         if (tags.includes(input_tag)) {
@@ -90,7 +88,6 @@ $(document).ready(function () {
                         .append(delete_icon);
                     element.append(tag_btn).append(delete_btn);
                     $('#tag-area').append(element);
-                    tag_list.push(input_tag);
                 }
             }
         }
@@ -108,4 +105,15 @@ $(document).ready(function () {
             $(this).parent().remove();
         });
     }
+
+    $('#submit').click(function () {
+        const tags = tag_list.toString();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "tags")
+            .attr("value", tags)
+            .appendTo("#form1");
+            
+        $("#form1").submit();
+        $("#form2").submit();
+    });
 });

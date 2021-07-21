@@ -46,9 +46,12 @@ router.get('/:category_id', async function(req, res) {
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
+    // get time now (milisecond)
+    time_now = getTimeModule.get_time_now();
+    
     // count articles by cat_id
-    premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
-    const total = await articleModel.count_by_cat_id(cat_id, premium);
+    premium = (req.session.auth === true && time_now <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
+    const total = await articleModel.count_by_cat_id(cat_id, premium, time_now/1000);
     let n_pages = Math.ceil(total[0][0].total / limit); // get total page
 
     // set status of current page is TRUE
@@ -79,7 +82,7 @@ router.get('/:category_id', async function(req, res) {
     const name_cat = await categoryModel.get_name_by_cat_id(cat_id);
 
     // get list articles by parent categoryID   
-    const list = await articleModel.find_by_cat_id(cat_id, offset, premium);
+    const list = await articleModel.find_by_cat_id(cat_id, offset, premium, time_now/1000);
     
     // get list sub-categories by parent categoryID
     const sub_cats = await categoryModel.get_sub_cats_by_cat_id(cat_id);
@@ -93,7 +96,8 @@ router.get('/:category_id', async function(req, res) {
         }
     }
 
-    if  (name_cat[0].length === 0) {
+    parent_id = await categoryModel.get_parent_cat_by_id(cat_id)
+    if (parent_id[0][0] === undefined || (parent_id[0][0].parent_category_id !== null && parent_id[0][0].parent_category_id !== cat_id)) {
         res.status(404);
         res.render('vwError/viewNotFound');
     }
