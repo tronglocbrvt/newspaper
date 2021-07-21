@@ -1,0 +1,30 @@
+// TODO:
+1. Download.
+2. Chua co trang editor - Tinh nang 4.
+3. Trang cua Quan Tri version.
+4. Trang chu: fix.
+6. Quan tri vien.
+7. Sai duong dan -> Loi 500
+8. Footer
+
+DEADLINES Chu Nhat:
+- Loc: 5. Front-End views + Download: Toi mai
+- Loc: Chu Nhat: 
+   /admin/categories
+   Quản lý chuyên mục category
+   Quản lý nhãn tag
+   /admin/tags
+
+- Linh: Chua co trang editor - Tinh nang 4.
+
+- Phuc:
+    + Xac thuc dang ky?
+    Quản lý danh sách người dùng (phóng viên, biên tập viên, độc giả, …)
+
+    /admin/writers
+    Phân công chuyên mục cho biên tập viên
+
+    /admin/editors
+
+    Gia hạn tài khoản độc giả
+    /admin/users
