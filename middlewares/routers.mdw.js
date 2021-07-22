@@ -12,5 +12,13 @@ module.exports = function (app) {
     app.use('/writers', require('../controllers/writer.router'));
     app.use('/search', require('../controllers/search.router'));
     app.use('/profile', require('../controllers/profile.router'));
-
+    app.use(function(req, res) {
+        res.status(404);
+        // respond with html page
+        if (req.accepts('html')) {
+            res.status(404);
+            res.render('vwError/viewNotFound');
+            return;
+        }
+      });
 }

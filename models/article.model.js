@@ -8,7 +8,7 @@ module.exports =
      */
     load_published_article_by_id(published_article_id) {
         const sql_query = `                
-        SELECT pa.time_published, a.article_title, a.article_abstract, a.article_content, c.category_id as subcate_id, c.category_name as sub_category, m_c.category_id as maincate_id, m_c.category_name as main_category, CONCAT('/categories/',m_c.category_id) as maincate_ref, CONCAT('/categories/',m_c.category_id,'/subs/',c.category_id) as subcate_ref, a.avatar_url,a.avatar_caption,a.is_premium, pa.published_article_id
+        SELECT pa.time_published, a.article_title, a.article_abstract, a.article_content, c.category_id as subcate_id, c.category_name as sub_category, m_c.category_id as maincate_id, m_c.category_name as main_category, CONCAT('/categories/',m_c.category_id) as maincate_ref, CONCAT('/categories/',m_c.category_id,'/subs/',c.category_id) as subcate_ref, a.avatar_url,a.avatar_caption,a.is_premium, pa.published_article_id, pa.views_numbers
         from published_articles as pa, articles as a, categories as c, categories as m_c
         where pa.published_article_id=? and pa.article_id = a.article_id and a.category_id = c.category_id and c.parent_category_id = m_c.category_id;
         `
@@ -74,7 +74,7 @@ module.exports =
      */
     find_by_cat_id(cat_id, offset, premium, time) {
         var params = { id: cat_id, offset: offset, premium: premium, time: time};
-        const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
+        const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id, p.views_numbers
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
             and categories.category_id = articles.category_id
@@ -137,7 +137,7 @@ module.exports =
      */
     find_by_subcat_id(sub_id, offset, premium, time) {
         var params = { id: sub_id, offset: offset, premium: premium, time: time};
-        const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id
+        const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id, p.views_numbers
         from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id
             and articles.category_id = categories.category_id
@@ -175,7 +175,7 @@ module.exports =
      */
     find_by_tag_id(tag_id, offset, premium, time) {
         var params = { id: tag_id, offset: offset, premium: premium, time: time};
-        const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id
+        const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id, p.views_numbers
         from articles, tag_links as tl, published_articles as p, tags, categories as c
         where tl.tag_id = :id
             and tl.tag_id = tags.tag_id
