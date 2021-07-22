@@ -19,7 +19,10 @@
             </div>
             {{#if this.premium}}
                 <div>
-                    <button id="btnDownload" type="button" class="btn-sm btn-primary mt-3"><i class="fa fa-download" aria-hidden="true"></i> Tải xuống</button>
+                    <form method="POST" action="/articles/{{article.published_article_id}}/download">
+                        <input type="hidden" name="download" value="{{data}}"> 
+                        <button id="btnDownload" type="submit" class="btn-sm btn-primary mt-3"><i class="fa fa-download" aria-hidden="true"></i> Tải xuống</button>
+                    </form>
                 </div>
             {{/if}} 
         </div>
@@ -150,7 +153,6 @@
 
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-<script src="/static/js/article/view.js"></script>
 {{/section}}
 
 {{#section 'css'}}
