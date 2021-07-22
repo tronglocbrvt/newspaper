@@ -115,7 +115,10 @@ async function getTemplateHtml() {
 }
 
 router.post('/:id/download', async function (req, res) {
-    id = req.params.id;
+    if (req.session.auth === false || getTimeModule.get_time_now() > getTimeModule.get_time_from_date(req.session.authUser.time_premium)) {
+        res.status(403);
+        return;
+    }
     let data_download = req.body.download;
     data = JSON.parse(data_download);
     getTemplateHtml().then(async (res) => {
