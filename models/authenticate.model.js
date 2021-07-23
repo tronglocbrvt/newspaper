@@ -126,7 +126,28 @@ module.exports =
     }
     ,
 
+    insertAccountAuthenticationToken(data)
+    {
+        return db('authenticate_email_commands').insert(data);
+    },
 
+    findAccountAuthenticationToken(user_id, time)
+    {
+        return db('authenticate_email_commands').where('user_id', user_id).andWhere('expired_time','>',time).orderBy('expired_time','desc');
+    },
+
+    authenticate_by_user_id(user_id)
+    {
+        const params =
+        {
+            un: user_id,
+        };
+        const sql_query = `UPDATE users
+        SET is_authenticated = 1
+        WHERE user_id = :un;`;
+        return db.raw(sql_query, params);
+    }
+    ,
     // Add FB & GG users.
     insertGoogleUser(googleID)
     {

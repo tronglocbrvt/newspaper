@@ -1,0 +1,25 @@
+<div class="col-sm-12">
+    <div class="container m-5 p-5 bg-light shadow">
+        {{#if redirect_message}}
+        <div id="redirect_message" class="alert alert-info">
+            {{redirect_message}}
+        </div>
+        {{/if}}
+        <h2>Xác thực tài khoản</h2>
+        <div>
+            Tài khoản của quý khách chưa được kích hoạt. Để kích hoạt tài khoản vui lòng nhập mã xác thực đã được gửi qua email: <b>{{email}}</b>. 
+            Quý khách lưu ý: mã xác thực chỉ có thời hạn 5 phút.
+        </div>
+        <hr>
+        <br>
+        <form id="frmSendAuthenticate" method="post">
+            <div class="form-group">
+                <label for="otp">Nhập 6 chữ số được gửi qua email của bạn.</label>
+                <input type="text" class="form-control" id="otp" placeholder="" maxlength="32"
+                    name="otp">
+            </div>
+        <button class = "btn btn-primary">Xác thực tài khoản.</button>
+        <a class="btn btn-danger" href="/auth/authenticate-account">Gửi lại mã xác thực.</a>
+        </form>
+    </div>
+</div>

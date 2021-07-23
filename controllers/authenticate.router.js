@@ -6,39 +6,28 @@ const express = require('express');
 const authenticate_model = require('../models/authenticate.model');
 const auth = require('../middlewares/auth.mdw');
 const not_auth = require('../middlewares/not_auth.mdw')
+const email_helper = require('../middlewares/email_creator.mdw')
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const otp = require('otplib');
-const nodemailer = require('nodemailer');
-const randomstring = require("randomstring");
 var passport = require('passport');
-const { clearCustomQueryHandlers } = require('puppeteer');
-const { findByEmail } = require('../models/authenticate.model');
+const randomstring = require("randomstring");
 // Mailer
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  auth: {
-    user: 'llp.newspapers@gmail.com',
-    pass: 'LinhLocPhuc123'
-  }
-});
+const transporter = email_helper.create_transporter();
+
 // 6 phut
-const totp_options = {
-  window: 20,
-};
+const totp_options = { window: 20, };
 otp.totp.options = totp_options;
 
 
 
 //----------------------------------------------------------------------------------
-
 /**
  * API Get log-in In Page
  * Render page view for log-in
  */
-router.get('/log-in',not_auth, async function (req, res) {
+router.get('/log-in', not_auth, async function (req, res) {
   if (res.locals.auth === false) {
     res.render('vwAuthentications/sign_in',
       {
@@ -52,31 +41,40 @@ router.get('/log-in',not_auth, async function (req, res) {
   }
 });
 
-router.post('/log-in',not_auth,async function (req, res) {
+router.post('/log-in', not_auth, async function (req, res) {
   const username = req.body.username;
   console.log(username);
 
   const data = await authenticate_model.findByUsername(username);
+
   if (data.length === 0) {
     return res.render('vwAuthentications/sign_in', {
       err_message: 'Sai Tài Khoản!'
     })
   }
 
+  // user exist
   user = data[0];
 
-  console.log(user);
+  // Not authenticated
+  if (user.is_authenticated == false) {
+    req.session.redirect_message = 'Tài khoản của quý khách chưa được kích hoạt. Quý khách vui lòng kích hoạt theo hướng dẫn.';
+    req.session.authenticate_user_email = data[0].email;
+    return res.redirect('authenticate-account');
+  }
 
+  //console.log(user);
   const ret = bcrypt.compareSync(req.body.password, user.password);
-
-  if (ret === false) {
+  if (ret === false) 
+  {
     return res.render('vwAuthentications/sign_in', {
       err_message: 'Sai mật khẩu'
     })
   }
 
-  delete user.password;
 
+  // Success.
+  delete user.password;
   console.log(user.user_name + "Dang nhap thanh cong")
   req.session.auth = true;
   req.session.authUser = user;
@@ -94,11 +92,11 @@ router.post('/log-in',not_auth,async function (req, res) {
  * API Get Sign up Page
  * Render page view for sign-up
  */
-router.get('/sign-up',not_auth, async function (req, res) {
+router.get('/sign-up', not_auth, async function (req, res) {
   res.render('vwAuthentications/sign_up');
 });
 
-router.get('/is-username-available', not_auth,async function (req, res) {
+router.get('/is-username-available', not_auth, async function (req, res) {
   const username = req.query.username;
   const user = await authenticate_model.findByUsername(username);
   if (user.length === 0)
@@ -106,7 +104,7 @@ router.get('/is-username-available', not_auth,async function (req, res) {
   return res.json(false);
 });
 
-router.get('/is-email-available', not_auth,async function (req, res) {
+router.get('/is-email-available', not_auth, async function (req, res) {
   const email = req.query.email;
   const user = await authenticate_model.findByEmail(email);
   if (user.length === 0)
@@ -114,7 +112,7 @@ router.get('/is-email-available', not_auth,async function (req, res) {
   return res.json(false);
 });
 
-router.post('/sign-up', not_auth,async function (req, res) {
+router.post('/sign-up', not_auth, async function (req, res) {
   const hash = bcrypt.hashSync(req.body.raw_password, N_HASHING_TIMES);
   const dob = moment(req.body.raw_date_of_birth, "MM/DD,YYYY").format("YYYY-MM-DD");
   const new_user =
@@ -127,24 +125,119 @@ router.post('/sign-up', not_auth,async function (req, res) {
     email: req.body.email,
     is_writer: 0,
     is_editor: 0,
-    is_admin: 0
+    is_admin: 0,
+    is_authenticated: false
   }
   console.log(new_user);
   await authenticate_model.add_new_user(new_user);
-  req.session.redirect_message = "Chúc mừng quý khách đã đăng kí thành công. Quý khách có thể đăng nhập để sử dụng đầy đủ các chức năng của LLP Newspapers"
-  res.redirect("log-in");
+  req.session.authenticate_user_email = new_user.email;
+  res.redirect("authenticate-account");
 }
 );
 
 //----------------------------------------------------------------------------------
+/** 
+ * view for authenticate_account
+ * **/
+router.get('/authenticate-account', not_auth, async function (req, res) {
+  const user_email = req.session.authenticate_user_email;
+  if (!user_email) {
+    return res.redirect('log-in');
+  }
+
+  const data = await authenticate_model.findByEmail(user_email);
+  if (data.length === 0) {
+    delete req.session.authenticate_user_email;
+    return res.redirect('log-in');
+  }
+
+  // -- BEGIN OTP 
+  // Create token
+  const secret = randomstring.generate(128); // Secret Key
+  const token = otp.totp.generate(secret); // Token create by the Secret key
+  const expired_time = moment(Date.now() + 300000).format('YYYY-MM-DD HH:mm:ss');   // Expired_time for the password is 5 minutes.
+  const token_data =
+  {
+    user_id: data[0].user_id,
+    token: secret,
+    expired_time: expired_time
+  };
+
+  // Insert to DB.
+  await authenticate_model.insertAccountAuthenticationToken(token_data);
+
+  // Send Emails.
+  var mailOptions = email_helper.create_auth_email(user_email, token);
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+  // -- END OTP send email.
+
+  // username has request forget password.
+  res.render('vwAuthentications/authenticate_account', {
+    email: user_email, redirect_message: req.session.redirect_message
+  });
+  delete req.session.redirect_message;
+});
 
 
 
+
+router.post('/authenticate-account', not_auth, async function (req, res) {
+  const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+  const user_email = req.session.authenticate_user_email;
+  if (!user_email) {
+    return res.redirect('auth/log-in');
+  }
+  var data = await authenticate_model.findByEmail(user_email);
+  if (data.length === 0) {
+    delete req.session.authenticate_user_email;
+    return res.redirect('auth/log-in');
+  }
+
+  const user_id = data[0].user_id;
+  // check token and time
+  console.log(user_id,current_time);
+  data = await authenticate_model.findAccountAuthenticationToken(user_id, current_time);
+
+  // can not auth
+  if (data.length === 0)
+    return res.redirect('auth/log-in');
+
+  // otp from client
+  const key = req.body.otp;
+  // secret key in db
+  const secret = data[0]['token'];
+  console.log('secret ' + secret);
+  console.log('key' + key);
+  const isValid = otp.totp.check(key, secret);
+
+  // check secret key and otp
+  if (!isValid) {
+    req.session.redirect_message = 'Mã OTP bạn vừa nhập không đúng hoặc đã hết hạn sử dụng. Chúng tôi đã gửi đến bạn một mã xác thực khác. Vui lòng kiểm tra lại email';
+    return res.redirect('authenticate-account');
+  }
+
+  await authenticate_model.authenticate_by_user_id(user_id);
+  req.session.redirect_message = "Chúc mừng quý khách đã đăng kí thành công. Quý khách có thể đăng nhập để sử dụng đầy đủ các chức năng của LLP Newspapers"
+  res.redirect("log-in");
+  delete req.session.authenticate_user_email;
+});
+
+
+
+
+
+
+//----------------------------------------------------------------------------------
 /** 
  * view for quên mật khẩu
- * TODO: Chua log-in moi cho dung
  * **/
-router.get('/forget-password',not_auth, async function (req, res) {
+router.get('/forget-password', not_auth, async function (req, res) {
   res.render('vwAuthentications/forget_password',
     {
       redirect_message: req.session.redirect_message
@@ -152,7 +245,7 @@ router.get('/forget-password',not_auth, async function (req, res) {
   delete req.session.redirect_message;
 });
 
-router.post('/forget-password', async function (req, res) {
+router.post('/forget-password', not_auth, async function (req, res) {
   data = await authenticate_model.findByEmail(req.body.email);
   if (data.length === 0) {
     return res.render('vwAuthentications/forget_password',
@@ -161,12 +254,11 @@ router.post('/forget-password', async function (req, res) {
       });
   }
   else {
+
+    // Generate tokens
     const secret = randomstring.generate(128); // Secret Key
     const token = otp.totp.generate(secret); // Token create by the Secret key
-
-    // Expired_time for the password is 5 minutes.
-    const expired_time = moment(Date.now() + 300000).format('YYYY-MM-DD HH:mm:ss');
-
+    const expired_time = moment(Date.now() + 300000).format('YYYY-MM-DD HH:mm:ss'); // Expired_time for the password is 5 minutes.
     const token_data =
     {
       user_id: data[0].user_id,
@@ -174,17 +266,11 @@ router.post('/forget-password', async function (req, res) {
       expired_time: expired_time
     };
 
-    console.log(token_data);
+    // add to DB
     await authenticate_model.insertToken(token_data);
 
-    // send mail
-    var mailOptions = {
-      from: 'llp.newspapers@gmail.com',
-      to: req.body.email,
-      subject: '[LLP Newspaper] - [Đặt lại mật khẩu]',
-      html: OTP_email_creator(token)
-    };
-
+    // Send Emails
+    var mailOptions = email_helper.create_reset_password_email(req.body.email, token);
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
@@ -205,7 +291,11 @@ router.post('/forget-password', async function (req, res) {
 
 
 
-router.get('/reset-password', not_auth,async function (req, res) {
+//----------------------------------------------------------------------------------
+/** 
+ * view for reset password
+ * **/
+router.get('/reset-password', not_auth, async function (req, res) {
   const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   const user_id = req.session.forgetPasswordUserID || -1;
   // check token and time
@@ -220,9 +310,8 @@ router.get('/reset-password', not_auth,async function (req, res) {
 });
 
 
-
 // Reset by Tokens
-router.post('/reset-password/',not_auth, async function (req, res) {
+router.post('/reset-password/', not_auth, async function (req, res) {
 
   const current_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   const user_id = req.session.forgetPasswordUserID || -1;
@@ -288,8 +377,7 @@ router.post('/reset-password/',not_auth, async function (req, res) {
 router.post('/change-password', auth, async function (req, res) {
   const is_log_in_by_third_party = req.session.authUser.facebook_id || req.session.authUser.google_id;
 
-  if (is_log_in_by_third_party)
-  {
+  if (is_log_in_by_third_party) {
     res.redirect("../profile");
     return;
   }
@@ -386,10 +474,10 @@ router.post('/log-out', auth, async function (req, res) {
 /**
  * Sign in with google handler
  */
-router.get('/google',not_auth,
+router.get('/google', not_auth,
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback',not_auth,
+router.get('/google/callback', not_auth,
   passport.authenticate('google',
     {
       failureRedirect: '/log-in'
@@ -403,7 +491,11 @@ router.get('/google/callback',not_auth,
       console.log("create new google users")
       const new_user =
       {
-        name: req.user.displayName
+        name: req.user.displayName,
+        is_admin: 0,
+        is_editor: 0,
+        is_writer: 0,
+        is_authenticated: 1,
       }
       await authenticate_model.add_new_user(new_user); // add new users to db
       await authenticate_model.insertGoogleUser(google_id);
@@ -429,14 +521,13 @@ router.get('/google/callback',not_auth,
 /**
  * Sign in with facebook handler
  */
-router.get("/facebook", not_auth,passport.authenticate("facebook"));
-router.get("/facebook/callback",not_auth,
+router.get("/facebook", not_auth, passport.authenticate("facebook"));
+router.get("/facebook/callback", not_auth,
   passport.authenticate("facebook",
     {
       failureRedirect: "/log-in"
     }),
-  async function (req, res) 
-  {
+  async function (req, res) {
     const facebook_id = req.user.id;
     console.log(facebook_id);
     var data = await authenticate_model.findByFacebookID(facebook_id);
@@ -446,7 +537,11 @@ router.get("/facebook/callback",not_auth,
       console.log("create new facebook users")
       const new_user =
       {
-        name: req.user.displayName
+        name: req.user.displayName,
+        is_admin: 0,
+        is_editor: 0,
+        is_writer: 0,
+        is_authenticated: 1
       }
       await authenticate_model.add_new_user(new_user); // add new users to db
       await authenticate_model.insertFacebookUser(facebook_id);
@@ -469,25 +564,5 @@ module.exports = router
 
 
 //------------------------------------------
-// utilities
-function OTP_email_creator(otp) {
-  return `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
-  <div style="margin:50px auto;width:70%;padding:20px 0">
-    <div style="border-bottom:1px solid #eee">
-      <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">LLP News</a>
-    </div>
-    <p style="font-size:1.1em">Kính chào quý khách,</p>
-    <p>Cảm ơn quý khách đã sử dụng dịch vụ của LLP News. Quý khách vui lòng sử dụng mã OTP bên dưới để hoàn tất quá trình đặt lại mật khẩu. Quý khách lưu ý : mã OTP chỉ có giá trị sử dụng trong vòng <b>5 phút</b>.</p>
-    <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">`
-    + otp + `</h2>
-    <p style="font-size:0.9em;">Trân trọng cảm ơn,<br />LLP News</p>
-    <hr style="border:none;border-top:1px solid #eee" />
-    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-      <p>LLP News</p>
-      <p>18CNTN - Khoa Công Nghệ Thông Tin</p>
-      <p>Đại học Khoa học Tự nhiên - ĐHQG TPHCM</p>
-    </div>
-  </div>
-</div>`
-}
+
 
