@@ -50,5 +50,17 @@ module.exports={
         where c1.category_id = ?`;
         name_cat = db.raw(sql, cat_id);
         return name_cat;
+    },
+
+    find_by_cat_id(cat_id) {
+        return db('categories').where('category_id', cat_id);
+    },
+
+    patch(cat_id, cat_name) {
+        return db('categories').where('category_id', cat_id).update({category_name: cat_name});
+    },
+
+    delete(cat_id) {
+        return db('categories').where('category_id', cat_id).del();
     }
 }
