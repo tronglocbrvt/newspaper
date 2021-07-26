@@ -35,7 +35,7 @@ router.get('/getsubcats', async function(req, res){
  * API get Articles by Parent categoryID
  * Input URL: category_id: category id (only parent category)
  * Render page view contains list articles of parent category 
- */
+*/
 router.get('/:category_id', async function(req, res) {
     // get category_id from param url, default 0
     const cat_id = req.params.category_id || 0;

@@ -9,7 +9,7 @@ module.exports={
      */
     get_articles_from_search(keyword, type_search, offset, premium, time){
         //const params = { kw: keyword, type: type_search };
-        const sql = `select distinct a.*, p.published_article_id, p.time_published, c.parent_category_id, c.category_name
+        const sql = `select distinct a.*, p.published_article_id, p.time_published, c.parent_category_id, c.category_name, p.views_numbers
         from articles as a, published_articles as p, categories as c
         where p.article_id = a.article_id
             and c.category_id = a.category_id

@@ -58,5 +58,33 @@ module.exports={
         from categories c
         where c.category_id = ?`
         return db.raw(sql, cat_id);
+    },
+    
+    find_by_cat_id(cat_id) {
+        return db('categories').where('category_id', cat_id);
+    },
+
+    patch(cat_id, cat_name) {
+        return db('categories').where('category_id', cat_id).update({category_name: cat_name});
+    },
+
+    delete(cat_id) {
+        return db('categories').where('category_id', cat_id).del();
+    },
+
+    count_main_cat(){
+        const sql = `select count(*) as total
+        from categories
+        where parent_category_id is null`;
+        return db.raw(sql);
+    },
+
+    list_main_cat(offset){
+        const sql = `select *
+        from categories
+        where parent_category_id is null
+        limit 10 offset ?`;
+        main_cats = db.raw(sql, offset);
+        return main_cats;
     }
 }

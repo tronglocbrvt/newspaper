@@ -14,4 +14,15 @@ module.exports = function (app) {
     app.use('/profile', require('../controllers/profile.router'));
     app.use('/admin/users',require('../controllers/admin.user.router'));
     app.use('/editors', require('../controllers/editor.router'));
+    app.use('/admin/categories', require('../controllers/admin.categories.router'));
+    app.use('/admin/tags', require('../controllers/admin.tags.router'));
+    app.use(function(req, res) {
+        res.status(404);
+        // respond with html page
+        if (req.accepts('html')) {
+            res.status(404);
+            res.render('vwError/viewNotFound');
+            return;
+        }
+      });
 }

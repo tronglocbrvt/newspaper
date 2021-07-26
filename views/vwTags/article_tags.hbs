@@ -45,6 +45,7 @@
                       <a class="fw-bold" href="/categories/{{parent_category_id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>                 
                     <time datetime={{time_published}}>{{date_format time_published}}</time>
+                    <i class="fa fa-eye ml-3" aria-hidden="true"> {{views_numbers}}</i>
                     {{#if is_premium}}
                       <button type="button" class="btn-sm btn-primary ml-4"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</button>
                     {{/if}}
