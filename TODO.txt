@@ -6,20 +6,20 @@
 6. Quan tri vien.
 7. Sai duong dan -> Loi 500
 8. Footer
+9. sửa ngày
 
-DEADLINES Chu Nhat:
-- Loc: 5. Front-End views + Download: Toi mai *
+DEADLINES T5:
 
-- Loc: Chu Nhat: 
+- Loc: 
    /admin/categories
    Quản lý chuyên mục category
    Quản lý nhãn tag
    /admin/tags
+   Testing
 
-- Linh: Chua co trang editor - Tinh nang 4.
+- Linh: Chua co trang editor - trang chủ (frontend - backend)
 
 - Phuc:
-    + Xac thuc dang ky?
     Quản lý danh sách người dùng (phóng viên, biên tập viên, độc giả, …)
 
     /admin/writers
@@ -27,5 +27,7 @@ DEADLINES Chu Nhat:
 
     /admin/editors
 
-    Gia hạn tài khoản độc giả
+    Gia hạn tài khoản độc giả - 7 ngày
     /admin/users
+
+    sửa ngày
