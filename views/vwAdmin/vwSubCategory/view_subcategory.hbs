@@ -1,0 +1,92 @@
+<!--Content start-->
+<main id="content">
+    <!--Container-->
+    <div class="container c-mobile">
+        <div class="row">
+            <!--Start include wrapper-->
+            <div class="include-wrapper pb-5 col-12">
+                <div class="row mt-4 py-3">
+                    <!--content-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <h3>QUẢN LÝ CHUYÊN MỤC CON</h3>
+                                <span class="float-right" style="margin-right: 120px;"><a
+                                        class="btn btn-outline-primary" href="/admin/categories/add"><i
+                                            class="fa fa-plus"></i> Thêm chuyên mục con</a></span>
+                            </div>
+                        </div>
+
+                        <!--table start-->
+                        <center>
+                            <table class="table table-striped" style="width:80%">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0 text-center">ID</th>
+                                        <th class="border-bottom-0 text-center">Tên chuyên mục</th>
+                                        <th class="border-bottom-0 text-center">Xem danh sách bài báo</th>
+                                        <th class="border-bottom-0 text-center">Chỉnh sửa chuyên mục</th>
+                                        <th class="border-bottom-0 text-center">Chuyên mục con</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each categories}}
+                                    <tr>
+                                        <td class="text-center">{{category_id}}</td>
+                                        <td class="text-center">{{category_name}}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                href="/categories/{{category_id}}"><i class="fa fa-eye"></i> Xem</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                href="/admin/categories/{{category_id}}"><i class="fa fa-pencil"
+                                                    aria-hidden="true"></i> Chỉnh sửa</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                href="/admin/categories/{{category_id}}/subs"><i class="fa fa-eye"></i>
+                                                Xem</a>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </center>
+                        <!--end table-->
+                        <!--Pagination-->
+                        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
+                            <ul class="pagination">
+                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
+                                </li>
+                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang
+                                        trước</a>
+                                </li>
+                                {{#each this.page_numbers}}
+                                {{#if isCurrent}}
+                                <li class="page-item {{#if isCurrent}}active{{/if}}">
+                                    <a class="page-link" href="javascript:;">{{value}}</a>
+                                </li>
+                                {{else}}
+                                <li class="page-item {{#if hide}}hide{{/if}}">
+                                    <a class="page-link" href="?page={{value}}">{{value}}</a>
+                                </li>
+                                {{/if}}
+                                {{/each}}
+                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang
+                                        tiếp</a>
+                                </li>
+                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,21 @@
+<div class="card">
+  <h4 class="card-header">
+    Thêm mới chuyên mục chính
+  </h4>
+  <div class="card-body">
+    <form method="POST">
+      <div class="form-group">
+        <label for="txtCatName">Tên chuyên mục mới</label>
+        <input type="text" class="form-control" id="txtCatName" name="category_name" autofocus>
+      </div>
+      <a class="btn btn-primary" href="/admin/categories/" role="button">
+        <i class="fa fa-backward" aria-hidden="true"></i>
+        Trở về
+      </a>
+      <button type="submit" class="btn btn-success ml-4" formaction="/admin/categories">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Lưu
+      </button>
+    </form>
+  </div>
+</div>

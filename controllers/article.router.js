@@ -61,6 +61,7 @@ router.get('/:id', async function (req, res) {
         let obj_tags = JSON.stringify(tags);
         obj_article = obj_article.substring(0, obj_article.length - 1)
         let data = obj_article + ", \"tags\":" + obj_tags + "}";
+        premium = (req.session.auth === true && getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
 
         var view_inputs =
         {
@@ -68,7 +69,7 @@ router.get('/:id', async function (req, res) {
             tags: tags,
             similar_articles: similar_articles,
             comments: comments,
-            premium: req.session.auth,
+            premium: premium,
             data: data
         }
         
@@ -120,6 +121,7 @@ router.post('/:id/download', async function (req, res) {
         return;
     }
     let data_download = req.body.download;
+    console.log(data_download);
     data = JSON.parse(data_download);
     getTemplateHtml().then(async (res) => {
         console.log("Compile the template with handlebars")
