@@ -41,12 +41,12 @@ $(document).ready(function () {
                 .appendTo("#form1");
 
             $('#title').focus();
-        });
-    });
 
-    $('#btn-add-tag').click(function () {
-        var input_tag = $('#tags').val();
-        add_tag(input_tag)
+            $('#btn-add-tag').click(function () {
+                var input_tag = $('#tags').val();
+                add_tag(input_tag);
+            });
+        });
     });
 
     $("#btn_edit_avatar").click(function () {
@@ -70,7 +70,6 @@ $(document).ready(function () {
         $('#sub_category').append(empty_element);
     }
 
-
     function add_tag(input_tag) {
         $('#alert-area').empty();
         if (tags.includes(input_tag)) {
@@ -88,6 +87,7 @@ $(document).ready(function () {
                         .append(delete_icon);
                     element.append(tag_btn).append(delete_btn);
                     $('#tag-area').append(element);
+                    tag_list.push(input_tag);
                 }
             }
         }
@@ -106,14 +106,28 @@ $(document).ready(function () {
         });
     }
 
-    $('#submit').click(function () {
+    $('#save_draft').click(function (e) {
         const tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", tags)
             .appendTo("#form1");
-            
+
         $("#form1").submit();
-        $("#form2").submit();
+    });
+
+    $('#submit').click(function (e) {
+        const tags = tag_list.toString();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "tags")
+            .attr("value", tags)
+            .appendTo("#form1");
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "is_submit")
+            .attr("value", "1")
+            .appendTo("#form1");
+
+        $("#form1").submit();
     });
 });

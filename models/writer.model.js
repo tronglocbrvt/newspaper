@@ -4,10 +4,17 @@ module.exports = {
     get_articles_by_id(id, offset){
         const sql = `select article_id, article_title, writer_id,
         CASE
-            WHEN article_id in (select pa.article_id
-                             from published_articles pa)
+            WHEN is_published and article_id in (select pa.article_id
+                                                from published_articles pa
+                                                where pa.time_published < now())
                 THEN 'Đã xuất bản'
-            ELSE 'Chờ xét duyệt'
+            WHEN is_rejected
+                THEN 'Từ chối'
+            WHEN is_submitted
+                THEN 'Chờ xét duyệt'
+            WHEN is_draft
+                THEN 'Bản nháp'
+            ELSE 'Chờ xuất bản'
          END AS status,
         CASE
             WHEN article_id in (select pa.article_id
@@ -18,8 +25,7 @@ module.exports = {
             ELSE 0
          END AS published_article_id
         from articles
-        where writer_id = ${id}
-        limit 10 offset ${offset}`;
+        where writer_id = ${id}`;
 
         return db.raw(sql);
     },
@@ -47,7 +53,16 @@ module.exports = {
             .update(article);
     },
 
-    patch_article_content(article_id, content){
+    async patch_article_content(article_id, content){
+        if(article_id < 0){
+            const sql = `select article_id
+            from articles
+            order by article_id desc
+            limit 1`;
+            var latest_article = await db.raw(sql);
+            article_id = latest_article[0][0].article_id;
+        }
+
         return db('articles')
             .where('article_id', article_id)
             .update({article_content: content})

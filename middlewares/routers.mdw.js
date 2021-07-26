@@ -13,4 +13,5 @@ module.exports = function (app) {
     app.use('/search', require('../controllers/search.router'));
     app.use('/profile', require('../controllers/profile.router'));
     app.use('/admin/users',require('../controllers/admin.user.router'));
+    app.use('/editors', require('../controllers/editor.router'));
 }

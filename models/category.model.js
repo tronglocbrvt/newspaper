@@ -50,5 +50,13 @@ module.exports={
         where c1.category_id = ?`;
         name_cat = db.raw(sql, cat_id);
         return name_cat;
+    },
+
+    //get name by cat id
+    get_name_by_id(cat_id){
+        const sql = `select c.category_name as category_name
+        from categories c
+        where c.category_id = ?`
+        return db.raw(sql, cat_id);
     }
 }

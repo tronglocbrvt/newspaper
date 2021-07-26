@@ -1,5 +1,8 @@
 $(document).ready(function () {
     var tag_list = [];
+    const url = window.location.href;
+    const id = url.substr(url.lastIndexOf('/') - 1, 1);
+
     $.ajax({
         url: '/categories/getsubcats'
     }).done(function (data) {
@@ -53,17 +56,33 @@ $(document).ready(function () {
         })
     });
 
+    $('#save_draft').click(function (e) {
+        const tags = tag_list.toString();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "tags")
+            .attr("value", tags)
+            .appendTo("#form1");
+
+        $("#form1").submit();
+    });
+
     $('#submit').click(function (e) {
         const tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", tags)
-            .appendTo("#form");
-        return true;
+            .appendTo("#form1");
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "is_submit")
+            .attr("value", "1")
+            .appendTo("#form1");
+
+        $("#form1").submit();
     });
 });
 
-function set_sub_cats(id, data){
+function set_sub_cats(id, data) {
     $('#sub_category').empty();
     sub_cats = data.filter(cat => cat.parent_category_id === +id);
     for (let i = 0; i < sub_cats.length; i++) {

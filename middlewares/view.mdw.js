@@ -45,7 +45,7 @@ hbs.handlebars.registerHelper('date_time_format', function (str) {
 });
 
 hbs.handlebars.registerHelper('is_editable', function (str) {
-  if (str === "Đã xuất bản" || str === "Chờ xuất bản")
+  if (str === "Đã xuất bản" || str === "Chờ xuất bản" || str === "Chờ xét duyệt")
     return false
   return true
 })
@@ -70,6 +70,11 @@ hbs.handlebars.registerHelper('gen_gender', function (value) {
     return "Nam";
   return "Khác"
 });
+hbs.handlebars.registerHelper('is_submitted', function(str){
+  if(str === "Chờ xét duyệt")
+    return true;
+  return false;
+})
 
 module.exports = function (app) {
   app.engine('hbs', exphbs({
