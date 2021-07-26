@@ -1,0 +1,89 @@
+<!--Content start-->
+<main id="content">
+    <!--Container-->
+    <div class="container c-mobile">
+        <div class="row">
+            <!--Start include wrapper-->
+            <div class="include-wrapper pb-5 col-12">
+                <div class="row mt-4 py-3">
+                    <!--content-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <h2><b>QUẢN LÝ NGƯỜI DÙNG</b></h2>
+                                <span class="float-right"><a class="btn btn-outline-primary" href="/admin/users/add"><i
+                                            class="fa fa-plus"></i> Thêm người dùng
+                                        mới</a></span>
+                            </div>
+                        </div>
+                        <!--table start-->
+
+                        <center>
+                            <table class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0 text-center">ID</th>
+                                        <th class="border-bottom-0 text-center">Username</th>
+                                        <th class="border-bottom-0 text-center">Email</th>
+                                        <th class="border-bottom-0 text-center">Họ và Tên</th>
+                                        <th class="border-bottom-0 text-center">Giới tính</th>
+                                        <th class="border-bottom-0 text-center">Độc giả Premium</th>
+                                        <th class="border-bottom-0 text-center">Phóng viên</th>
+                                        <th class="border-bottom-0 text-center">Biên tập viên</th>
+                                        <th class="border-bottom-0 text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each users}}
+                                    <tr>
+                                        <td class="text-center">{{user_id}}</td>
+                                        <td class="text-center">{{user_name}}</td>
+                                        <td class="text-center">{{email}}</td>
+                                        <td class="text-center">{{name}}</td>
+                                        <td class="text-center">
+                                            {{gen_gender gender}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{#if is_premium}}
+                                            <input class="form-check-input" type="checkbox" checked disabled
+                                                style="margin:auto">
+                                            {{else}}
+                                            <input class="form-check-input" type="checkbox" disabled
+                                                style="margin:auto">
+                                            {{/if}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{#if is_writer}}
+                                            <input class="form-check-input" type="checkbox" checked disabled
+                                                style="margin:auto">
+                                            {{else}}
+                                            <input class="form-check-input" type="checkbox" disabled
+                                                style="margin:auto">
+                                            {{/if}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{#if is_editor}}
+                                            <input class="form-check-input" type="checkbox" checked disabled
+                                                style="margin:auto">
+                                            {{else}}
+                                            <input class="form-check-input" type="checkbox" disabled
+                                                style="margin:auto">
+                                            {{/if}}
+                                        </td>
+
+                                        <td class="text-center">
+                                            <a class="btn btn-outline-success" href="/admin/users/edit/{{user_id}}"><i
+                                                    class="fa fa-info-circle fa-lg"></i></a>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </center>
+                        <!--end table-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

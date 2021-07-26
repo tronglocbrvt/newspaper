@@ -8,7 +8,8 @@
 8. Footer
 
 DEADLINES Chu Nhat:
-- Loc: 5. Front-End views + Download: Toi mai
+- Loc: 5. Front-End views + Download: Toi mai *
+
 - Loc: Chu Nhat: 
    /admin/categories
    Quản lý chuyên mục category

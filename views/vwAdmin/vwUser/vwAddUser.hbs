@@ -1,0 +1,173 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/static/js/datetimepicker/jquery.datetimepicker.css" />
+{{/section}}
+
+
+<div class="card m-5 ">
+    <h2 class="card-header">
+        Thêm người dùng
+    </h2>
+
+    <div class="card-body">
+        <form method="POST">
+            <div class="m-5" id="myTabContent">
+                <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Username</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="txtUserName" name="user_name">
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Email</label>
+                        </div>
+
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="txtEmail" name="email">
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Họ và Tên</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="txtName" name="name">
+                        </div>
+                    </div>
+
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Ngày sinh</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="txtDOB" name="dob">
+                        </div>
+                    </div>
+
+                    <hr />
+
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Giới tính</label>
+                        </div>
+
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="txtGender" name="gender">
+                        </div>
+                    </div>
+
+                    <hr />
+
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Phân quyền premium</label>
+                        </div>
+                        <div class="col-8">
+                            <input id="checked_premium" name="checked_premium" class="form-check-input" type="checkbox"
+                                 style="margin:auto">
+                        </div>
+                    </div>
+
+                    {{!-- Collapsed When not check--}}
+                
+                    <div class="row collapse" id="change-time-premium">
+                        <div class="col-3">
+                            <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" id="txtTimePremium" name="time_premium"
+                                placeholder="{{date_time_format time_premium}}"
+                                value="{{date_time_format time_premium}}">
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Phân quyền phóng viên</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-check-input" type="checkbox" style="margin:auto">
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-3">
+                            <label style="font-weight:bold;">Phân quyền biên tập viên</label>
+                        </div>
+
+                        <div class="col-8">
+                            <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox"
+                                style="margin:auto">
+                        </div>
+                    </div>
+                </div>
+                {{!-- EDITOR Collapsed When not check--}}
+                <div class="row collapse" id="change-assigned-categoríes">
+                    <div class="col-3">
+                        <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
+                    </div>
+                    <div class="col-8">
+                        Chưa biết làm á Bà Con - Chép bà Linh nè.
+                    </div>
+                </div>
+
+
+                <hr />
+
+                <a class="btn btn-primary" href="/admin/users/" role="button">
+                    <i class="fa fa-backward" aria-hidden="true"></i>
+                    Trở về
+                </a>
+
+                <button type="submit" class="btn btn-success ml-5" formaction="/admin/users/add/">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Lưu
+                </button>
+
+        </form>
+    </div>
+</div>
+
+{{#section 'js'}}
+<script src="/static/js/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<script>
+
+    $("#checked_premium").change(function () {
+        $('#change-time-premium').collapse('toggle');
+    });
+
+    $("#check_editor").change(function () {
+        $('#change-assigned-categoríes').collapse('toggle');
+    });
+
+    $.datetimepicker.setDateFormatter('moment');
+    $('#txtTimePremium').datetimepicker(
+        {
+            format: 'DD/MM/YYYY HH:mm a'
+        }
+    );
+</script>
+{{/section}}
