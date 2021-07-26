@@ -42,5 +42,18 @@ module.exports = {
 
     delete(tag_id) {
         return db('tags').where('tag_id', tag_id).del();
-    }
+    },
+
+    count_tag() {
+        const sql = `select count(*) as total
+        from tags`;
+        return db.raw(sql);
+    },
+
+    get_list_tags(offset) {
+        const sql = `select t.tag_name as tag_name, t.tag_id as tag_id
+        from tags t
+        limit 10 offset ?`;
+        return db.raw(sql, offset);
+    },
 }

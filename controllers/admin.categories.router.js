@@ -14,9 +14,50 @@ router.post('/', async function(req, res) {
 });
 
 router.get('/', async function(req, res) {
-    const list = await categoryModel.get_main_cats()
+    const limit = 10; // number of rows on 1 page
+
+    // get current page, default 1
+    const page = req.query.page || 1;
+    if (page < 1) page = 1;
+
+    // count articles by cat_id
+    const total = await categoryModel.count_main_cat();
+    let n_pages = Math.ceil(total[0][0].total / limit); // get total page
+
+    // set status of current page is TRUE
+    const page_numbers = [];
+    for (i = 1; i <= n_pages; i++) {
+    page_numbers.push({
+      value: i,
+      isCurrent: i === +page,
+      hide: true
+    });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5; 
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
+    }
+
+    // set offset that pass to query in database
+    const offset = (page - 1) * limit;
+
+    const list = await categoryModel.list_main_cat(offset);
+
     res.render('vwAdmin/vwCategory/view_category', {
-        categories: list[0]
+        categories: list[0],
+        page_numbers,
+        n_pages,
+        page_first: parseInt(page) === 1, // check first page 
+        page_last: parseInt(page) === parseInt(n_pages), // check last page
+        next_page: parseInt(page) + 1 ,
+        previous_page: parseInt(page) - 1,
     });
 });
 
