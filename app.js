@@ -1,11 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
+const fileUpload = require('express-fileupload')
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(fileUpload())
 
 app.use('/static', express.static('static'));
 

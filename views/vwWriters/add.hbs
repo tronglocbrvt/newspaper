@@ -1,4 +1,10 @@
-<form method="post" enctype="multipart/form-data" id="form">
+<form method="post" enctype="multipart/form-data" id="form1">
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium">
+        <label class="form-check-label" for="is_premium">
+            PREMIUM
+        </label>
+    </div>
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
         <input type="text" class="form-control" name="article_title" id="title" maxlength="75" required>
@@ -14,10 +20,6 @@
     <div class="form-group">
         <label for="avatar_caption">MÔ TẢ ẢNH BÌA</label>
         <input type="text" class="form-control" name="avatar_caption" id="avatar_caption" required>
-    </div>
-    <div class="form-group">
-        <label for="content">NỘI DUNG</label>
-        <textarea id="content" name="article_content" required></textarea>
     </div>
     <div class="row">
         <div class="form-group col-md-5">
@@ -54,25 +56,26 @@
         <div class="col-md-5" id="alert-area" style="color: red;"></div>
     </div>
     <div class="mb-2" id="tag-area"></div>
-    <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium">
-        <label class="form-check-label" for="is_premium">
-            PREMIUM
-        </label>
+    <div class="form-group">
+        <label for="content">NỘI DUNG</label>
+        <textarea id="content" name="article_content" required></textarea>
     </div>
-    <button type="submit" class="btn btn-success" id="submit">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Hoàn tất
-    </button>
 </form>
-
-<div id="display"></div>
-
+<div class="text-center mb-3">
+    <button class="btn btn-dark" id="save_draft">
+        <i class="fa fa-file-text" aria-hidden="true"></i>
+        Lưu bản nháp
+    </button>
+    <button class="btn btn-success" id="submit">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Hoàn tất và gửi
+    </button>
+</div>
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/writer.add.js"></script>
+<script src="/static/js/writer/writer.add.js"></script>
 <script>
     $(document).ready(function () {
         $('#content').summernote({

@@ -1,0 +1,58 @@
+<!--Content start-->
+<main id="content">
+    <!--Container-->
+    <div class="container c-mobile">
+        <div class="row">
+            <!--Start include wrapper-->
+            <div class="include-wrapper pb-5 col-12">
+                <div class="row mt-4 py-3">
+                    <!--content-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <h3>QUẢN LÝ BÀI BÁO</h3>
+                                <span class="float-right" style="mr-auto"><a class="btn btn-outline-primary"
+                                        href="/writers/1/add"><i class="fa fa-plus"></i> Viết bài mới</a></span>
+                            </div>
+                        </div>
+
+                        <!--table start-->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="border-bottom-0" scope="col">STT</th>
+                                    <th class="border-bottom-0" scope="col">Tiêu đề</th>
+                                    <th class="border-bottom-0" scope="col">Tình trạng</th>
+                                    {{!-- <th class="d-none d-sm-block border-bottom-0" scope="col">date</th> --}}
+                                    <th class="border-bottom-0 text-center" scope="col">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each articles}}
+                                <tr>
+                                    <th scope="row">{{@index}}</th>
+                                    <td style="font-weight: 600;">{{article_title}}</td>
+                                    <td><span class="text-{{get_status_color status}}">{{status}}</span></td>
+                                    {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
+                                    <td class="text-center">{{#if (is_editable status)}}
+                                        <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
+                                            href="/writers/{{writer_id}}/articles/{{article_id}}" title="Chỉnh sửa"><i class="fa fa-pencil"></i> Chỉnh
+                                            sửa</a>
+                                        {{else}} 
+                                        {{#if (is_submitted status)}}
+                                        <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
+                                            href="/writers/{{writer_id}}/submitted/{{article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> 
+                                        {{else}}<a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
+                                            href="/articles/{{published_article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> {{/if}} {{/if}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <!--end table-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -20,7 +20,7 @@ hbs.handlebars.registerHelper('date_format', function (str) {
 })
 
 hbs.handlebars.registerHelper('is_editable', function (str) {
-  if (str === "Đã xuất bản" || str === "Chờ xuất bản")
+  if (str === "Đã xuất bản" || str === "Chờ xuất bản" || str === "Chờ xét duyệt")
     return false
   return true
 })
@@ -36,6 +36,12 @@ hbs.handlebars.registerHelper('get_status_color', function (str) {
     return "success";
   if(str === "Bản nháp")
     return "dark";
+})
+
+hbs.handlebars.registerHelper('is_submitted', function(str){
+  if(str === "Chờ xét duyệt")
+    return true;
+  return false;
 })
 
 module.exports = function (app) {
