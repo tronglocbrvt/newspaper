@@ -1,0 +1,30 @@
+<div class="card">
+  <h4 class="card-header">
+    Chỉnh sửa tag
+  </h4>
+  <div class="card-body">
+    <form method="POST">
+      <div class="form-group">
+        <label for="txtTagID">ID</label>
+        <input type="text" readonly class="form-control" id="txtTagID" name="tag_id" value="{{tag_id}}">
+      </div>
+      <div class="form-group">
+        <label for="txtCatName">Tên tag</label>
+        <input type="text" class="form-control" id="txtTagName" name="tag_name" autofocus
+          value="{{tag_name}}">
+      </div>
+      <a class="btn btn-primary" href="/admin/tags/" role="button">
+        <i class="fa fa-backward" aria-hidden="true"></i>
+        Trở về
+      </a>
+      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/tags/{{tag_id}}/del">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        Xóa
+      </button>
+      <button type="submit" class="btn btn-success ml-5" formaction="/admin/tags/{{tag_id}}/patch">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Lưu
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="card">
+  <h4 class="card-header">
+    Thêm mới tag
+  </h4>
+  <div class="card-body">
+    <form method="POST">
+      <div class="form-group">
+        <label for="txtTagName">Tên tag mới</label>
+        <input type="text" class="form-control" id="txtTagName" name="tag_name" autofocus>
+      </div>
+      <a class="btn btn-primary" href="/admin/tags/" role="button">
+        <i class="fa fa-backward" aria-hidden="true"></i>
+        Trở về
+      </a>
+      <button type="submit" class="btn btn-success ml-4" formaction="/admin/tags">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Lưu
+      </button>
+    </form>
+  </div>
+</div>

@@ -10,9 +10,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h3>QUẢN LÝ CHUYÊN MỤC CHÍNH</h3>
+                                <h3>QUẢN LÝ TAGS</h3>
                                 <span class="float-right" style="margin-right: 120px;"><a class="btn btn-outline-primary"
-                                        href="/admin/categories/add"><i class="fa fa-plus"></i> Thêm chuyên mục chính</a></span>
+                                        href="/admin/tags/add"><i class="fa fa-plus"></i> Thêm tag mới</a></span>
                             </div>
                         </div>
 
@@ -22,30 +22,24 @@
                             <thead>
                                 <tr>
                                     <th class="border-bottom-0 text-center">ID</th>
-                                    <th class="border-bottom-0 text-center">Tên chuyên mục</th>
+                                    <th class="border-bottom-0 text-center">Tên Tag</th>
                                     <th class="border-bottom-0 text-center">Xem danh sách bài báo</th>
-                                    <th class="border-bottom-0 text-center">Chỉnh sửa chuyên mục</th>
-                                    <th class="border-bottom-0 text-center">Chuyên mục con</th>
+                                    <th class="border-bottom-0 text-center">Chỉnh sửa tag</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each categories}}
+                                {{#each tags}}
                                 <tr>
-                                    <td class="text-center">{{category_id}}</td>
-                                    <td class="text-center">{{category_name}}</td>
+                                    <td class="text-center">{{tag_id}}</td>
+                                    <td class="text-center">{{tag_name}}</td>
                                     <td class="text-center">
                                         <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
-                                            href="/categories/{{category_id}}"><i
+                                            href="/tags/{{tag_id}}"><i
                                                 class="fa fa-eye"></i> Xem</a> 
                                     </td>
                                     <td class="text-center">
                                         <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0 px-3"
-                                            href="/admin/categories/{{category_id}}"><i class="fa fa-pencil" aria-hidden="true"></i> Chỉnh sửa</a> 
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
-                                            href="/admin/categories/{{category_id}}/subs"><i
-                                                class="fa fa-eye"></i> Xem</a> 
+                                            href="/admin/tags/{{tag_id}}"><i class="fa fa-pencil" aria-hidden="true"></i> Chỉnh sửa</a> 
                                     </td>
                                 </tr>
                                 {{/each}}

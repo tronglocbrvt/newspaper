@@ -1,12 +1,12 @@
 <div class="card">
   <h4 class="card-header">
-    Chuyên mục cha
+    Chỉnh sửa chuyên mục chính
   </h4>
   <div class="card-body">
     <form method="POST">
       <div class="form-group">
-        <label for="txtCatID">ID</label>
-        <input type="text" readonly class="form-control" id="txtCatID" name="cat_id" value="{{category.category_id}}">
+        <label for="txtTagID">ID</label>
+        <input type="text" readonly class="form-control" id="txtTagID" name="tag_id" value="{{tags.tag_id}}">
       </div>
       <div class="form-group">
         <label for="txtCatName">Tên chuyên mục</label>
@@ -17,11 +17,11 @@
         <i class="fa fa-backward" aria-hidden="true"></i>
         Trở về
       </a>
-      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/categories/patch">
+      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/categories/{{category.category_id}}/del">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         Xóa
       </button>
-      <button type="submit" class="btn btn-success ml-5" formaction="/admin/categories/del">
+      <button type="submit" class="btn btn-success ml-5" formaction="/admin/categories/{{category.category_id}}/patch">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>

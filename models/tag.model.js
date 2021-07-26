@@ -2,7 +2,7 @@ const db = require('../utils/db')
 
 module.exports = {
     get_tags() {
-        const sql = `select t.tag_name as tag_name
+        const sql = `select t.tag_name as tag_name, t.tag_id as tag_id
         from tags t`;
         return db.raw(sql);
     },
@@ -30,5 +30,17 @@ module.exports = {
     async get_name_tag_by_tag_id(id) {
         const name = await db('tags').where({"tag_id": id}).select('tag_name');
         return name[0];
+    },
+
+    add(tag) {
+        return db('tags').insert(tag);
+    },
+
+    patch(tag_id, tag_name) {
+        return db('tags').where('tag_id', tag_id).update({tag_name: tag_name});
+    },
+
+    delete(tag_id) {
+        return db('tags').where('tag_id', tag_id).del();
     }
 }
