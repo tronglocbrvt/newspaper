@@ -10,6 +10,11 @@
   </h2>
 
   <div class="card-body">
+    {{#if err_message}}
+    <div id="error_message" class="alert alert-danger">
+      {{err_message}}
+    </div>
+    {{/if}}
     <form method="POST">
       <div class="m-5" id="myTabContent">
         <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
@@ -22,7 +27,7 @@
             </div>
 
             <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtUserID" name="user_id" value="{{user_id}}">
+              <label style="font-weight:bold;">{{user_id}}</label>
             </div>
 
           </div>
@@ -31,10 +36,14 @@
 
           <div class="row">
             <div class="col-3">
-              <label style="font-weight:bold;">Username</label>
+              <label style="font-weight:bold;">Tài khoản</label>
             </div>
             <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtUserName" name="user_name" value="{{user_name}}">
+              {{#if user_name}}
+              <label style="font-weight:bold;">{{user_name}}</label>
+              {{else}}
+              <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+              {{/if}}
             </div>
           </div>
 
@@ -46,32 +55,58 @@
             </div>
 
             <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtEmail" name="email" value="{{email}}">
+              {{#if email}}
+              <label style="font-weight:bold;">{{email}}</label>
+              {{else}}
+              <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+              {{/if}}
+            </div>
+          </div>
+
+          <hr />
+          <div class="row">
+            <div class="col-3">
+              <label style="font-weight:bold;">Xác thực</label>
             </div>
 
+            <div class="col-8">
+              {{#if is_authenticated}}
+              <label style="font-weight:bold;">Đã xác thực</label>
+              {{else}}
+              <label style="font-weight:bold;">Chưa xác thực</label>
+              {{/if}}
+            </div>
           </div>
+
+          <hr />
+
+
+          <div class="row">
+            <div class="col-3">
+              <label for="name" style="font-weight:bold;">Họ và tên</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control" id="name" placeholder="{{name}}" value="{{name}}" name="name"
+                maxlength="100">
+              <div id="name_invalid" class="invalid-feedback">
+                Tên không hợp lệ.
+              </div>
+            </div>
+          </div>
+
 
           <hr />
 
           <div class="row">
             <div class="col-3">
-              <label style="font-weight:bold;">Họ và Tên</label>
+              <label for="date_of_birth" style="font-weight:bold;">Ngày sinh: </label>
             </div>
             <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtName" name="name" value="{{name}}">
-            </div>
-          </div>
-
-
-          <hr />
-
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Ngày sinh</label>
-            </div>
-            <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtDOB" name="dob"
-                value="{{date_format_2 date_of_birth}}">
+              <input readonly id="date_of_birth" width="276" name="raw_date_of_birth"
+                value="{{date_format_2 date_of_birth}}" placeholder="{{date_format_2 date_of_birth}}">
+              <div id="date_of_birth_invalid" class="invalid-feedback">
+                Ngày sinh không hợp lệ.
+              </div>
             </div>
           </div>
 
@@ -84,8 +119,9 @@
             </div>
 
             <div class="col-8">
-              <input type="text" readonly class="form-control" id="txtGender" name="gender"
-                value="{{gen_gender gender}}">
+              <select class="form-select" id="gender" name="gender">
+                {{{render_gender gender}}}
+              </select>
             </div>
           </div>
 
@@ -125,13 +161,15 @@
               <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
             </div>
             <div class="col-8">
-              <input class="form-control" id="txtTimePremium" name="time_premium"
-                placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
+              <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH" value="">
             </div>
           </div>
           {{/if}}
 
           <hr />
+
+
+
 
           <div class="row">
             <div class="col-3">
@@ -139,16 +177,48 @@
             </div>
             <div class="col-8">
               {{#if is_writer}}
-              <input class="form-check-input" type="checkbox" checked style="margin:auto">
+              <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox" checked
+                style="margin:auto">
               {{else}}
-              <input class="form-check-input" type="checkbox" style="margin:auto">
+              <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox" style="margin:auto">
               {{/if}}
             </div>
           </div>
 
+          {{!-- Collapsed When not check--}}
+
+          {{#if is_writer}}
+
+          <div class="row collapse show" id="change-nickname">
+            <div class="col-3">
+              <label style="font-weight:lighter;"><i>Bí danh</i></label>
+            </div>
+            <div class="col-8">
+              <input id="nickname" name="nick_name" value="{{nick_name}}" placeholder="{{nick_name}}">
+            </div>
+          </div>
+
+          {{else}}
+          <div class="row collapse" id="change-nickname">
+            <div class="col-3">
+              <label style="font-weight:lighter;"><i>Bí danh</i></label>
+            </div>
+            <div class="col-8">
+              <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
+            </div>
+          </div>
+          {{/if}}
+
+
+
 
           <hr />
+
+
+
+
           <div class="row">
+
             <div class="col-3">
               <label style="font-weight:bold;">Phân quyền biên tập viên</label>
             </div>
@@ -161,6 +231,7 @@
               <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox" style="margin:auto">
               {{/if}}
             </div>
+
           </div>
         </div>
 
@@ -170,18 +241,31 @@
           <div class="col-3">
             <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
           </div>
+
           <div class="col-8">
-            Chưa biết làm á Bà Con - Chép bà Linh nè.
+            <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
+              aria-label="size 3 select example">
+              {{{render_categories categories selected_categories}}}
+            </select>
           </div>
+
         </div>
         {{else}}
         <div class="row collapse" id="change-assigned-categoríes">
+
           <div class="col-3">
             <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
           </div>
+
           <div class="col-8">
-            Chưa biết làm á Bà Con - Chép bà Linh nè.
+            <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
+              aria-label="size 3 select example">
+              {{#each categories}}
+              <option value="{{category_id}}">{{category_name}}</option>
+              {{/each}}
+            </select>
           </div>
+
         </div>
         {{/if}}
 
@@ -193,7 +277,8 @@
           Trở về
         </a>
 
-        <button type="submit" class="btn btn-danger ml-5" formaction="/admin/users/del/{{user_id}}">
+        <button type="submit" class="btn btn-danger ml-5" formaction="/admin/users/del/{{user_id}}"
+          onclick="return confirm('Toàn bộ thông tin người dùng sẽ bị xóa - bao gồm cả thông tin từ các bảng liên quan.');">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
           Xóa
         </button>
@@ -221,10 +306,27 @@
     $('#change-assigned-categoríes').collapse('toggle');
   });
 
+  $("#check_writer").change(function () {
+    $('#change-nickname').collapse('toggle');
+  });
+
+
+  $('#categories_selected option').mousedown(function (e) {
+    e.preventDefault();
+    $(this).prop('selected', !$(this).prop('selected'));
+    return false;
+  });
+
   $.datetimepicker.setDateFormatter('moment');
   $('#txtTimePremium').datetimepicker(
     {
-      format: 'DD/MM/YYYY HH:mm a'
+      format: 'DD/MM/YYYY HH'
+    }
+  );
+  $('#date_of_birth').datetimepicker(
+    {
+      timepicker: false,
+      format: 'DD/MM/YYYY'
     }
   );
 </script>

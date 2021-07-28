@@ -51,10 +51,10 @@ router.get('/', auth, async function (req, res) {
             username: user_name,
             is_premium: is_premium,
             name: req.session.authUser.name,
-            dob: formatTime(req.session.authUser.date_of_birth),
+            dob: req.session.authUser.date_of_birth,
             gender: genderToString(req.session.authUser.gender),
             email: req.session.authUser.email,
-            premium_date: formatTime(req.session.authUser.time_premium),
+            premium_date: req.session.authUser.time_premium,
             is_log_in_by_third_party: is_log_in_by_third_party
         }
     );
