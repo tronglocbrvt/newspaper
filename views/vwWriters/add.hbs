@@ -25,7 +25,6 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <select name="category_id" class="form-control" id="category" required>
-                <option value="0">---------</option>
                 {{#each main_cats}}
                 <option value="{{category_id}}">{{category_name}}</option>
                 {{/each}}
@@ -34,7 +33,6 @@
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <select name="sub_category" class="form-control" id="sub_category">
-                <option value="0">---------</option>
             </select>
         </div>
     </div>

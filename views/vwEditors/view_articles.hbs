@@ -10,40 +10,63 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h3>Chờ duyệt chuyên mục {{category_name}}</h3>
+                                <h3>Bài báo chờ duyệt</h3>
                             </div>
                         </div>
-
-                        <!--table start-->
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="border-bottom-0" scope="col">STT</th>
-                                    <th class="border-bottom-0" scope="col">Tiêu đề</th>
-                                    <th class="border-bottom-0" scope="col">Tác giả</th>
-                                    {{!-- <th class="d-none d-sm-block border-bottom-0" scope="col">date</th> --}}
-                                    <th class="border-bottom-0 text-center" scope="col">&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each articles}}
-                                <tr>
-                                    <th scope="row">{{@index}}</th>
-                                    <td style="font-weight: 600;">{{article_title}}</td>
-                                    <td>{{writer_alias}}</td>
-                                    {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
-                                    <td class="text-center">
-                                        <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
-                                            href="/editors/{{../editor_id}}/articles/{{article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a>
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                        <!--end table-->
+                        {{#each categories}}
+                        <a class="btn btn-success mb-3" data-toggle="collapse" href="#col{{@index}}" role="button"
+                            aria-expanded="false" aria-controls="col{{@index}}" onclick="clickCollapse()">
+                            {{category_name}}
+                        </a>
+                        {{/each}}
+                        {{#each articles_all}}
+                        <div class="collapse" id="col{{@index}}">
+                            <!--table start-->
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="border-bottom-0" scope="col">STT</th>
+                                        <th class="border-bottom-0" scope="col">Tiêu đề</th>
+                                        <th class="border-bottom-0" scope="col">Chuyên mục con</th>
+                                        <th class="border-bottom-0" scope="col">Tác giả</th>
+                                        {{!-- <th class="d-none d-sm-block border-bottom-0" scope="col">date</th> --}}
+                                        <th class="border-bottom-0 text-center" scope="col">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        <th scope="row">{{@index}}</th>
+                                        <td style="font-weight: 600;">{{article_title}}</td>
+                                        <td>{{category_name}}</td>
+                                        <td>{{writer_alias}}</td>
+                                        {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
+                                        <td class="text-center">
+                                            <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
+                                                href="/editors/{{../../editor_id}}/review/{{article_id}}"
+                                                title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                            <!--end table-->
+                        </div>
+                        {{/each}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+{{#section 'js'}}
+<script>
+    $("#col0").addClass('show');
+
+    function clickCollapse(){
+        $(".show").removeClass('show');
+    }
+</script>
+
+{{/section}}

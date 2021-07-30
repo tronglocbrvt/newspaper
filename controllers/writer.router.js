@@ -99,10 +99,18 @@ router.get('/:writer_id/articles/:article_id', async function (req, res) {
     const article = await writer_model.load_article_by_id(article_id);
     const main_cats = await category_model.get_main_cats();
     const tags = await tag_model.get_tags();
+    var is_rejected = false, comment;
+    if(article[0][0].is_rejected){
+        comment = await writer_model.get_rejected_comment(article_id);
+        comment = comment[0][0].editor_comments;
+        is_rejected = true;
+    }
     res.render("vwWriters/edit_article", {
         article: article[0][0],
         main_cats: main_cats[0],
-        tags: tags[0]
+        tags: tags[0],
+        is_rejected: is_rejected,
+        comment: comment
     })
 })
 
@@ -244,12 +252,8 @@ async function get_main_sub_cat(category_id) {
 router.get('/:writer_id/submitted/:article_id', async function(req, res){
     const article_id = req.params.article_id || 0;
     const article = await writer_model.load_article_by_id(article_id);
-    const main_cats = await category_model.get_main_cats();
-    const tags = await tag_model.get_tags();
     res.render("vwWriters/view_article", {
-        article: article[0][0],
-        main_cats: main_cats[0],
-        tags: tags[0]
+        article: article[0][0]
     })
 })
 
