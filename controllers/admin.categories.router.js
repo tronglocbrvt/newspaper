@@ -79,7 +79,9 @@ router.post('/:id/patch', async function(req, res) {
 });
 
 router.post('/:id/del', async function(req, res) {
-    await categoryModel.delete(req.params.id);
+    count = await categoryModel.count_articles_in_cat(req.params.id);
+    if (count[0][0].count == 0)
+        await categoryModel.delete(req.params.id);
     res.redirect('/admin/categories');
 });
 

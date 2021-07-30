@@ -5,7 +5,7 @@ module.exports =
     /**
      * @param published_article_id
      * @Return return information of an article with published_article_id = id.
-     */
+    */
     load_published_article_by_id(published_article_id) {
         const sql_query = `                
         SELECT pa.time_published, a.article_title, a.article_abstract, a.article_content, c.category_id as subcate_id, c.category_name as sub_category, m_c.category_id as maincate_id, m_c.category_name as main_category, CONCAT('/categories/',m_c.category_id) as maincate_ref, CONCAT('/categories/',m_c.category_id,'/subs/',c.category_id) as subcate_ref, a.avatar_url,a.avatar_caption,a.is_premium, pa.published_article_id, pa.views_numbers

@@ -86,5 +86,13 @@ module.exports={
         limit 10 offset ?`;
         main_cats = db.raw(sql, offset);
         return main_cats;
+    },
+
+    count_articles_in_cat(cat_id) {
+        const sql = `select count(*) as count
+        from articles as a, categories as c
+        where a.category_id = c.category_id
+            and c.parent_category_id = ?`;
+        return db.raw(sql, cat_id);
     }
 }
