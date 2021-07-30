@@ -79,7 +79,8 @@ router.post('/:id/patch', async function(req, res) {
 });
 
 router.post('/:id/del', async function(req, res) {
-    await tag_model.delete(req.params.id);
+    await tag_model.delete_tag_link(req.params.id);
+    await tag_model.delete_tag(req.params.id);
     res.redirect('/admin/tags');
 });
 

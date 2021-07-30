@@ -40,8 +40,12 @@ module.exports = {
         return db('tags').where('tag_id', tag_id).update({tag_name: tag_name});
     },
 
-    delete(tag_id) {
+    delete_tag(tag_id) {
         return db('tags').where('tag_id', tag_id).del();
+    },
+
+    delete_tag_link(tag_id) {
+        return db('tag_links').where('tag_id', tag_id).del();
     },
 
     count_tag() {
