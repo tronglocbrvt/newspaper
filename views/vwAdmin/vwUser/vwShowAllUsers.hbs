@@ -27,6 +27,7 @@
                                         <th class="border-bottom-0 text-center">Email</th>
                                         <th class="border-bottom-0 text-center">Họ và Tên</th>
                                         <th class="border-bottom-0 text-center">Giới tính</th>
+                                        <th class="border-bottom-0 text-center">Xác thực</th>
                                         <th class="border-bottom-0 text-center">Độc giả Premium</th>
                                         <th class="border-bottom-0 text-center">Phóng viên</th>
                                         <th class="border-bottom-0 text-center">Biên tập viên</th>
@@ -37,11 +38,31 @@
                                     {{#each users}}
                                     <tr>
                                         <td class="text-center">{{user_id}}</td>
+
+                                        {{#if user_name}}
                                         <td class="text-center">{{user_name}}</td>
+                                        {{else}}
+                                        <td class="text-center">NULL</td>
+                                        {{/if}}
+
+                                        {{#if email}}
                                         <td class="text-center">{{email}}</td>
+                                        {{else}}
+                                        <td class="text-center">NULL</td>
+                                        {{/if}}
+
                                         <td class="text-center">{{name}}</td>
                                         <td class="text-center">
                                             {{gen_gender gender}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{#if is_authenticated}}
+                                            <input class="form-check-input" type="checkbox" checked disabled
+                                                style="margin:auto">
+                                            {{else}}
+                                            <input class="form-check-input" type="checkbox" disabled
+                                                style="margin:auto">
+                                            {{/if}}
                                         </td>
                                         <td class="text-center">
                                             {{#if is_premium}}
@@ -81,6 +102,44 @@
                             </table>
                         </center>
                         <!--end table-->
+
+                        <!--Pagination-->
+                        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
+                            <ul class="pagination">
+                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
+                                </li>
+
+                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang
+                                        trước</a>
+                                </li>
+
+                                {{#each this.page_numbers}}
+
+                                {{#if isCurrent}}
+                                <li class="page-item {{#if isCurrent}}active{{/if}}">
+                                    <a class="page-link" href="javascript:;">{{value}}</a>
+                                </li>
+                                {{else}}
+                                <li class="page-item {{#if hide}}hide{{/if}}">
+                                    <a class="page-link" href="?page={{value}}">{{value}}</a>
+                                </li>
+                                {{/if}}
+
+                                {{/each}}
+                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang
+                                        tiếp</a>
+                                </li>
+
+                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
+                                </li>
+                            </ul>
+
+                        </nav>
+
                     </div>
                 </div>
             </div>

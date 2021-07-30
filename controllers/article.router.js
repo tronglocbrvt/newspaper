@@ -13,14 +13,15 @@ const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
 const auth = require('../middlewares/auth.mdw');
 const getTimeModule = require('../utils/get_time.js');
+const moment = require('moment');
+
 
 /**
  * @param {s} String
  * @returns format time string
  */
 function formatTime(s) {
-    var date = new Date(s);
-    return date.toLocaleString("en-US");
+    return moment(s).format("DD/MM/YYYY HH:mm:ss");
 }
 
 /**
@@ -89,7 +90,8 @@ router.get('/:id', async function (req, res) {
 router.post('/:id', auth, async function (req, res) {
     const published_article_id = req.params.id || 0;
     const content = req.body.comment;
-    const time_comment = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const time_comment  = moment().format("YYYY-MM-DD HH:mm:ss");
+    console.log(time_comment);
     // console.log(req.session.authUser);
     const new_comment =
     {

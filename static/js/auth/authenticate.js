@@ -1,7 +1,7 @@
 /**
     Check whether username or email is duplicate. Show bug if duplicate. Submit if not
     **/
-    async function checkDuplicateAndSubmit(username, email) {
+    async function checkDuplicateAndSubmit(formName,username, email) {
         function getJsonFromServer(api) {
             return new Promise(function (fn_done, fn_fail) {
                 $.getJSON(api, function (data) { fn_done(data); });
@@ -10,6 +10,8 @@
         }
         const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
         const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
+        console.log("mail: " + is_email_avail);
+        console.log("name: " + is_username_avail);
         if (is_email_avail === false) {
             $('#email_duplicate').show();
             $('#email').addClass("border border-danger");
@@ -34,7 +36,7 @@
 
         if (is_email_avail && is_username_avail) {
             console.log("submit");
-            $('#frmRegister').off('submit').submit();
+            $(formName).off('submit').submit();
         }
     }
 
@@ -49,8 +51,8 @@
 
         // Parse the date parts to integers
         var parts = dateString.split("/");
-        var day = parseInt(parts[1], 10);
-        var month = parseInt(parts[0], 10);
+        var day = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10);
         var year = parseInt(parts[2], 10);
 
         console.log(day + " " + month + " " + year);
@@ -193,7 +195,85 @@
 
         // Check duplicate with Server DBs and submit()
         if (validTestPassed) {
-            checkDuplicateAndSubmit(username, email);
+            checkDuplicateAndSubmit("#frmRegister",username, email);
+        }
+        else
+        {
+            $("#password").val("");
+            $("#password_confirm").val("");
+        }
+    });
+
+
+
+    $('#frmAdminAddUser').on('submit', function (e) {
+
+        e.preventDefault();
+        validTestPassed = true;
+
+        ///////////////////////////////////////////////////
+
+        const name = $('#name').val();
+        if (!checkName(name)) {
+            $('#name_invalid').show();
+            $('#name').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#name_invalid').hide()
+            $('#name').removeClass("border border-danger");
+        }
+
+
+        ///////////////////////////////////////////////////
+
+        const email = $('#email').val()
+        if (!checkEmail(email)) {
+            $('#email_invalid').show();
+            $('#email').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#email_invalid').hide()
+            $('#email').removeClass("border border-danger");
+        }
+
+
+        ///////////////////////////////////////////////////
+
+        const date = $('#date_of_birth').val()
+        if (!checkDate(date)) {
+            $('#date_of_birth_invalid').show();
+            $('#date_of_birth').addClass("border border-danger");
+            validTestPassed = false;
+        }
+
+        else {
+            $('#date_of_birth_invalid').hide()
+            $('#date_of_birth').removeClass("border border-danger");
+        }
+
+        ///////////////////////////////////////////////////
+
+        const username = $('#username').val();
+        if (!checkUsername(username)) {
+            $('#username_invalid').show();
+            $('#username').addClass("border border-danger");
+            validTestPassed = false;
+        }
+        else {
+            $('#username_invalid').hide()
+            $('#username').removeClass("border border-danger");
+        }
+
+       
+        ///////////////////////////////////////////////////
+
+        
+
+        // Check duplicate with Server DBs and submit()
+        if (validTestPassed) {
+            checkDuplicateAndSubmit("#frmAdminAddUser",username, email);
         }
         else
         {
