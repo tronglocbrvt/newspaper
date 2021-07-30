@@ -66,8 +66,6 @@ $(document).ready(function () {
             var element = $('<option></option>').attr('value', sub_cats[i].category_id).text(sub_cats[i].category_name);
             $('#sub_category').append(element);
         }
-        const empty_element = $('<option></option>').attr('value', 0).text('---------');
-        $('#sub_category').append(empty_element);
     }
 
     function add_tag(input_tag) {

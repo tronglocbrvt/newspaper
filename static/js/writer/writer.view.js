@@ -10,8 +10,6 @@ $(document).ready(function () {
         $("#content").html(data1.article_content);
         $('#category').val(data1.main_category_name);
         $('#sub_category').val(data1.sub_category_name);
-        // $('#category').append(`<option selected>${data1.main_category_name}</option>`);
-        // $('#sub_category').append(`<option selected>${data1.sub_category_name}</option>`);
 
         $.ajax({
             url: '/tags'
