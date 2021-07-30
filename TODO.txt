@@ -1,23 +1,25 @@
 // TODO:
 1. Download.
-2. Chua co trang editor - Tinh nang 4.
+2. Chua co trang editor - Tinh nang 4. ok 
 3. Trang cua Quan Tri version.
-4. Trang chu: fix.
+4. Trang chu: fix. 
 6. Quan tri vien.
-7. Sai duong dan -> Loi 500
-8. Footer
+7. Sai duong dan -> Loi 500 ok 
+8. Footer 
 9. sửa ngày
 
-DEADLINES T5:
+DEADLINES CN
 
 - Loc: 
-   /admin/categories
-   Quản lý chuyên mục category
-   Quản lý nhãn tag
-   /admin/tags
+   Quản lý chuyên mục category 0- chỉnh sửa thông báo, sub
+   Quản lý nhãn tag - chỉnh sửa thông báo
    Testing
+   fix lỗi / ko phải số
+   fix lỗi article time published
 
-- Linh: Chua co trang editor - trang chủ (frontend - backend)
+- Linh: trang chủ (frontend - backend)
+   fix lỗi / ko phải số
+   đổi trang xem bài báo publish writer
 
 - Phuc:
     Quản lý danh sách người dùng (phóng viên, biên tập viên, độc giả, …)
@@ -27,7 +29,7 @@ DEADLINES T5:
 
     /admin/editors
 
-    Gia hạn tài khoản độc giả - 7 ngày
-    /admin/users
-
-    sửa ngày
+   chọn ngày quá khứ
+   fix lỗi / ko phải số
+   chỉnh front end
+   chưa hiện form đăng ký
