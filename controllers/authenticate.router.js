@@ -65,8 +65,7 @@ router.post('/log-in', not_auth, async function (req, res) {
 
   //console.log(user);
   const ret = bcrypt.compareSync(req.body.password, user.password);
-  if (ret === false) 
-  {
+  if (ret === false) {
     return res.render('vwAuthentications/sign_in', {
       err_message: 'Sai mật khẩu'
     })
@@ -114,7 +113,7 @@ router.get('/is-email-available', not_auth, async function (req, res) {
 
 router.post('/sign-up', not_auth, async function (req, res) {
   const hash = bcrypt.hashSync(req.body.raw_password, N_HASHING_TIMES);
-  const dob = moment(req.body.raw_date_of_birth, "MM/DD,YYYY").format("YYYY-MM-DD");
+  const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
   const new_user =
   {
     user_name: req.body.username,
@@ -201,7 +200,7 @@ router.post('/authenticate-account', not_auth, async function (req, res) {
 
   const user_id = data[0].user_id;
   // check token and time
-  console.log(user_id,current_time);
+  console.log(user_id, current_time);
   data = await authenticate_model.findAccountAuthenticationToken(user_id, current_time);
 
   // can not auth
@@ -423,8 +422,7 @@ router.post('/change-name', auth, async function (req, res) {
 router.post('/change-dob', auth, async function (req, res) {
   // Get username from session.
   const user_id = req.session.authUser.user_id;
-  const dob = moment(req.body.raw_date_of_birth, "MM/DD,YYYY").format("YYYY-MM-DD");
-
+  const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
   await authenticate_model.change_DOB_by_user_id(user_id, dob);
 
   // change session

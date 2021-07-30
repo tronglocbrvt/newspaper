@@ -10,28 +10,46 @@
     </h2>
 
     <div class="card-body">
-        <form method="POST">
+        <form id="frmAdminAddUser" method="POST">
+
             <div class="m-5" id="myTabContent">
                 <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
                     <div class="row">
+
                         <div class="col-3">
-                            <label style="font-weight:bold;">Username</label>
+                            <label for="username" style="font-weight:bold;">Tài khoản:</label>
                         </div>
+
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtUserName" name="user_name">
+                            <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản"
+                                maxlength="32" name="username">
+                            <div id="username_invalid" class="invalid-feedback">
+                                Tài khoản không hợp lệ.
+                            </div>
+                            <div id="username_duplicate" class="invalid-feedback">
+                                Tài khoản đã tồn tại.
+                            </div>
                         </div>
+
                     </div>
 
                     <hr />
 
                     <div class="row">
                         <div class="col-3">
-                            <label style="font-weight:bold;">Email</label>
+                            <label for="email" style="font-weight:bold;">Email: </label>
                         </div>
 
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtEmail" name="email">
+                            <input class="form-control" id="email" type="text" name="email"
+                                placeholder="abc@example.com" maxlength="100" />
+                            <div id="email_invalid" class="invalid-feedback">
+                                Email không hợp lệ.
+                            </div>
+                            <div id="email_duplicate" class="invalid-feedback">
+                                Email đã tồn tại.
+                            </div>
                         </div>
 
                     </div>
@@ -40,10 +58,14 @@
 
                     <div class="row">
                         <div class="col-3">
-                            <label style="font-weight:bold;">Họ và Tên</label>
+                            <label for="name" style="font-weight:bold;">Họ và tên</label>
                         </div>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtName" name="name">
+                            <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name"
+                                maxlength="100">
+                            <div id="name_invalid" class="invalid-feedback">
+                                Tên không hợp lệ.
+                            </div>
                         </div>
                     </div>
 
@@ -52,10 +74,13 @@
 
                     <div class="row">
                         <div class="col-3">
-                            <label style="font-weight:bold;">Ngày sinh</label>
+                            <label for="date_of_birth" style="font-weight:bold;">Ngày sinh: </label>
                         </div>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtDOB" name="dob">
+                            <input readonly id="date_of_birth" width="276" name="raw_date_of_birth" placeholder="dd/mm/yyyy">
+                            <div id="date_of_birth_invalid" class="invalid-feedback">
+                                Ngày sinh không hợp lệ.
+                            </div>
                         </div>
                     </div>
 
@@ -64,11 +89,15 @@
 
                     <div class="row">
                         <div class="col-3">
-                            <label style="font-weight:bold;">Giới tính</label>
+                            <label for="gender" style="font-weight:bold;">Giới tính: </label>
                         </div>
 
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtGender" name="gender">
+                            <select class="form-select" id="gender" name="gender">
+                                <option selected value="-1">Khác</option>
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
                         </div>
                     </div>
 
@@ -80,21 +109,19 @@
                             <label style="font-weight:bold;">Phân quyền premium</label>
                         </div>
                         <div class="col-8">
-                            <input id="checked_premium" name="checked_premium" class="form-check-input" type="checkbox"
-                                 style="margin:auto">
+                            <input id="checked_premium" name="check_premium" class="form-check-input" type="checkbox"
+                                style="margin:auto">
                         </div>
                     </div>
 
                     {{!-- Collapsed When not check--}}
-                
+
                     <div class="row collapse" id="change-time-premium">
                         <div class="col-3">
                             <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" id="txtTimePremium" name="time_premium"
-                                placeholder="{{date_time_format time_premium}}"
-                                value="{{date_time_format time_premium}}">
+                            <input readonly id="txtTimePremium" name="time_premium" placeholder="dd/mm/yyyy hh">
                         </div>
                     </div>
 
@@ -105,12 +132,23 @@
                             <label style="font-weight:bold;">Phân quyền phóng viên</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-check-input" type="checkbox" style="margin:auto">
+                            <input class="form-check-input" id = "check_writer" name = "check_writer" type="checkbox" style="margin:auto">
+                        </div>
+                    </div>
+
+                    {{!-- Collapsed When not check--}}
+
+                    <div class="row collapse" id="change-nickname">
+                        <div class="col-3">
+                            <label style="font-weight:lighter;"><i>Bí danh</i></label>
+                        </div>
+                        <div class="col-8">
+                            <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
                         </div>
                     </div>
 
 
-                    <hr />
+                    <hr/>
                     <div class="row">
                         <div class="col-3">
                             <label style="font-weight:bold;">Phân quyền biên tập viên</label>
@@ -120,6 +158,7 @@
                             <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox"
                                 style="margin:auto">
                         </div>
+
                     </div>
                 </div>
                 {{!-- EDITOR Collapsed When not check--}}
@@ -128,7 +167,12 @@
                         <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
                     </div>
                     <div class="col-8">
-                        Chưa biết làm á Bà Con - Chép bà Linh nè.
+                        <select id="categories_selected" name= "categories_selected" class="form-select" multiple size="10"
+                            aria-label="size 3 select example">
+                            {{#each categories}}
+                            <option value="{{category_id}}">{{category_name}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                 </div>
 
@@ -163,11 +207,30 @@
         $('#change-assigned-categoríes').collapse('toggle');
     });
 
+    $("#check_writer").change(function () {
+        $('#change-nickname').collapse('toggle');
+    });
+
+
+    $('#categories_selected option').mousedown(function (e) {
+        e.preventDefault();
+        $(this).prop('selected', !$(this).prop('selected'));
+        return false;
+    });
+
     $.datetimepicker.setDateFormatter('moment');
     $('#txtTimePremium').datetimepicker(
         {
-            format: 'DD/MM/YYYY HH:mm a'
+            format: 'DD/MM/YYYY HH'
+        }
+    );
+     $('#date_of_birth').datetimepicker(
+        {
+            timepicker:false,
+            format: 'DD/MM/YYYY'
         }
     );
 </script>
+
+<script src="/static/js/auth/authenticate.js"> </script>
 {{/section}}
