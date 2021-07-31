@@ -34,7 +34,7 @@ router.get('/:id', async function (req, res) {
     const article_id = req.params.id || 0;
 
     // Load from dbs
-    const db_data_article = await article_model.load_published_article_by_id(article_id);
+    const db_data_article = await article_model.load_published_article_by_id(article_id, getTimeModule.get_time_now()/1000);
     const db_data_tags = await article_model.load_tags_by_published_article_id(article_id);
     const db_data_similar_articles = await article_model.load_random_published_articles_with_same_category(article_id, LIMIT_SIMILAR_ARTICLE);
     const db_data_comment = await article_model.load_comments_of_published_articles_by_id(article_id);

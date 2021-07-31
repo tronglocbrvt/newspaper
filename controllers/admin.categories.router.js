@@ -9,6 +9,7 @@ router.get('/add', async function(req, res) {
 });
 
 router.post('/', async function(req, res) {
+    // if (req.body !== "")
     await categoryModel.add(req.body)
     res.redirect('/admin/categories');
 });
@@ -69,8 +70,10 @@ router.get('/:id', async function(req, res) {
         return res.redirect('/admin/categories');
     }
     res.render('vwAdmin/vwCategory/edit_category', {
-        category: category[0]
+        category: category[0],
+        err_message: req.session.redirect_message
     });
+    delete req.session.redirect_message;
 });
 
 router.post('/:id/patch', async function(req, res) {
@@ -82,6 +85,10 @@ router.post('/:id/del', async function(req, res) {
     count = await categoryModel.count_articles_in_cat(req.params.id);
     if (count[0][0].count == 0)
         await categoryModel.delete(req.params.id);
+    else {
+        req.session.redirect_message = 'Không thể xóa - Do đây là chuyên mục chính - Cần xóa các bài báo và chuyên mục con trước';
+        return res.redirect('/admin/categories/' + req.params.id);
+    }
     res.redirect('/admin/categories');
 });
 

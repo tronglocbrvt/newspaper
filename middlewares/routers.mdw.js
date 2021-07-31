@@ -15,6 +15,10 @@ module.exports = function (app) {
     app.use('/admin/users',require('../controllers/admin.user.router'));
     app.use('/editors', require('../controllers/editor.router'));
     app.use('/admin/categories', require('../controllers/admin.categories.router'));
+    app.use('/admin/categories/:category_id', function (req, res, next) {
+        req.cat_id = req.params.category_id;
+        next();
+    }, require('../controllers/admin.subcategories.router'));
     app.use('/admin/tags', require('../controllers/admin.tags.router'));
     app.use(function(req, res) {
         res.status(404);

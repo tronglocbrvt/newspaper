@@ -3,21 +3,27 @@
     Chỉnh sửa chuyên mục chính
   </h4>
   <div class="card-body">
+    {{#if err_message}}
+    <div id="error_message" class="alert alert-danger">
+      {{err_message}}
+    </div>
+    {{/if}}
     <form method="POST">
       <div class="form-group">
         <label for="txtCatID">ID</label>
-        <input type="text" readonly class="form-control" id="txtCatID" name="cad_id" value="{{category.category_id}}">
+        <input type="text" readonly class="form-control" id="txtCatID" name="cat_id" value="{{category.category_id}}">
       </div>
       <div class="form-group">
         <label for="txtCatName">Tên chuyên mục</label>
         <input type="text" class="form-control" id="txtCatName" name="cat_name" autofocus
-          value="{{category.category_name}}">
+          value="{{category.category_name}}" required>
       </div>
       <a class="btn btn-primary" href="/admin/categories/" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Trở về
       </a>
-      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/categories/{{category.category_id}}/del">
+      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/categories/{{category.category_id}}/del"
+      onclick="return confirm('Toàn bộ thông tin đến chuyên mục này sẽ bị xóa, nếu vẫn còn bài viết thuộc chuyên mục này bạn sẽ không thể thực hiện tính năng này')">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         Xóa
       </button>

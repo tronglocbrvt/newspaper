@@ -94,5 +94,31 @@ module.exports={
         where a.category_id = c.category_id
             and c.parent_category_id = ?`;
         return db.raw(sql, cat_id);
-    }
+    },
+
+    count_sub_cats_by_cat_id(cat_id) {
+        const sql = `select count(*) as total
+        from categories
+        where parent_category_id is not null
+        and parent_category_id = ?`;
+        sub_cats = db.raw(sql, cat_id);
+        return sub_cats;
+    },
+
+    list_sub_cats_by_cat_id(cat_id, offset) {
+        const sql = `select distinct category_name, category_id
+        from categories
+        where parent_category_id is not null
+        and parent_category_id = ${cat_id}
+        limit 10 offset ${offset}`;
+        sub_cats = db.raw(sql);
+        return sub_cats;
+    },
+
+    count_articles_in_subcat(subcat_id) {
+        const sql = `select count(*) as count
+        from articles as a
+        where a.category_id = ?`;
+        return db.raw(sql, subcat_id);
+    },
 }

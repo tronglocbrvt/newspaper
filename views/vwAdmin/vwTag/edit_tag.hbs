@@ -17,7 +17,8 @@
         <i class="fa fa-backward" aria-hidden="true"></i>
         Trở về
       </a>
-      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/tags/{{tag_id}}/del">
+      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/tags/{{tag_id}}/del" 
+      onclick="return confirm('Toàn bộ thông tin đến tag sẽ bị xóa - bao gồm việc xóa các tag ở các bài viết')";>
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         Xóa
       </button>
