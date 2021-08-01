@@ -22,13 +22,6 @@ DEADLINES CN
    đổi trang xem bài báo publish writer
 
 - Phuc:
-    Quản lý danh sách người dùng (phóng viên, biên tập viên, độc giả, …)
-
-    /admin/writers
-    Phân công chuyên mục cho biên tập viên
-
-    /admin/editors
-
    chọn ngày quá khứ
    fix lỗi / ko phải số
    chỉnh front end

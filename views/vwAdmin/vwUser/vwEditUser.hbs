@@ -15,7 +15,7 @@
       {{err_message}}
     </div>
     {{/if}}
-    <form method="POST">
+    <form id="frmAdminEditUser" method="POST" action ='/admin/users/patch/{{user_id}}'>
       <div class="m-5" id="myTabContent">
         <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
@@ -152,6 +152,9 @@
             <div class="col-8">
               <input class="form-control" id="txtTimePremium" name="time_premium"
                 placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
+              <div id="time_premium_invalid" class="invalid-feedback">
+                Thời gian không hợp lệ.
+              </div>
             </div>
           </div>
 
@@ -162,7 +165,12 @@
             </div>
             <div class="col-8">
               <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH" value="">
+              <div id="time_premium_invalid" class="invalid-feedback">
+                Thời gian không hợp lệ.
+              </div>
             </div>
+
+
           </div>
           {{/if}}
 
@@ -283,7 +291,7 @@
           Xóa
         </button>
 
-        <button type="submit" class="btn btn-success ml-5" formaction="/admin/users/patch/{{user_id}}">
+        <button type="submit" class="btn btn-success ml-5">
           <i class="fa fa-check" aria-hidden="true"></i>
           Lưu
         </button>
@@ -330,4 +338,6 @@
     }
   );
 </script>
+<script src="/static/js/auth/authenticate.js"> </script>
+
 {{/section}}
