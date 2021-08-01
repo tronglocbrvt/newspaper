@@ -1,283 +1,419 @@
 /**
     Check whether username or email is duplicate. Show bug if duplicate. Submit if not
     **/
-    async function checkDuplicateAndSubmit(formName,username, email) {
-        function getJsonFromServer(api) {
-            return new Promise(function (fn_done, fn_fail) {
-                $.getJSON(api, function (data) { fn_done(data); });
-            }
-            );
+async function checkDuplicateAndSubmit(formName, username, email) {
+    function getJsonFromServer(api) {
+        return new Promise(function (fn_done, fn_fail) {
+            $.getJSON(api, function (data) { fn_done(data); });
         }
-        const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
-        const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
-        console.log("mail: " + is_email_avail);
-        console.log("name: " + is_username_avail);
-        if (is_email_avail === false) {
-            $('#email_duplicate').show();
-            $('#email').addClass("border border-danger");
-            $("#password").val("");
-            $("#password_confirm").val("");
-        }
-        else {
-            $('#email_duplicate').hide()
-            $('#email').removeClass("border border-danger");
-        }
-
-        if (is_username_avail === false) {
-            $('#username_duplicate').show();
-            $('#username').addClass("border border-danger");
-            $("#password").val("");
-            $("#password_confirm").val("");
-        }
-        else {
-            $('#username_duplicate').hide()
-            $('#username').removeClass("border border-danger");
-        }
-
-        if (is_email_avail && is_username_avail) {
-            console.log("submit");
-            $(formName).off('submit').submit();
-        }
+        );
+    }
+    const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
+    const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
+    console.log("mail: " + is_email_avail);
+    console.log("name: " + is_username_avail);
+    if (is_email_avail === false) {
+        $('#email_duplicate').show();
+        $('#email').addClass("border border-danger");
+        $("#password").val("");
+        $("#password_confirm").val("");
+    }
+    else {
+        $('#email_duplicate').hide()
+        $('#email').removeClass("border border-danger");
     }
 
+    if (is_username_avail === false) {
+        $('#username_duplicate').show();
+        $('#username').addClass("border border-danger");
+        $("#password").val("");
+        $("#password_confirm").val("");
+    }
+    else {
+        $('#username_duplicate').hide()
+        $('#username').removeClass("border border-danger");
+    }
 
-    // Check Attributes are Valid or not? 
-    function checkDate(dateString) {
-        if (dateString.length === 0) return false;
+    if (is_email_avail && is_username_avail) {
+        console.log("submit");
+        $(formName).off('submit').submit();
+    }
+}
 
-        // First check for the pattern
-        if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-            return false;
 
-        // Parse the date parts to integers
-        var parts = dateString.split("/");
-        var day = parseInt(parts[0], 10);
-        var month = parseInt(parts[1], 10);
-        var year = parseInt(parts[2], 10);
+// Check Attributes are Valid or not? 
+function checkDate(dateString) {
+    if (dateString.length === 0) return false;
 
-        console.log(day + " " + month + " " + year);
+    // First check for the pattern
+    if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+        return false;
 
-        // Check the ranges of month and year
-        if (year < 1000 || year > 3000 || month == 0 || month > 12)
-            return false;
+    const dob = moment(dateString, "DD/MM/YYYY");
+    console.log("DOB : " + dob + " - " + moment());
+    if (dob > moment()) return false;
 
-        var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    // Parse the date parts to integers
+    var parts = dateString.split("/");
+    var day = parseInt(parts[0], 10);
+    var month = parseInt(parts[1], 10);
+    var year = parseInt(parts[2], 10);
 
-        // Adjust for leap years
-        if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
-            monthLength[1] = 29;
+    console.log(day + " " + month + " " + year);
 
-        // Check the range of the day
-        if (!(day > 0 && day <= monthLength[month - 1])) return false;
+    // Check the ranges of month and year
+    if (year < 1000 || year > 3000 || month == 0 || month > 12)
+        return false;
+
+    var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    // Adjust for leap years
+    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+        monthLength[1] = 29;
+
+    // Check the range of the day
+    if (!(day > 0 && day <= monthLength[month - 1])) return false;
+    return true;
+}
+
+
+// Check Attributes are Valid or not? 
+function checkDatePremium(dateString, check_premium) {
+    console.log("check_premium :" + check_premium);
+
+    if (!check_premium) {
+        $('#txtTimePremium').val("");
         return true;
     }
+    console.log(dateString);
 
-    // Check Attributes are Valid or not? 
-    function checkEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
+    if (dateString.length === 0) return false;
+
+    const time_premium = moment(dateString, "DD/MM/YYYY HH");
+    console.log("TIME PREMIUM : ");
+    console.log(time_premium < moment());
+    if (time_premium < moment()) return false; // Time premium is less than now
+    return true;
+}
+
+
+async function checkDuplicateAndSubmitAdmin(formName, username, email) {
+    function getJsonFromServer(api) {
+        return new Promise(function (fn_done, fn_fail) {
+            $.getJSON(api, function (data) { fn_done(data); });
+        }
+        );
+    }
+    const is_username_avail = await getJsonFromServer(`/auth/is-username-available?username=${username}`);
+    const is_email_avail = await getJsonFromServer(`/auth/is-email-available?email=${email}`);
+    console.log("mail: " + is_email_avail);
+    console.log("name: " + is_username_avail);
+    if (is_email_avail === false) {
+        $('#email_duplicate').show();
+        $('#email').addClass("border border-danger");
+    }
+    else {
+        $('#email_duplicate').hide()
+        $('#email').removeClass("border border-danger");
     }
 
-    function checkUsername(username) {
-        return (username.length > 0);
+    if (is_username_avail === false) {
+        $('#username_duplicate').show();
+        $('#username').addClass("border border-danger");
+    }
+    else {
+        $('#username_duplicate').hide()
+        $('#username').removeClass("border border-danger");
     }
 
-    // Check Attributes are Valid or not? 
-    function checkPassword() {
-        if (parseInt(myPassMeter.getScore()) >= 3)
-            return true;
-        return false;
+    if (is_email_avail && is_username_avail) {
+        console.log("submit");
+        $(formName).off('submit').submit();
+    }
+}
+
+
+
+// Check Attributes are Valid or not? 
+function checkEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function checkUsername(username) {
+    return (username.length > 0);
+}
+
+// Check Attributes are Valid or not? 
+function checkPassword() {
+    if (parseInt(myPassMeter.getScore()) >= 3)
+        return true;
+    return false;
+}
+
+// Check Attributes are Valid or not? 
+function checkName(name) {
+    return (name.length > 0);
+}
+
+// Check Attributes are Valid or not? 
+function checkConfirmPassword(password, password_confirm) {
+    return (password === password_confirm);
+}
+
+// Submit Form
+$('#frmRegister').on('submit', function (e) {
+
+    e.preventDefault();
+    validTestPassed = true;
+
+    ///////////////////////////////////////////////////
+
+    const name = $('#name').val();
+    if (!checkName(name)) {
+        $('#name_invalid').show();
+        $('#name').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#name_invalid').hide()
+        $('#name').removeClass("border border-danger");
     }
 
-    // Check Attributes are Valid or not? 
-    function checkName(name) {
-        return (name.length > 0);
+
+    ///////////////////////////////////////////////////
+
+    const email = $('#email').val()
+    if (!checkEmail(email)) {
+        $('#email_invalid').show();
+        $('#email').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#email_invalid').hide()
+        $('#email').removeClass("border border-danger");
     }
 
-    // Check Attributes are Valid or not? 
-    function checkConfirmPassword(password, password_confirm) {
-        return (password === password_confirm);
+
+    ///////////////////////////////////////////////////
+
+    const date = $('#date_of_birth').val()
+    if (!checkDate(date)) {
+        $('#date_of_birth_invalid').show();
+        $('#date_of_birth').addClass("border border-danger");
+        validTestPassed = false;
     }
 
-    // Submit Form
-    $('#frmRegister').on('submit', function (e) {
+    else {
+        $('#date_of_birth_invalid').hide()
+        $('#date_of_birth').removeClass("border border-danger");
+    }
 
-        e.preventDefault();
-        validTestPassed = true;
+    ///////////////////////////////////////////////////
 
-        ///////////////////////////////////////////////////
+    const username = $('#username').val();
+    if (!checkUsername(username)) {
+        $('#username_invalid').show();
+        $('#username').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#username_invalid').hide()
+        $('#username').removeClass("border border-danger");
+    }
 
-        const name = $('#name').val();
-        if (!checkName(name)) {
-            $('#name_invalid').show();
-            $('#name').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#name_invalid').hide()
-            $('#name').removeClass("border border-danger");
-        }
+    ///////////////////////////////////////////////////
 
+    if (!checkPassword()) {
+        $('#password_invalid').show();
+        $('#password').addClass("border border-danger");
+        $("#password").val("");
+        $("#password_confirm").val("");
+        validTestPassed = false;
+        myPassMeter.checkPasswordAgain("");
+    }
+    else {
+        $('#password_invalid').hide()
+        $('#password').removeClass("border border-danger");
+    }
 
-        ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
 
-        const email = $('#email').val()
-        if (!checkEmail(email)) {
-            $('#email_invalid').show();
-            $('#email').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#email_invalid').hide()
-            $('#email').removeClass("border border-danger");
-        }
+    const password = $('#password').val();
+    const password_confirm = $('#password_confirm').val();
 
+    if (!checkConfirmPassword(password, password_confirm)) {
+        $('#password_confirm_invalid').show();
+        $('#password_confirm').addClass("border border-danger");
+        $("#password").val("");
+        $("#password_confirm").val("");
+        validTestPassed = false;
+        myPassMeter.checkPasswordAgain("");
+    }
+    else {
+        $('#password_confirm_invalid').hide();
+        $('#password_confirm').removeClass("border border-danger");
+    }
 
-        ///////////////////////////////////////////////////
-
-        const date = $('#date_of_birth').val()
-        if (!checkDate(date)) {
-            $('#date_of_birth_invalid').show();
-            $('#date_of_birth').addClass("border border-danger");
-            validTestPassed = false;
-        }
-
-        else {
-            $('#date_of_birth_invalid').hide()
-            $('#date_of_birth').removeClass("border border-danger");
-        }
-
-        ///////////////////////////////////////////////////
-
-        const username = $('#username').val();
-        if (!checkUsername(username)) {
-            $('#username_invalid').show();
-            $('#username').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#username_invalid').hide()
-            $('#username').removeClass("border border-danger");
-        }
-
-        ///////////////////////////////////////////////////
-
-        if (!checkPassword()) {
-            $('#password_invalid').show();
-            $('#password').addClass("border border-danger");
-            $("#password").val("");
-            $("#password_confirm").val("");
-            validTestPassed = false;
-            myPassMeter.checkPasswordAgain("");
-        }
-        else {
-            $('#password_invalid').hide()
-            $('#password').removeClass("border border-danger");
-        }
-
-        ///////////////////////////////////////////////////
-
-        const password = $('#password').val();
-        const password_confirm = $('#password_confirm').val();
-
-        if (!checkConfirmPassword(password, password_confirm)) {
-            $('#password_confirm_invalid').show();
-            $('#password_confirm').addClass("border border-danger");
-            $("#password").val("");
-            $("#password_confirm").val("");
-            validTestPassed = false;
-            myPassMeter.checkPasswordAgain("");
-        }
-        else {
-            $('#password_confirm_invalid').hide();
-            $('#password_confirm').removeClass("border border-danger");
-        }
-
-        // Check duplicate with Server DBs and submit()
-        if (validTestPassed) {
-            checkDuplicateAndSubmit("#frmRegister",username, email);
-        }
-        else
-        {
-            $("#password").val("");
-            $("#password_confirm").val("");
-        }
-    });
+    // Check duplicate with Server DBs and submit()
+    if (validTestPassed) {
+        checkDuplicateAndSubmitAdmin("#frmRegister", username, email);
+    }
+    else {
+        $("#password").val("");
+        $("#password_confirm").val("");
+    }
+});
 
 
 
-    $('#frmAdminAddUser').on('submit', function (e) {
+$('#frmAdminAddUser').on('submit', function (e) {
+    console.log("check form");
+    e.preventDefault();
+    validTestPassed = true;
 
-        e.preventDefault();
-        validTestPassed = true;
+    ///////////////////////////////////////////////////
 
-        ///////////////////////////////////////////////////
-
-        const name = $('#name').val();
-        if (!checkName(name)) {
-            $('#name_invalid').show();
-            $('#name').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#name_invalid').hide()
-            $('#name').removeClass("border border-danger");
-        }
-
-
-        ///////////////////////////////////////////////////
-
-        const email = $('#email').val()
-        if (!checkEmail(email)) {
-            $('#email_invalid').show();
-            $('#email').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#email_invalid').hide()
-            $('#email').removeClass("border border-danger");
-        }
+    const name = $('#name').val();
+    if (!checkName(name)) {
+        $('#name_invalid').show();
+        $('#name').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#name_invalid').hide()
+        $('#name').removeClass("border border-danger");
+    }
 
 
-        ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
 
-        const date = $('#date_of_birth').val()
-        if (!checkDate(date)) {
-            $('#date_of_birth_invalid').show();
-            $('#date_of_birth').addClass("border border-danger");
-            validTestPassed = false;
-        }
+    const email = $('#email').val()
+    if (!checkEmail(email)) {
+        $('#email_invalid').show();
+        $('#email').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#email_invalid').hide()
+        $('#email').removeClass("border border-danger");
+    }
 
-        else {
-            $('#date_of_birth_invalid').hide()
-            $('#date_of_birth').removeClass("border border-danger");
-        }
 
-        ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
 
-        const username = $('#username').val();
-        if (!checkUsername(username)) {
-            $('#username_invalid').show();
-            $('#username').addClass("border border-danger");
-            validTestPassed = false;
-        }
-        else {
-            $('#username_invalid').hide()
-            $('#username').removeClass("border border-danger");
-        }
+    const date = $('#date_of_birth').val()
+    if (!checkDate(date)) {
+        $('#date_of_birth_invalid').show();
+        $('#date_of_birth').addClass("border border-danger");
+        validTestPassed = false;
+    }
 
-       
-        ///////////////////////////////////////////////////
+    else {
+        $('#date_of_birth_invalid').hide()
+        $('#date_of_birth').removeClass("border border-danger");
+    }
 
-        
+    ///////////////////////////////////////////////////
 
-        // Check duplicate with Server DBs and submit()
-        if (validTestPassed) {
-            checkDuplicateAndSubmit("#frmAdminAddUser",username, email);
-        }
-        else
-        {
-            $("#password").val("");
-            $("#password_confirm").val("");
-        }
-    });
+    const username = $('#username').val();
+    if (!checkUsername(username)) {
+        $('#username_invalid').show();
+        $('#username').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#username_invalid').hide()
+        $('#username').removeClass("border border-danger");
+    }
+
+
+    ///////////////////////////////////////////////////
+
+
+    const time_premium = $('#txtTimePremium').val();
+    const check_premium = $('#checked_premium').prop('checked');
+
+    if (!checkDatePremium(time_premium, check_premium)) {
+        $('#time_premium_invalid').show();
+        $('#txtTimePremium').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#time_premium_invalid').hide();
+        $('#txtTimePremium').removeClass("border border-danger");
+    }
+
+    //Check duplicate with Server DBs and submit()
+    if (validTestPassed) {
+        checkDuplicateAndSubmit("#frmAdminAddUser", username, email);
+    }
+    else {
+        $("#password").val("");
+        $("#password_confirm").val("");
+    }
+});
+
+
+
+
+
+
+$('#frmAdminEditUser').on('submit', function (e) {
+    console.log("check form");
+    e.preventDefault();
+    validTestPassed = true;
+
+    ///////////////////////////////////////////////////
+
+    const name = $('#name').val();
+    if (!checkName(name)) {
+        $('#name_invalid').show();
+        $('#name').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#name_invalid').hide()
+        $('#name').removeClass("border border-danger");
+    }
+
+
+
+    ///////////////////////////////////////////////////
+
+    const date = $('#date_of_birth').val()
+    if (!checkDate(date)) {
+        $('#date_of_birth_invalid').show();
+        $('#date_of_birth').addClass("border border-danger");
+        validTestPassed = false;
+    }
+
+    else {
+        $('#date_of_birth_invalid').hide()
+        $('#date_of_birth').removeClass("border border-danger");
+    }
+
+    ///////////////////////////////////////////////////
+
+
+    const time_premium = $('#txtTimePremium').val();
+    const check_premium = $('#checked_premium').prop('checked');
+
+    if (!checkDatePremium(time_premium, check_premium)) {
+        $('#time_premium_invalid').show();
+        $('#txtTimePremium').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#time_premium_invalid').hide();
+        $('#txtTimePremium').removeClass("border border-danger");
+    }
+
+    //Check duplicate with Server DBs and submit()
+    if (validTestPassed) {
+        console.log("submit");
+        $('#frmAdminEditUser').off('submit').submit();
+    }
+    else {
+    }
+});

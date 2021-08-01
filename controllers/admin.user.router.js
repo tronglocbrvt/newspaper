@@ -61,6 +61,11 @@ router.get('/', async function (req, res) {
 
 // -- VIEW USER API --
 router.get('/edit/:id', async function (req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
+    
     const user_id = parseInt(req.params.id);
     const user = await userModel.load_user_info_by_id(user_id);
     if (!user[0][0]) {
@@ -81,6 +86,11 @@ router.get('/edit/:id', async function (req, res) {
 
 // post patch
 router.post('/patch/:id', async function (req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
+
     const user_id = parseInt(req.params.id);
     const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
     const time_premium = moment(req.body.time_premium, "DD/MM/YYYY HH").format("YYYY-MM-DD HH");
@@ -138,8 +148,7 @@ router.post('/patch/:id', async function (req, res) {
     }
 
     // Update table editor.
-    if (!editted_user.is_editor) 
-    {
+    if (!editted_user.is_editor) {
         console.log("xoa editor");
         await userModel.deleteEditor(user_id);
     }
@@ -175,6 +184,11 @@ router.post('/patch/:id', async function (req, res) {
 
 // Post Delete
 router.post('/del/:id', async function (req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
+
     const user_id = parseInt(req.params.id);
 
     const data = await userModel.load_user_info_by_id(user_id);
@@ -229,7 +243,7 @@ router.post('/add', async function (req, res) {
 
     console.log("pre =" + req.body.check_premium);
     if (time_premium === 'Invalid date' || (req.body.check_premium == undefined))
-        editted_user.time_premium = null;
+        new_user.time_premium = null;
 
     await authenticate_model.add_new_user(new_user);
 

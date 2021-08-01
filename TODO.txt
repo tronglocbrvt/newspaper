@@ -8,28 +8,34 @@
 8. Footer 
 9. sửa ngày
 
-DEADLINES CN
 
+DEADLINES T5
 - Loc: 
-   Quản lý chuyên mục category 0- chỉnh sửa thông báo, sub
-   Quản lý nhãn tag - chỉnh sửa thông báo
-   Testing
-   fix lỗi / ko phải số
-   fix lỗi article time published
+Fix: 
+   Front end thêm thành công.
+   Xóa thư mục con (Rang buộc đếm số lượng subcats).
+New tasks:
+   Chỉnh hàm auth để phân quyền.
+   Chỉnh link trong trang profile để đưa qua.
+Testing:
 
-- Linh: trang chủ (frontend - backend)
-   fix lỗi / ko phải số
-   đổi trang xem bài báo publish writer
+
+- Linh: 
+Fix: 
+   trang chủ (frontend - backend)
+   Trang chu:
+   * Nổi bật 1 tuần : đk thời gian + đk is out standing.
+   * mói nhất dễ.
+   * đọc nhiều dễ.
+   * mỗi chuyên mục tổng views, lấy ra cái nhiều nhất. Mỗi cái lấy ra 1 bài.
+New Tasks:
+   *Quản lý bài viết.
+   *Fix bugs lộc Logs
 
 - Phuc:
-    Quản lý danh sách người dùng (phóng viên, biên tập viên, độc giả, …)
-
-    /admin/writers
-    Phân công chuyên mục cho biên tập viên
-
-    /admin/editors
-
-   chọn ngày quá khứ
-   fix lỗi / ko phải số
-   chỉnh front end
-   chưa hiện form đăng ký
+Fix:
+   - Loc tai khoan theo loai users.
+   - chưa hiện form đăng ký.
+New tasks:
+   - Heroku: 
+   - Fix bugs lộc Logs
