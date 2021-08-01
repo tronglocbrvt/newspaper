@@ -11,6 +11,13 @@
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <h3 style="margin-bottom: 50px;">QUẢN LÝ CHUYÊN MỤC CON - {{cat_name.category_name}}</h3>
+                                {{#if message}}
+                                <center>
+                                <div id="error_message" class="alert alert-success" style="margin-top: 30px; width: 80%; text-align: left">
+                                    {{message}}
+                                </div>
+                                </center>
+                                {{/if}}
                                 <span class="float-left" style="margin-left: 120px;"><a class="btn btn-outline-primary" 
                                 href="/admin/categories" role="button">
                                     <i class="fa fa-backward" aria-hidden="true"></i>

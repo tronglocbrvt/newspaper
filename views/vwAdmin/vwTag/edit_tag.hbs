@@ -3,6 +3,11 @@
     Chỉnh sửa tag
   </h4>
   <div class="card-body">
+    {{#if err_message}}
+    <div id="error_message" class="alert alert-danger">
+      {{err_message}}
+    </div>
+    {{/if}}
     <form method="POST">
       <div class="form-group">
         <label for="txtTagID">ID</label>
@@ -10,7 +15,7 @@
       </div>
       <div class="form-group">
         <label for="txtCatName">Tên tag</label>
-        <input type="text" class="form-control" id="txtTagName" name="tag_name" autofocus
+        <input type="text" class="form-control" id="txtTagName" name="tag_name" autofocus required
           value="{{tag_name}}">
       </div>
       <a class="btn btn-primary" href="/admin/tags/" role="button">

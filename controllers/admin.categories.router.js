@@ -10,7 +10,8 @@ router.get('/add', async function(req, res) {
 
 router.post('/', async function(req, res) {
     // if (req.body !== "")
-    await categoryModel.add(req.body)
+    await categoryModel.add(req.body);
+    req.session.redirect_message = 'Thêm thành công';
     res.redirect('/admin/categories');
 });
 
@@ -59,7 +60,9 @@ router.get('/', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages), // check last page
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
+        message: req.session.redirect_message
     });
+   delete req.session.redirect_message
 });
 
 router.get('/:id', async function(req, res) {
@@ -78,13 +81,16 @@ router.get('/:id', async function(req, res) {
 
 router.post('/:id/patch', async function(req, res) {
     await categoryModel.patch(req.params.id, req.body.cat_name);
+    req.session.redirect_message = 'Chỉnh sửa thành công';
     res.redirect('/admin/categories');
 });
 
 router.post('/:id/del', async function(req, res) {
     count = await categoryModel.count_articles_in_cat(req.params.id);
-    if (count[0][0].count == 0)
+    if (count[0][0].count == 0) {
         await categoryModel.delete(req.params.id);
+        req.session.redirect_message = 'Xóa thành công';
+    }
     else {
         req.session.redirect_message = 'Không thể xóa - Do đây là chuyên mục chính - Cần xóa các bài báo và chuyên mục con trước';
         return res.redirect('/admin/categories/' + req.params.id);

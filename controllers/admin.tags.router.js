@@ -9,7 +9,8 @@ router.get('/add', async function(req, res) {
 });
 
 router.post('/', async function(req, res) {
-    await tag_model.add(req.body)
+    await tag_model.add(req.body);
+    req.session.redirect_message = 'Thêm thành công';
     res.redirect('/admin/tags');
 });
 
@@ -57,7 +58,9 @@ router.get('/', async function(req, res) {
         page_last: parseInt(page) === parseInt(n_pages), // check last page
         next_page: parseInt(page) + 1 ,
         previous_page: parseInt(page) - 1,
+        message: req.session.redirect_message
     });
+    delete req.session.redirect_message
 });
 
 router.get('/:id', async function(req, res) {
@@ -70,17 +73,21 @@ router.get('/:id', async function(req, res) {
     res.render('vwAdmin/vwTag/edit_tag', {
         tag_name: tag_name.tag_name,
         tag_id: tag_id,
+        err_message: req.session.redirect_message,
     });
+    delete req.session.redirect_message;
 });
 
 router.post('/:id/patch', async function(req, res) {
     await tag_model.patch(req.params.id, req.body.tag_name);
+    req.session.redirect_message = 'Chỉnh sửa thành công';
     res.redirect('/admin/tags');
 });
 
 router.post('/:id/del', async function(req, res) {
     await tag_model.delete_tag_link(req.params.id);
     await tag_model.delete_tag(req.params.id);
+    req.session.redirect_message = 'Xóa thành công';
     res.redirect('/admin/tags');
 });
 

@@ -123,23 +123,26 @@ router.post('/:id/download', async function (req, res) {
         return;
     }
     let data_download = req.body.download;
-    console.log(data_download);
     data = JSON.parse(data_download);
-    getTemplateHtml().then(async (res) => {
-        console.log("Compile the template with handlebars")
-        const template = hb.compile(res, { strict: true });
-        const result = template(data);
-        const html = result;
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage()
-        await page.setContent(html)
-        await page.pdf({ path: 'newspaper.pdf', format: 'A4' })
-        await browser.close();
-        console.log("PDF Generated");
-    }).catch(err => {
-        console.error(err)
-    });
-    res.redirect('back');
+    const resp = await getTemplateHtml();
+    console.log("Compile the template with handlebars")
+    const template = hb.compile(resp, { strict: true });
+    const result = template(data);
+    const html = result;
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage()
+    await page.setContent(html)
+    const pdf = await page.pdf({printBackground: true, format: 'A4', margin: {
+        top: "100px",
+        bottom: "100px",
+        left: "100px",
+        right: "100px"
+    }
+     })
+    await browser.close();
+    res.contentType("application/pdf");
+    res.send(pdf);
+    console.log("PDF Generated");
 });
 
 module.exports = router
