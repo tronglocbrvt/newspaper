@@ -39,7 +39,10 @@ router.get('/getsubcats', async function(req, res){
 router.get('/:category_id', async function(req, res) {
     // get category_id from param url, default 0
     const cat_id = req.params.category_id || 0;
-
+    if (isNaN(parseInt(cat_id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     const limit = 10; // number of articles on 1 page
 
     // get current page, default 1

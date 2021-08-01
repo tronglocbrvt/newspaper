@@ -16,6 +16,11 @@ router.get('/subs/:id', async function(req, res) {
     const cat_id = req.cat_id || 0;
     const sub_id = req.params.id || 0;
 
+    if (isNaN(parseInt(cat_id)) || isNaN(parseInt(sub_id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
+
     // number of articels on 1 page
     const limit = 10;
 

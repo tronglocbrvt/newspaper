@@ -21,7 +21,7 @@ router.get('/', async function(req, res) {
     const page = req.query.page || 1;
     if (page < 1) page = 1;
 
-    // count articles by cat_id
+    // count articles by tag_id
     const total = await tag_model.count_tag();
     let n_pages = Math.ceil(total[0][0].total / limit); // get total page
 
@@ -65,6 +65,10 @@ router.get('/', async function(req, res) {
 
 router.get('/:id', async function(req, res) {
     const tag_id = req.params.id;
+    if (isNaN(parseInt(tag_id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     const tag_name = await tag_model.get_name_tag_by_tag_id(tag_id);
     if (tag_name === undefined)
     {
@@ -79,12 +83,20 @@ router.get('/:id', async function(req, res) {
 });
 
 router.post('/:id/patch', async function(req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     await tag_model.patch(req.params.id, req.body.tag_name);
     req.session.redirect_message = 'Chỉnh sửa thành công';
     res.redirect('/admin/tags');
 });
 
 router.post('/:id/del', async function(req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     await tag_model.delete_tag_link(req.params.id);
     await tag_model.delete_tag(req.params.id);
     req.session.redirect_message = 'Xóa thành công';

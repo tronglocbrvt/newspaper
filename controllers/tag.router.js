@@ -13,7 +13,10 @@ const router = express.Router();
 router.get('/:tag_id', async function(req, res) {
     // get tag_id from param url, default 0
     const tag_id = req.params.tag_id || 0;
-
+    if (isNaN(parseInt(tag_id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     // get name tag from tag_id
     const name_tag = await tagModel.get_name_tag_by_tag_id(tag_id);
     if (name_tag === undefined) {

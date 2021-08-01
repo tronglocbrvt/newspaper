@@ -67,6 +67,10 @@ router.get('/', async function(req, res) {
 
 router.get('/:id', async function(req, res) {
     const cat_id = req.params.id;
+    if (isNaN(parseInt(cat_id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     const category = await categoryModel.find_by_cat_id(cat_id);
     if (category[0] === undefined)
     {
@@ -80,12 +84,20 @@ router.get('/:id', async function(req, res) {
 });
 
 router.post('/:id/patch', async function(req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     await categoryModel.patch(req.params.id, req.body.cat_name);
     req.session.redirect_message = 'Chỉnh sửa thành công';
     res.redirect('/admin/categories');
 });
 
 router.post('/:id/del', async function(req, res) {
+    if (isNaN(parseInt(req.params.id))) {
+        res.status(404);
+        return res.render('vwError/viewNotFound');
+    }
     count = await categoryModel.count_articles_in_cat(req.params.id);
     if (count[0][0].count == 0) {
         await categoryModel.delete(req.params.id);
