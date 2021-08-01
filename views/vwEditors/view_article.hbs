@@ -1,6 +1,6 @@
-<form method="post" enctype="multipart/form-data" id="form1">
+<form>
     <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium" {{#if
+        <input class="form-check-input" type="checkbox" value="" id="is_premium" {{#if
             article.is_premium}}checked{{/if}} readonly>
         <label class="form-check-label" for="is_premium">
             PREMIUM
@@ -8,13 +8,12 @@
     </div>
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
-        <input type="text" class="form-control" name="article_title" id="title" maxlength="75"
-            value="{{this.article.article_title}}" readonly>
+        <input type="text" class="form-control" id="title" maxlength="75" value="{{this.article.article_title}}"
+            readonly>
     </div>
     <div class="form-group">
         <label for="abstract">TÓM TẮT</label>
-        <textarea class="form-control" name="article_abstract" id="abstract" rows="5"
-            readonly>{{article.article_abstract}}</textarea>
+        <textarea class="form-control" id="abstract" rows="5" readonly>{{article.article_abstract}}</textarea>
     </div>
 
     <div id="avatar_container" class="form-group">
@@ -25,23 +24,22 @@
 
     <div class="form-group">
         <label for="avatar_caption">MÔ TẢ ẢNH BÌA</label>
-        <input type="text" class="form-control" name="avatar_caption" id="avatar_caption"
-            value="{{article.avatar_caption}}" readonly>
+        <input type="text" class="form-control" id="avatar_caption" value="{{article.avatar_caption}}" readonly>
     </div>
     <div class="row">
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
-            <input type="text" name="category_id" class="form-control" id="category" readonly>
-                {{!-- <option value="0">---------</option> --}}
-                {{!-- {{#each main_cats}}
-                <option value="{{category_id}}">{{category_name}}</option>
-                {{/each}} --}}
+            <input type="text" class="form-control" id="category" readonly>
+            {{!-- <option value="0">---------</option> --}}
+            {{!-- {{#each main_cats}}
+            <option value="{{category_id}}">{{category_name}}</option>
+            {{/each}} --}}
             </input>
         </div>
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
-            <input type="text" name="sub_category" class="form-control" id="sub_category" readonly>
-                {{!-- <option value="0">---------</option> --}}
+            <input type="text" class="form-control" id="sub_category" readonly>
+            {{!-- <option value="0">---------</option> --}}
             </input>
         </div>
     </div>
@@ -49,23 +47,96 @@
     <div class="mb-2" id="tag-area"></div>
     <div class="form-group">
         <label for="content">NỘI DUNG</label>
-        <div id="content" name="article_content" readonly></div>
+        <div id="content" readonly></div>
     </div>
 </form>
+<hr>
+<form method="POST" id="form">
+    <div class="row">
+        <div class="col-md-5 mb-3">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="accept">
+                <label class="form-check-label text-success" for="accept">
+                    DUYỆT
+                </label>
+            </div>
+            <div class="accept-div p-3">
+                <div class="form-group">
+                    <label for="category" class="text-dark">Đặt chuyên mục</label>
+                    <input type="text" class="form-control" id="main_cat_readonly" readonly>
+                    <select type="text" class="form-control" name="main_cat_reset" id="main_cat_reset" hidden>
+                        {{#each main_cats}}
+                        <option value="{{category_id}}">{{category_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sub_category" class="text-dark">Đặt chuyên mục con</label>
+                    <input type="text" class="form-control" id="sub_cat_readonly" readonly></input>
+                    <select type="text" class="form-control" name="sub_cat_reset" id="sub_cat_reset" hidden></select>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label for="tags" class="text-dark col-md-6">Chọn tags</label>
+                        <div class="col-md-6 mb-3" id="tag-alert-area" style="color: red;"></div>
+                    </div>
+                    <input type="text" id="tag_readonly" class="form-control" disabled>
+                    <div class="input-group" id="tag-group" hidden>
+                        <input type="text" list="tag-list" class="form-control" id="tags" />
+                        <datalist id="tag-list">
+                            {{#each tags}}
+                            <option value="{{tag_name}}">{{tag_name}}</option>
+                            {{/each}}
+                        </datalist>
+                        <div class="input-group-append">
+                            <div class="btn btn-primary" id="btn-add-tag">
+                                <i class="fa fa-plus"></i> Thêm tag
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tag-area-reset" hidden></div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="text-dark col-md-6">Chọn thời điểm đăng</label>
+                        <div id="date-alert-area" class="col-md-6" style="color: red;"></div>
+                    </div>
+                    <input type="text" id="date_readonly" class="form-control" disabled>
+                    <input id="publish-time" name="publish_time" type="text" class="form-control" hidden>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 offset-md-1 mb-3">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="reject">
+                <label class="form-check-label text-danger" for="reject">
+                    TỪ CHỐI
+                </label>
+            </div>
+            <div class="reject-div p-3">
+                <label for="comment" class="text-dark">Lí do từ chối:</label>
+                <textarea class="form-control" id="comment" name="comment" placeholder="Vui lòng nhập lí do..." rows="10"
+                    disabled></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mb-3">
+        <button type="submit" class="btn btn-success" id="submit">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Hoàn tất
+        </button>
+    </div>
+</form>
+
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/writer/writer.view.js"></script>
-{{!-- <script>
-    $(document).ready(function () {
-        $('#content').summernote({
-            placeholder: 'Nhập nội dung',
-            tabsize: 2,
-            height: 300
-        });
-    });
-</script> --}}
+<script src="/static/js/editor/editor.view.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+    integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 {{/section}}
 
 {{#section 'css'}}
@@ -74,6 +145,11 @@
     crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput.min.css" media="all"
     rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/static/css/editor/editor.view.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+    integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     label {
         font-weight: 650;

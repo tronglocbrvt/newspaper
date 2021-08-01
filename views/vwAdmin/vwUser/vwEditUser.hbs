@@ -15,7 +15,7 @@
       {{err_message}}
     </div>
     {{/if}}
-    <form method="POST">
+    <form id="frmAdminEditUser" method="POST" action='/admin/users/patch/{{user_id}}'>
       <div class="m-5" id="myTabContent">
         <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
@@ -152,6 +152,9 @@
             <div class="col-8">
               <input class="form-control" id="txtTimePremium" name="time_premium"
                 placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
+              <div id="time_premium_invalid" class="invalid-feedback">
+                Thời gian không hợp lệ.
+              </div>
             </div>
           </div>
 
@@ -162,7 +165,12 @@
             </div>
             <div class="col-8">
               <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH" value="">
+              <div id="time_premium_invalid" class="invalid-feedback">
+                Thời gian không hợp lệ.
+              </div>
             </div>
+
+
           </div>
           {{/if}}
 
@@ -283,7 +291,7 @@
           Xóa
         </button>
 
-        <button type="submit" class="btn btn-success ml-5" formaction="/admin/users/patch/{{user_id}}">
+        <button type="submit" class="btn btn-success ml-5">
           <i class="fa fa-check" aria-hidden="true"></i>
           Lưu
         </button>
@@ -297,18 +305,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script>
-
   $("#checked_premium").change(function () {
+    $("#checked_premium").attr("disabled", true);
     $('#change-time-premium').collapse('toggle');
   });
+  $('#change-time-premium').on('hidden.bs.collapse', function () {
+    $("#checked_premium").removeAttr("disabled");
+  });
+  $('#change-time-premium').on('shown.bs.collapse', function () {
+    $("#checked_premium").removeAttr("disabled");
+  });
+
+  /////////////////////////////////////////////////////////////////
 
   $("#check_editor").change(function () {
+    $("#check_editor").attr("disabled", true);
     $('#change-assigned-categoríes').collapse('toggle');
   });
+  $('#change-assigned-categoríes').on('hidden.bs.collapse', function () {
+    $("#check_editor").removeAttr("disabled");
+  });
+  $('#change-assigned-categoríes').on('shown.bs.collapse', function () {
+    $("#check_editor").removeAttr("disabled");
+  });
+
+  /////////////////////////////////////////////////////////////////
+
 
   $("#check_writer").change(function () {
+    $("#check_writer").attr("disabled", true);
     $('#change-nickname').collapse('toggle');
   });
+  $('#change-nickname').on('hidden.bs.collapse', function () {
+    $("#check_writer").removeAttr("disabled");
+  });
+  $('#change-nickname').on('shown.bs.collapse', function () {
+    $("#check_writer").removeAttr("disabled");
+  });
+
+
+  /////////////////////////////////////////////////////////////////
 
 
   $('#categories_selected option').mousedown(function (e) {
@@ -316,6 +352,7 @@
     $(this).prop('selected', !$(this).prop('selected'));
     return false;
   });
+
 
   $.datetimepicker.setDateFormatter('moment');
   $('#txtTimePremium').datetimepicker(
@@ -330,4 +367,6 @@
     }
   );
 </script>
+<script src="/static/js/auth/authenticate.js"> </script>
+
 {{/section}}

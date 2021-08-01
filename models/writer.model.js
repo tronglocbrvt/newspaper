@@ -53,18 +53,35 @@ module.exports = {
             .update(article);
     },
 
-    async patch_article_content(article_id, content){
-        if(article_id < 0){
-            const sql = `select article_id
-            from articles
-            order by article_id desc
-            limit 1`;
-            var latest_article = await db.raw(sql);
-            article_id = latest_article[0][0].article_id;
-        }
+    get_rejected_comment(article_id){
+        const sql = `select editor_comments
+        from rejected_articles
+        where article_id = ${article_id}`;
 
-        return db('articles')
-            .where('article_id', article_id)
-            .update({article_content: content})
+        return db.raw(sql);
+    },
+
+    is_exist(writer_id){
+        const sql = `select *
+        from writers
+        where writer_id = ${writer_id}`;
+
+        return db.raw(sql);
+    },
+
+    if_article_belong_writer(writer_id, article_id){
+        const sql = `select *
+        from articles
+        where writer_id = ${writer_id}
+        and article_id = ${article_id}`;
+
+        return db.raw(sql);
+    },
+
+    delete_rejected_article(article_id){
+        const sql = `delete from rejected_articles
+        where article_id = ${article_id}`;
+
+        return db.raw(sql);
     }
 }

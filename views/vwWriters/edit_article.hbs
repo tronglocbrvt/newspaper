@@ -1,4 +1,11 @@
 <form method="post" enctype="multipart/form-data" id="form1">
+    {{#if is_rejected}}
+    <div class="reject-div p-3 mb-3">
+        <label for="comment" class="text-dark">Lí do từ chối:</label>
+        <textarea class="form-control" id="comment" name="comment" rows="2"
+            disabled>{{comment}}</textarea>
+    </div>
+    {{/if}}
     <div class="form-check mb-3">
         <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium" {{#if
             article.is_premium}}checked{{/if}}>
@@ -38,7 +45,6 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <select name="category_id" class="form-control" id="category" required>
-                <option value="0">---------</option>
                 {{#each main_cats}}
                 <option value="{{category_id}}">{{category_name}}</option>
                 {{/each}}
@@ -47,7 +53,6 @@
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <select name="sub_category" class="form-control" id="sub_category">
-                <option value="0">---------</option>
             </select>
         </div>
     </div>
@@ -73,17 +78,17 @@
         <label for="content">NỘI DUNG</label>
         <textarea id="content" name="article_content" required></textarea>
     </div>
+        <div class="text-center mb-3">
+        <button type="submit" class="btn btn-dark" name="action" value="draft">
+            <i class="fa fa-file-text" aria-hidden="true"></i>
+            Lưu bản nháp
+        </button>
+        <button type="submit" class="btn btn-success" name="action" value="submit">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Hoàn tất và gửi
+        </button>
+    </div>
 </form>
-<div class="text-center mb-3">
-    <button class="btn btn-dark" id="save_draft">
-        <i class="fa fa-file-text" aria-hidden="true"></i>
-        Lưu bản nháp
-    </button>
-    <button class="btn btn-success" id="submit">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Hoàn tất và gửi
-    </button>
-</div>
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -106,6 +111,7 @@
     crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput.min.css" media="all"
     rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/static/css/editor/editor.view.css">
 <style>
     label {
         font-weight: 650;

@@ -44,6 +44,11 @@ function checkDate(dateString) {
     if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
         return false;
 
+
+    const dob = moment(dateString, "DD/MM/YYYY");
+    console.log("DOB : " + dob + " - " + moment());
+    if (dob > moment()) return false;
+
     // Parse the date parts to integers
     var parts = dateString.split("/");
     var day = parseInt(parts[0], 10);
@@ -190,6 +195,10 @@ function checkDate(dateString) {
     // First check for the pattern
     if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
         return false;
+
+    const dob = moment(dateString, "DD/MM/YYYY");
+    console.log("DOB : " + dob + " - " + moment());
+    if (dob > moment()) return false;
 
     // Parse the date parts to integers
     var parts = dateString.split("/");
