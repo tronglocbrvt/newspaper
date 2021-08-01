@@ -7,27 +7,27 @@
     </div>
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
-        <input type="text" class="form-control" name="article_title" id="title" maxlength="75" required>
+        <input type="text" class="form-control" name="article_title" id="title" maxlength="75" required='true'>
     </div>
     <div class="form-group">
         <label for="abstract">TÓM TẮT</label>
-        <input type="text" class="form-control" name="article_abstract" id="abstract" required>
+        <input type="text" class="form-control" name="article_abstract" id="abstract" required />
     </div>
     <div class="form-group">
         <label for="avatar">ẢNH BÌA</label>
-        <input type="file" class="form-control" name="avatar" id="avatar" required>
+        <input type="file" class="form-control" name="avatar" id="avatar" required />
     </div>
     <div class="form-group">
         <label for="avatar_caption">MÔ TẢ ẢNH BÌA</label>
-        <input type="text" class="form-control" name="avatar_caption" id="avatar_caption" required>
+        <input type="text" class="form-control" name="avatar_caption" id="avatar_caption" required />
     </div>
     <div class="row">
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
-            <select name="category_id" class="form-control" id="category" required>
-                {{#each main_cats}}
-                <option value="{{category_id}}">{{category_name}}</option>
-                {{/each}}
+            <select name="category_id" class="form-control" id="category" required />
+            {{#each main_cats}}
+            <option value="{{category_id}}">{{category_name}}</option>
+            {{/each}}
             </select>
         </div>
         <div class="form-group col-md-5">
@@ -58,17 +58,17 @@
         <label for="content">NỘI DUNG</label>
         <textarea id="content" name="article_content" required></textarea>
     </div>
+    <div class="text-center mb-3">
+        <button type="submit" class="btn btn-dark" name="action" value="draft">
+            <i class="fa fa-file-text" aria-hidden="true"></i>
+            Lưu bản nháp
+        </button>
+        <button type="submit" class="btn btn-success" name="action" value="submit">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Hoàn tất và gửi
+        </button>
+    </div>
 </form>
-<div class="text-center mb-3">
-    <button class="btn btn-dark" id="save_draft">
-        <i class="fa fa-file-text" aria-hidden="true"></i>
-        Lưu bản nháp
-    </button>
-    <button class="btn btn-success" id="submit">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Hoàn tất và gửi
-    </button>
-</div>
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>

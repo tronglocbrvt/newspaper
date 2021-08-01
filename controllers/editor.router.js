@@ -8,6 +8,18 @@ const tag_model = require("../models/tag.model");
 router.get('/:editor_id/reviews', async function (req, res) {
     const editor_id = req.params.editor_id;
 
+    if (isNaN(parseInt(editor_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await editor_model.if_exist(editor_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+
     var editor_cats = await editor_model.get_categories_by_editor(editor_id);
     editor_cats = editor_cats[0];
     var categories = [], articles_all = [];
@@ -28,12 +40,27 @@ router.get('/:editor_id/reviews', async function (req, res) {
 
 router.get('/:editor_id/review/:article_id', async function (req, res) {
     const article_id = req.params.article_id || 0;
-    const article = await writer_model.load_article_by_id(article_id);
-    const main_cats = await category_model.get_main_cats();
-    res.render("vwEditors/view_article", {
-        article: article[0][0],
-        main_cats: main_cats[0]
-    })
+    const editor_id = req.params.editor_id;
+    if (isNaN(parseInt(editor_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await editor_model.if_article_belong_editor(editor_id, article_id);
+    if (if_exist[0][0]) {
+        const article = await writer_model.load_article_by_id(article_id);
+        const main_cats = await category_model.get_main_cats();
+        res.render("vwEditors/view_article", {
+            article: article[0][0],
+            main_cats: main_cats[0]
+        })
+    }
+    else {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+
 });
 
 router.post('/:editor_id/review/:article_id', async function (req, res) {

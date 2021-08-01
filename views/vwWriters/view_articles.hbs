@@ -36,14 +36,14 @@
                                     {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
                                     <td class="text-center">{{#if (is_editable status)}}
                                         <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                            href="/writers/{{writer_id}}/articles/{{article_id}}" title="Chỉnh sửa"><i class="fa fa-pencil"></i> Chỉnh
+                                            href="/writers/{{writer_id}}/edit/{{article_id}}" title="Chỉnh sửa"><i class="fa fa-pencil"></i> Chỉnh
                                             sửa</a>
                                         {{else}} 
                                         {{#if (is_submitted status)}}
                                         <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
                                             href="/writers/{{writer_id}}/submitted/{{article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> 
                                         {{else}}<a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                            href="/articles/{{published_article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> {{/if}} {{/if}}
+                                            href="/writers/{{writer_id}}/published/{{article_id}}" title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> {{/if}} {{/if}}
                                     </td>
                                 </tr>
                                 {{/each}}

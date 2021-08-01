@@ -4,7 +4,6 @@
 /* Slideshow container */
 .slideshow-container {
   overflow: hidden;
-  height: 650px;
   position: relative;
   margin: auto;
 }
@@ -25,7 +24,6 @@ img:hover{
 
 .img-containter{
   overflow: hidden;
-  height: 420px;
   width: 100%;
   margin-bottom: 10px;
 }
