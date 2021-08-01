@@ -11,7 +11,7 @@ router.get('/add', async function(req, res) {
 
 router.post('/', async function(req, res) {
     cat = await categoryModel.search_by_cat_name(req.body.category_name);
-    if (cat[0] === undefined) {
+    if (cat[0][0] === undefined) {
         await categoryModel.add(req.body);
         req.session.redirect_message = 'Thêm thành công';
         res.redirect('/admin/categories');

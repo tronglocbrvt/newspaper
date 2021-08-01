@@ -23,7 +23,7 @@ router.post('/', async function(req, res) {
     }
     req.body.parent_category_id = req.cat_id;
     cat = await categoryModel.search_by_cat_name(req.body.category_name);
-    if (cat[0] === undefined) {
+    if (cat[0][0] === undefined) {
         await categoryModel.add(req.body);
         req.session.redirect_message = 'Thêm thành công';
         res.redirect('/admin/categories/' + req.cat_id + '/subs');
