@@ -102,6 +102,12 @@ hbs.handlebars.registerHelper('get_status_color', function (str) {
     return "dark";
 })
 
+hbs.handlebars.registerHelper('is_empty_editor', function(value){
+  if(value.length < 1)
+    return true
+  return false
+})
+
 hbs.handlebars.registerHelper('gen_gender', function (value) {
   if (value === 0)
     return "Nữ";

@@ -28,5 +28,25 @@ module.exports = {
 
     add_publish_article(article){
         return db('published_articles').insert(article);
+    },
+
+    if_exist(editor_id){
+        const sql = `select *
+        from editors
+        where editor_id = ${editor_id}`;
+
+        return db.raw(sql);
+    },
+
+    if_article_belong_editor(editor_id, article_id){
+        const sql = `select *
+        from editor_category_links ecl, articles a, categories c
+        where a.is_submitted = true
+        and c.category_id = a.category_id
+        and c.parent_category_id = ecl.category_id
+        and ecl.editor_id = ${editor_id}
+        and a.article_id = ${article_id}`;
+
+        return db.raw(sql);
     }
 }

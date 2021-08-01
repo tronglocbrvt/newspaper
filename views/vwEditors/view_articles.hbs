@@ -20,6 +20,9 @@
                         </a>
                         {{/each}}
                         {{#each articles_all}}
+                        {{#if (is_empty_editor this)}}
+                        <h4 class="collapse text-primary" id="col{{@index}}">Không có bài báo chờ</h4>
+                        {{else}}
                         <div class="collapse" id="col{{@index}}">
                             <!--table start-->
                             <table class="table table-striped">
@@ -52,6 +55,7 @@
                             </table>
                             <!--end table-->
                         </div>
+                        {{/if}}
                         {{/each}}
                     </div>
                 </div>
@@ -64,7 +68,7 @@
 <script>
     $("#col0").addClass('show');
 
-    function clickCollapse(){
+    function clickCollapse() {
         $(".show").removeClass('show');
     }
 </script>

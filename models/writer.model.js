@@ -59,5 +59,29 @@ module.exports = {
         where article_id = ${article_id}`;
 
         return db.raw(sql);
+    },
+
+    is_exist(writer_id){
+        const sql = `select *
+        from writers
+        where writer_id = ${writer_id}`;
+
+        return db.raw(sql);
+    },
+
+    if_article_belong_writer(writer_id, article_id){
+        const sql = `select *
+        from articles
+        where writer_id = ${writer_id}
+        and article_id = ${article_id}`;
+
+        return db.raw(sql);
+    },
+
+    delete_rejected_article(article_id){
+        const sql = `delete from rejected_articles
+        where article_id = ${article_id}`;
+
+        return db.raw(sql);
     }
 }

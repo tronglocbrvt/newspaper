@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-7" style="padding: 0">
+  <div class="col-md-7 col-sm-12 col-12" style="padding: 0">
     <!-- Slideshow container -->
     <div class="slideshow-container">
       <!-- Full-width images with number and caption text -->
@@ -15,7 +15,7 @@
           <a href="/articles/{{article_id}}" class="title-link">{{article_title}}</a>
         </div>
         <div style="font-size: large;">
-          <span class="d-none d-sm-inline me-1" style="margin-left: 30px;">
+          <span class="d-sm-inline me-1" style="margin-left: 30px;">
             <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
           </span>
           <span class="date">&nbsp;{{date_format time_published}}</span>
@@ -30,7 +30,7 @@
     <br>
 
   </div>
-  <div class="col-sm-5">
+  <div class="col-md-5 col-sm-12 col-12">
     <ul class="nav nav-pills" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="tab-javascript" data-toggle="tab" href="#content-javascript" role="tab"
@@ -46,7 +46,7 @@
     </ul>
 
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade" id="content-javascript" role="tabpanel" aria-labelledby="tab-javascript">
+      <div class="tab-pane fade show active" id="content-javascript" role="tabpanel" aria-labelledby="tab-javascript">
         <div class="hot-news-container">
           {{#each latest_news}}
           <div class="card" style="height: 100px; margin: 10px 0px">
@@ -57,7 +57,7 @@
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
                 <span class="d-none d-sm-inline me-1">
-                  <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
+                  <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
                 <span class="date">&nbsp;{{date_format time_published}}</span>
               </div>
@@ -66,7 +66,7 @@
           {{/each}}
         </div>
       </div>
-      <div class="tab-pane fade show active" id="content-css" role="tabpanel" aria-labelledby="tab-css">
+      <div class="tab-pane fade" id="content-css" role="tabpanel" aria-labelledby="tab-css">
         <div class="hot-news-container">
           {{#each most_news}}
           <div class="card" style="height: 100px; margin: 10px 0px">
@@ -77,7 +77,7 @@
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
                 <span class="d-none d-sm-inline me-1">
-                  <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
+                  <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
                 <span class="date">&nbsp;{{date_format time_published}}</span>
               </div>
@@ -96,11 +96,11 @@
 <div class="row" style="margin-bottom: 20px;">
   {{#each hot_categories}}
   <div class="col-sm-2 v-article">
-    <a href="/categories/{{category_id}}" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
+    <a href="/categories/{{parent_cat_id}}/subs/{{category_id}}" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
       style="font-size: medium;">{{category_name}}</a>
     <div class="card v-card">
       <a href="/articles/{{article_id}}">
-        <img class="card-img-top" src="{{avatar_url}}" alt="Card image cap" width="180px" height="120px"></a>
+        <img class="card-img-top" src="{{avatar_url}}" alt="Nổi bật" style="width: 100%; max-height: 120px;"></a>
       <a href="#" class="title-link v-card-content">{{article_title}}</a>
       <div class="v-time">
         {{date_format time_published}}

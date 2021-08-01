@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    // $("input[required], select[required]").attr("oninvalid", "this.setCustomValidity('Vui lòng nhập vùng này')");
+
     var tag_list = [];
     const url = window.location.href;
     const id = url.substr(url.lastIndexOf('/') - 1, 1);
@@ -57,30 +59,15 @@ $(document).ready(function () {
         })
     });
 
-    $('#save_draft').click(function (e) {
+    $("#form1").submit(function(){
         const tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", tags)
             .appendTo("#form1");
 
-        $("#form1").submit();
-    });
-
-    $('#submit').click(function (e) {
-        const tags = tag_list.toString();
-        $("<input />").attr("type", "hidden")
-            .attr("name", "tags")
-            .attr("value", tags)
-            .appendTo("#form1");
-
-        $("<input />").attr("type", "hidden")
-            .attr("name", "is_submit")
-            .attr("value", "1")
-            .appendTo("#form1");
-
-        $("#form1").submit();
-    });
+        return true;
+    })
 });
 
 function set_sub_cats(id, data) {

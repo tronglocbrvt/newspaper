@@ -12,11 +12,24 @@ router.get('/:writer_id/add', async function (req, res) {
     const main_cats = await category_model.get_main_cats();
     const tags = await tag_model.get_tags();
     const writer_id = req.params.writer_id;
-    res.render('vwWriters/add', {
-        main_cats: main_cats[0],
-        tags: tags[0],
-        writer_id: writer_id
-    });
+    if (isNaN(parseInt(writer_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await writer_model.is_exist(writer_id);
+
+    if (if_exist[0][0]) {
+        res.render('vwWriters/add', {
+            main_cats: main_cats[0],
+            tags: tags[0],
+            writer_id: writer_id
+        });
+    }
+    else {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+    }
 })
 
 router.post('/:writer_id/add', async function (req, res) {
@@ -49,12 +62,12 @@ router.post('/:writer_id/add', async function (req, res) {
     article['avatar_url'] = avatar_url;
 
     //set is_draft to true
-    if("is_submit" in article){
+    if (article['action'] === 'submit') {
         article['is_submitted'] = true;
-    } else{
+    } else {
         article['is_draft'] = true;
     }
-    delete article['is_submit']
+    delete article['action']
 
 
     //add article and get returned article_id
@@ -88,19 +101,44 @@ router.post('/:writer_id/add', async function (req, res) {
 
 router.get('/:writer_id/articles', async function (req, res) {
     const id = req.params.writer_id || 0;
+    if (isNaN(id)) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await writer_model.is_exist(id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
     const articles = await writer_model.get_articles_by_id(id, 0);
     res.render("vwWriters/view_articles", {
         articles: articles[0]
     });
 })
 
-router.get('/:writer_id/articles/:article_id', async function (req, res) {
+router.get('/:writer_id/edit/:article_id', async function (req, res) {
     const article_id = req.params.article_id || 0;
+    const writer_id = req.params.writer_id;
+
+    if (isNaN(parseInt(writer_id)) || isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+
     const article = await writer_model.load_article_by_id(article_id);
     const main_cats = await category_model.get_main_cats();
     const tags = await tag_model.get_tags();
     var is_rejected = false, comment;
-    if(article[0][0].is_rejected){
+    if (article[0][0].is_rejected) {
         comment = await writer_model.get_rejected_comment(article_id);
         comment = comment[0][0].editor_comments;
         is_rejected = true;
@@ -114,7 +152,7 @@ router.get('/:writer_id/articles/:article_id', async function (req, res) {
     })
 })
 
-router.post('/:writer_id/articles/:article_id', async function (req, res) {
+router.post('/:writer_id/edit/:article_id', async function (req, res) {
     var article = req.body;
 
     //get tag and delete from body
@@ -150,13 +188,18 @@ router.post('/:writer_id/articles/:article_id', async function (req, res) {
         article['is_premium'] = 0;
     }
 
-    //set is_submitted and is_draft
-    if('is_submit' in article){
+    //delete rejected article if any
+    await writer_model.delete_rejected_article(article['article_id']);
+    article['is_rejected'] = false;
+
+    //set is_draft to true
+    if (article['action'] === 'submit') {
         article['is_submitted'] = true;
         article['is_draft'] = false;
-        article['is_rejected'] = false;
+    } else {
+        article['is_draft'] = true;
     }
-    delete article['is_submit'];
+    delete article['action']
 
     //call model to process
     await writer_model.patch_article(article);
@@ -243,15 +286,49 @@ async function get_main_sub_cat(category_id) {
     var get_name2 = await category_model.get_name_by_id(main_cat);
     main_cat_name = get_name2[0][0].category_name;
 
-    return {main_cat: main_cat,
+    return {
+        main_cat: main_cat,
         main_cat_name: main_cat_name,
         sub_cat: sub_cat,
-        sub_cat_name: sub_cat_name};
+        sub_cat_name: sub_cat_name
+    };
 }
 
-router.get('/:writer_id/submitted/:article_id', async function(req, res){
+router.get('/:writer_id/submitted/:article_id', async function (req, res) {
     const article_id = req.params.article_id || 0;
+    const writer_id = req.params.writer_id;
     const article = await writer_model.load_article_by_id(article_id);
+    if (isNaN(parseInt(writer_id)) || isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    res.render("vwWriters/view_article", {
+        article: article[0][0]
+    })
+})
+
+router.get('/:writer_id/published/:article_id', async function (req, res) {
+    const article_id = req.params.article_id || 0;
+    const writer_id = req.params.writer_id;
+    const article = await writer_model.load_article_by_id(article_id);
+    if (isNaN(parseInt(writer_id)) || isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
     res.render("vwWriters/view_article", {
         article: article[0][0]
     })
