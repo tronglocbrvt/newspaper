@@ -60,4 +60,9 @@ module.exports = {
         limit 10 offset ?`;
         return db.raw(sql, offset);
     },
+
+    search_by_tag_name(tag_name) {
+        const sql = `select * from tags where tag_name = '${tag_name}'`;
+        return db.raw(sql);
+    }
 }

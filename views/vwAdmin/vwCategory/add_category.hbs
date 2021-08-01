@@ -3,6 +3,11 @@
     Thêm mới chuyên mục chính
   </h4>
   <div class="card-body">
+    {{#if message}}
+    <div id="error_message" class="alert alert-danger">
+      {{message}}
+    </div>
+    {{/if}}
     <form method="POST">
       <div class="form-group">
         <label for="txtCatName">Tên chuyên mục mới</label>
@@ -12,7 +17,8 @@
         <i class="fa fa-backward" aria-hidden="true"></i>
         Trở về
       </a>
-      <button type="submit" class="btn btn-success ml-4" formaction="/admin/categories">
+      <button type="submit" class="btn btn-success ml-4" formaction="/admin/categories"
+      onclick="return confirm('Bạn có chắc chắn muốn thêm chuyên mục này không?')">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>

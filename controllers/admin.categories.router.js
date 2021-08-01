@@ -5,14 +5,21 @@ const router = express.Router();
 
 // Category management
 router.get('/add', async function(req, res) {
-    res.render('vwAdmin/vwCategory/add_category');
+    res.render('vwAdmin/vwCategory/add_category',{message: req.session.redirect_message});
+    delete req.session.redirect_message;
 });
 
 router.post('/', async function(req, res) {
-    // if (req.body !== "")
-    await categoryModel.add(req.body);
-    req.session.redirect_message = 'Thêm thành công';
-    res.redirect('/admin/categories');
+    cat = await categoryModel.search_by_cat_name(req.body.category_name);
+    if (cat[0] === undefined) {
+        await categoryModel.add(req.body);
+        req.session.redirect_message = 'Thêm thành công';
+        res.redirect('/admin/categories');
+    }
+    else {
+        req.session.redirect_message = 'Tên chuyên mục đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/categories/add');
+    }
 });
 
 router.get('/', async function(req, res) {
@@ -88,9 +95,16 @@ router.post('/:id/patch', async function(req, res) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
-    await categoryModel.patch(req.params.id, req.body.cat_name);
-    req.session.redirect_message = 'Chỉnh sửa thành công';
-    res.redirect('/admin/categories');
+    cat = await categoryModel.search_by_cat_name(req.body.category_name);
+    if (cat[0] === undefined) {
+        await categoryModel.patch(req.params.id, req.body.cat_name);
+        req.session.redirect_message = 'Chỉnh sửa thành công';
+        res.redirect('/admin/categories');
+    }
+    else {
+        req.session.redirect_message = 'Tên chuyên mục đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/categories/' + req.params.id);
+    }
 });
 
 router.post('/:id/del', async function(req, res) {

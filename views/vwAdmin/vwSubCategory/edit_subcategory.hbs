@@ -20,7 +20,7 @@
       </div>
       <div class="form-group">
             <label for="category">Chuyên mục chính</label>
-            <select name="category_id" class="form-control" id="category" required>
+            <select name="parent_category_id" class="form-control" id="category" required>
                 {{#each main_cats}}
                   <option value="{{category_id}}" {{#if select}}selected="selected"{{/if}}>{{category_name}}</option>
                 {{/each}}
@@ -35,7 +35,8 @@
         <i class="fa fa-trash-o" aria-hidden="true"></i>
         Xóa
       </button>
-      <button type="submit" class="btn btn-success ml-5" formaction="/admin/categories/{{parent_cat_id}}/subs/{{category.category_id}}/patch">
+      <button type="submit" class="btn btn-success ml-5" formaction="/admin/categories/{{parent_cat_id}}/subs/{{category.category_id}}/patch"
+      onclick="return confirm('Thay đổi này có thể ảnh hưởng đến phân loại các bài viết liên quan. Bạn có muốn thực hiện không?')">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>

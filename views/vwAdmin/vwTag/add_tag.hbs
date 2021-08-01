@@ -3,19 +3,32 @@
     Thêm mới tag
   </h4>
   <div class="card-body">
-    <form method="POST">
+    {{#if message}}
+    <div id="error_message" class="alert alert-danger">
+      {{message}}
+    </div>
+    {{/if}}
+    <form id="frmTag" method="POST">
       <div class="form-group">
         <label for="txtTagName">Tên tag mới</label>
-        <input type="text" class="form-control" id="txtTagName" name="tag_name" autofocus required>
+        <input type="text" class="form-control" id="txtTagName" name="tag_name" minlength="2" placeholder="#Tag" autofocus required>
+        <div id="name_invalid" class="invalid-feedback">
+                    Tag không đúng định dạng: phải có ít nhất 2 ký tự và theo định dạng #Tag hoặc #123
+        </div>
       </div>
       <a class="btn btn-primary" href="/admin/tags/" role="button">
         <i class="fa fa-backward" aria-hidden="true"></i>
         Trở về
       </a>
-      <button type="submit" class="btn btn-success ml-4" formaction="/admin/tags">
+      <button type="submit" class="btn btn-success ml-4" formaction="/admin/tags"
+      onclick="return confirm('Bạn có chắc chắn muốn thêm tag này không?')">
         <i class="fa fa-check" aria-hidden="true"></i>
         Lưu
       </button>
     </form>
   </div>
 </div>
+
+{{#section 'js'}}
+  <script src="/static/js/admin/tags.js"></script>
+{{/section}}

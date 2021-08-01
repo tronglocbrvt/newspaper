@@ -10,8 +10,10 @@ router.get('/add', async function(req, res) {
         return res.render('vwError/viewNotFound');
     }
     res.render('vwAdmin/vwSubCategory/add_subcategory', {
-        cat_id: req.cat_id
+        cat_id: req.cat_id,
+        message: req.session.redirect_message
     });
+    delete req.session.redirect_message;
 });
 
 router.post('/', async function(req, res) {
@@ -20,10 +22,16 @@ router.post('/', async function(req, res) {
         return res.render('vwError/viewNotFound');
     }
     req.body.parent_category_id = req.cat_id;
-    console.log(req.body);
-    await categoryModel.add(req.body);
-    req.session.redirect_message = 'Thêm thành công';
-    res.redirect('/admin/categories/' + req.cat_id + '/subs');
+    cat = await categoryModel.search_by_cat_name(req.body.category_name);
+    if (cat[0] === undefined) {
+        await categoryModel.add(req.body);
+        req.session.redirect_message = 'Thêm thành công';
+        res.redirect('/admin/categories/' + req.cat_id + '/subs');
+    }
+    else {
+        req.session.redirect_message = 'Tên chuyên mục đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/categories/' + req.cat_id + '/add');
+    }
 });
 
 router.get('/subs', async function(req, res) {
@@ -120,9 +128,16 @@ router.post('/subs/:id/patch', async function(req, res) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
-    await categoryModel.patch(req.params.id, req.body.cat_name);
-    req.session.redirect_message = 'Chỉnh sửa thành công';
-    res.redirect('/admin/categories/' + req.cat_id + '/subs');
+    cat = await categoryModel.search_by_cat_name(req.body.category_name);
+    if (cat[0] === undefined) {
+        await categoryModel.patch_subcat(req.params.id, req.body.cat_name, req.body.parent_category_id);
+        req.session.redirect_message = 'Chỉnh sửa thành công';
+        res.redirect('/admin/categories/' + req.cat_id + '/subs');
+    }
+    else {
+        req.session.redirect_message = 'Tên chuyên mục đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/categories/' + req.cat_id + '/subs/' + req.params.id);
+    }
 });
 
 router.post('/subs/:id/del', async function(req, res) {

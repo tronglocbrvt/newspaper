@@ -68,6 +68,10 @@ module.exports={
         return db('categories').where('category_id', cat_id).update({category_name: cat_name});
     },
 
+    patch_subcat(cat_id, cat_name, parent_cat_id) {
+        return db('categories').where('category_id', cat_id).update({category_name: cat_name, parent_category_id: parent_cat_id});
+    },
+
     delete(cat_id) {
         return db('categories').where('category_id', cat_id).del();
     },
@@ -121,4 +125,9 @@ module.exports={
         where a.category_id = ?`;
         return db.raw(sql, subcat_id);
     },
+
+    search_by_cat_name(cat_name) {
+        const sql = `select * from categories where category_name = '${cat_name}'`;
+        return db.raw(sql);
+    }
 }

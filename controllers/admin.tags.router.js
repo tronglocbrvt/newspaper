@@ -1,17 +1,28 @@
 const express = require('express');
+const tagModel = require('../models/tag.model');
 const tag_model = require('../models/tag.model');
 
 const router = express.Router();
 
 // Tags management
 router.get('/add', async function(req, res) {
-    res.render('vwAdmin/vwTag/add_tag');
+    res.render('vwAdmin/vwTag/add_tag',{
+        message: req.session.redirect_message
+    });
+    delete req.session.redirect_message;
 });
 
 router.post('/', async function(req, res) {
-    await tag_model.add(req.body);
-    req.session.redirect_message = 'Thêm thành công';
-    res.redirect('/admin/tags');
+    tag = await tagModel.search_by_tag_name(req.body.tag_name);
+    if (tag[0] === undefined) {
+        await tag_model.add(req.body);
+        req.session.redirect_message = 'Thêm thành công';
+        res.redirect('/admin/tags');
+    }
+    else {
+        req.session.redirect_message = 'Tên tag đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/tags/add');
+    }
 });
 
 router.get('/', async function(req, res) {
@@ -87,9 +98,16 @@ router.post('/:id/patch', async function(req, res) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
-    await tag_model.patch(req.params.id, req.body.tag_name);
-    req.session.redirect_message = 'Chỉnh sửa thành công';
-    res.redirect('/admin/tags');
+    tag = await tagModel.search_by_tag_name(req.body.tag_name);
+    if (tag[0] === undefined) {
+        await tag_model.patch(req.params.id, req.body.tag_name);
+        req.session.redirect_message = 'Chỉnh sửa thành công';
+        res.redirect('/admin/tags');
+    }
+    else {
+        req.session.redirect_message = 'Tên tag đã tồn tại. Vui lòng đặt tên khác!';
+        res.redirect('/admin/tags/' + req.params.id);
+    }
 });
 
 router.post('/:id/del', async function(req, res) {

@@ -16,6 +16,9 @@ DEADLINES CN
    Testing
    fix lỗi / ko phải số
    fix lỗi article time published
+   check tên trùng
+   tag check # 
+   mix-max length
 
 - Linh: trang chủ (frontend - backend)
    fix lỗi / ko phải số
