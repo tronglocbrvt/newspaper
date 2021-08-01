@@ -10,7 +10,7 @@
     </h2>
 
     <div class="card-body">
-        <form id="frmAdminAddUser" method="POST" action = "/admin/users/add/">
+        <form id="frmAdminAddUser" method="POST" action="/admin/users/add/">
 
             <div class="m-5" id="myTabContent">
                 <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
@@ -77,7 +77,8 @@
                             <label for="date_of_birth" style="font-weight:bold;">Ngày sinh: </label>
                         </div>
                         <div class="col-8">
-                            <input readonly id="date_of_birth" width="276" name="raw_date_of_birth" placeholder="dd/mm/yyyy">
+                            <input readonly id="date_of_birth" width="276" name="raw_date_of_birth"
+                                placeholder="dd/mm/yyyy">
                             <div id="date_of_birth_invalid" class="invalid-feedback">
                                 Ngày sinh không hợp lệ.
                             </div>
@@ -132,7 +133,8 @@
                             <label style="font-weight:bold;">Phân quyền phóng viên</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-check-input" id = "check_writer" name = "check_writer" type="checkbox" style="margin:auto">
+                            <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox"
+                                style="margin:auto">
                         </div>
                     </div>
 
@@ -148,7 +150,7 @@
                     </div>
 
 
-                    <hr/>
+                    <hr />
                     <div class="row">
                         <div class="col-3">
                             <label style="font-weight:bold;">Phân quyền biên tập viên</label>
@@ -167,8 +169,8 @@
                         <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
                     </div>
                     <div class="col-8">
-                        <select id="categories_selected" name= "categories_selected" class="form-select" multiple size="10"
-                            aria-label="size 3 select example">
+                        <select id="categories_selected" name="categories_selected" class="form-select" multiple
+                            size="10" aria-label="size 3 select example">
                             {{#each categories}}
                             <option value="{{category_id}}">{{category_name}}</option>
                             {{/each}}
@@ -200,17 +202,45 @@
 <script>
 
     $("#checked_premium").change(function () {
+        $("#checked_premium").attr("disabled", true);
         $('#change-time-premium').collapse('toggle');
     });
+    $('#change-time-premium').on('hidden.bs.collapse', function () {
+        $("#checked_premium").removeAttr("disabled");
+    });
+    $('#change-time-premium').on('shown.bs.collapse', function () {
+        $("#checked_premium").removeAttr("disabled");
+    });
+
+    /////////////////////////////////////////////////////////////////
 
     $("#check_editor").change(function () {
+        $("#check_editor").attr("disabled", true);
         $('#change-assigned-categoríes').collapse('toggle');
     });
-
-    $("#check_writer").change(function () {
-        $('#change-nickname').collapse('toggle');
+    $('#change-assigned-categoríes').on('hidden.bs.collapse', function () {
+        $("#check_editor").removeAttr("disabled");
+    });
+    $('#change-assigned-categoríes').on('shown.bs.collapse', function () {
+        $("#check_editor").removeAttr("disabled");
     });
 
+    /////////////////////////////////////////////////////////////////
+
+
+    $("#check_writer").change(function () {
+        $("#check_writer").attr("disabled", true);
+        $('#change-nickname').collapse('toggle');
+    });
+    $('#change-nickname').on('hidden.bs.collapse', function () {
+        $("#check_writer").removeAttr("disabled");
+    });
+    $('#change-nickname').on('shown.bs.collapse', function () {
+        $("#check_writer").removeAttr("disabled");
+    });
+
+
+    /////////////////////////////////////////////////////////////////
 
     $('#categories_selected option').mousedown(function (e) {
         e.preventDefault();
@@ -224,9 +254,9 @@
             format: 'DD/MM/YYYY HH'
         }
     );
-     $('#date_of_birth').datetimepicker(
+    $('#date_of_birth').datetimepicker(
         {
-            timepicker:false,
+            timepicker: false,
             format: 'DD/MM/YYYY'
         }
     );
