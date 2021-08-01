@@ -22,7 +22,7 @@ DEADLINES CN
    đổi trang xem bài báo publish writer
 
 - Phuc:
-   chọn ngày quá khứ
-   fix lỗi / ko phải số
+   chọn ngày quá khứ xxx
+   fix lỗi / ko phải số xxx
    chỉnh front end
    chưa hiện form đăng ký
