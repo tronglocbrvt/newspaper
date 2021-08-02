@@ -26,7 +26,7 @@ router.get('/', async function(req, res) {
     const limit = 10; // number of rows on 1 page
 
     // get current page, default 1
-    const page = req.query.page || 1;
+    var page = req.query.page || 1;
     if (page < 1) page = 1;
 
     // count articles by cat_id
@@ -96,7 +96,7 @@ router.post('/:id/patch', async function(req, res) {
         return res.render('vwError/viewNotFound');
     }
     cat = await categoryModel.search_by_cat_name(req.body.category_name);
-    if (cat[0] === undefined) {
+    if (cat[0][0] === undefined) {
         await categoryModel.patch(req.params.id, req.body.cat_name);
         req.session.redirect_message = 'Chỉnh sửa thành công';
         res.redirect('/admin/categories');
@@ -112,8 +112,9 @@ router.post('/:id/del', async function(req, res) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
-    count = await categoryModel.count_articles_in_cat(req.params.id);
-    if (count[0][0].count == 0) {
+    count_articles = await categoryModel.count_articles_in_cat(req.params.id);
+    count_subcats = await categoryModel.count_sub_cats_by_cat_id(req.params.id);
+    if (count_articles[0][0].count === 0 && count_subcats[0][0].total === 0) {
         await categoryModel.delete(req.params.id);
         req.session.redirect_message = 'Xóa thành công';
     }

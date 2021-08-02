@@ -13,7 +13,7 @@ router.get('/', async function (req, res) {
     const limit = 20; // number of rows on 1 page
     // get current page, default 1
 
-    const page = req.query.page || 1;
+    var page = req.query.page || 1;
     if (page < 1) page = 1;
 
     // count articles by cat_id

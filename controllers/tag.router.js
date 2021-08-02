@@ -29,7 +29,7 @@ router.get('/:tag_id', async function(req, res) {
     const limit = 10;
 
     // get current page, default 1
-    const page = req.query.page || 1;
+    var page = req.query.page || 1;
     if (page < 1) page = 1;
 
     // get time now (milisecond)

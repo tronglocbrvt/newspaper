@@ -24,7 +24,7 @@ module.exports = function (app) {
         // respond with html page
         if (req.accepts('html')) {
             if (res.status(404))
-                res.render('vwError/viewNotFound');
+                res.render('vwAdmin/home');
             else if (res.status(500))
                 res.render('vwError/viewInternalServerErr');
         }
