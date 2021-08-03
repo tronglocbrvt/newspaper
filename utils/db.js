@@ -1,4 +1,4 @@
-const env = require('/env.js')
+const env = require('../env.js')
 const knex = require('knex')({
     client: 'mysql',
     connection: {
