@@ -1,15 +1,18 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
-
+const auth = require('../middlewares/auth.mdw');
 const router = express.Router();
 
 // Category management
-router.get('/add', async function(req, res) {
+router.get('/dashboard', auth.auth, auth.auth_admin, async function(req, res) {
+    res.render('vwAdmin/dashboard');
+});
+router.get('/add', auth.auth, auth.auth_admin, async function(req, res) {
     res.render('vwAdmin/vwCategory/add_category',{message: req.session.redirect_message});
     delete req.session.redirect_message;
 });
 
-router.post('/', async function(req, res) {
+router.post('/', auth.auth, auth.auth_admin, async function(req, res) {
     cat = await categoryModel.search_by_cat_name(req.body.category_name);
     if (cat[0][0] === undefined) {
         await categoryModel.add(req.body);
@@ -22,7 +25,7 @@ router.post('/', async function(req, res) {
     }
 });
 
-router.get('/', async function(req, res) {
+router.get('/', auth.auth, auth.auth_admin, async function(req, res) {
     const limit = 10; // number of rows on 1 page
 
     // get current page, default 1
@@ -72,7 +75,7 @@ router.get('/', async function(req, res) {
    delete req.session.redirect_message
 });
 
-router.get('/:id', async function(req, res) {
+router.get('/:id', auth.auth, auth.auth_admin, async function(req, res) {
     const cat_id = req.params.id;
     if (isNaN(parseInt(cat_id))) {
         res.status(404);
@@ -90,7 +93,7 @@ router.get('/:id', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/:id/patch', async function(req, res) {
+router.post('/:id/patch', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -107,7 +110,7 @@ router.post('/:id/patch', async function(req, res) {
     }
 });
 
-router.post('/:id/del', async function(req, res) {
+router.post('/:id/del', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');

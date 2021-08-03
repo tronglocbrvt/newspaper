@@ -87,7 +87,7 @@ router.get('/:id', async function (req, res) {
 
 );
 
-router.post('/:id', auth, async function (req, res) {
+router.post('/:id', auth.auth, async function (req, res) {
     const published_article_id = req.params.id || 0;
     const content = req.body.comment;
     const time_comment  = moment().format("YYYY-MM-DD HH:mm:ss");

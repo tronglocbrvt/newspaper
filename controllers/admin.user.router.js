@@ -6,10 +6,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const N_HASHING_TIMES = 10;
 const moment = require('moment');
-
+const auth = require('../middlewares/auth.mdw');
 
 // VIEW ALL USER API
-router.get('/', async function (req, res) {
+router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
     const limit = 20; // number of rows on 1 page
     // get current page, default 1
 
@@ -60,7 +60,7 @@ router.get('/', async function (req, res) {
 
 
 // -- VIEW USER API --
-router.get('/edit/:id', async function (req, res) {
+router.get('/edit/:id', auth.auth, auth.auth_admin, async function (req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -85,7 +85,7 @@ router.get('/edit/:id', async function (req, res) {
 });
 
 // post patch
-router.post('/patch/:id', async function (req, res) {
+router.post('/patch/:id', auth.auth, auth.auth_admin, async function (req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -183,7 +183,7 @@ router.post('/patch/:id', async function (req, res) {
 
 
 // Post Delete
-router.post('/del/:id', async function (req, res) {
+router.post('/del/:id', auth.auth, auth.auth_admin, async function (req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -214,13 +214,13 @@ router.post('/del/:id', async function (req, res) {
 
 
 // -- ADD USER API --
-router.get('/add', async function (req, res) {
+router.get('/add', auth.auth, auth.auth_admin, async function (req, res) {
     const list = await categoryModel.get_main_cats();
     //console.log(list[0]);
     res.render('vwAdmin/vwUser/vwAddUser', { categories: list[0] });
 });
 
-router.post('/add', async function (req, res) {
+router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
     const hash = bcrypt.hashSync("admin", N_HASHING_TIMES); // Password is always admin
     const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
     const time_premium = moment(req.body.time_premium, "DD/MM/YYYY HH").format("YYYY-MM-DD HH");

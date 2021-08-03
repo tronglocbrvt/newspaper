@@ -1,10 +1,10 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
-
+const auth = require('../middlewares/auth.mdw');
 const router = express.Router();
 
 // Subcategory management
-router.get('/add', async function(req, res) {
+router.get('/add', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -16,7 +16,7 @@ router.get('/add', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/', async function(req, res) {
+router.post('/', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -34,7 +34,7 @@ router.post('/', async function(req, res) {
     }
 });
 
-router.get('/subs', async function(req, res) {
+router.get('/subs', auth.auth, auth.auth_admin, async function(req, res) {
     const cat_id = req.cat_id || 0;
     if (isNaN(parseInt(cat_id))) {
         res.status(404);
@@ -91,7 +91,7 @@ router.get('/subs', async function(req, res) {
     delete req.session.redirect_message
 });
 
-router.get('/subs/:id', async function(req, res) {
+router.get('/subs/:id', auth.auth, auth.auth_admin, async function(req, res) {
     const cat_id = req.params.id;
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(cat_id))) {
         res.status(404);
@@ -123,7 +123,7 @@ router.get('/subs/:id', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/subs/:id/patch', async function(req, res) {
+router.post('/subs/:id/patch', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -140,7 +140,7 @@ router.post('/subs/:id/patch', async function(req, res) {
     }
 });
 
-router.post('/subs/:id/del', async function(req, res) {
+router.post('/subs/:id/del', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');

@@ -1,18 +1,18 @@
 const express = require('express');
 const tagModel = require('../models/tag.model');
 const tag_model = require('../models/tag.model');
-
+const auth = require('../middlewares/auth.mdw');
 const router = express.Router();
 
 // Tags management
-router.get('/add', async function(req, res) {
+router.get('/add', auth.auth, auth.auth_admin, async function(req, res) {
     res.render('vwAdmin/vwTag/add_tag',{
         message: req.session.redirect_message
     });
     delete req.session.redirect_message;
 });
 
-router.post('/', async function(req, res) {
+router.post('/', auth.auth, auth.auth_admin, async function(req, res) {
     tag = await tagModel.search_by_tag_name(req.body.tag_name);
     if (tag[0] === undefined) {
         await tag_model.add(req.body);
@@ -25,7 +25,7 @@ router.post('/', async function(req, res) {
     }
 });
 
-router.get('/', async function(req, res) {
+router.get('/', auth.auth, auth.auth_admin, async function(req, res) {
     const limit = 10; // number of rows on 1 page
 
     // get current page, default 1
@@ -74,7 +74,7 @@ router.get('/', async function(req, res) {
     delete req.session.redirect_message
 });
 
-router.get('/:id', async function(req, res) {
+router.get('/:id', auth.auth, auth.auth_admin, async function(req, res) {
     const tag_id = req.params.id;
     if (isNaN(parseInt(tag_id))) {
         res.status(404);
@@ -93,7 +93,7 @@ router.get('/:id', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/:id/patch', async function(req, res) {
+router.post('/:id/patch', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -110,7 +110,7 @@ router.post('/:id/patch', async function(req, res) {
     }
 });
 
-router.post('/:id/del', async function(req, res) {
+router.post('/:id/del', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
