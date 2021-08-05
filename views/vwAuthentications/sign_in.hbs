@@ -1,53 +1,56 @@
-<div class="col-sm-12">
-    <div class="container m-5 p-5 bg-light shadow">
-        {{#if redirect_message}}
-        <div id="redirect_message" class="alert alert-info">
-            {{redirect_message}}
-        </div>
-        {{/if}}
-        <h2>Đăng nhập</h2>
-        <hr>
-        <br>
-        <form action="#" method="post">
-            <div class="form-group">
-                <label for="username">Tài khoản</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tài khoản">
-            </div>
+<div class="container-fluid col-sm-12 align-middle" style="font-size:19px;">
+    <div id="content" class="container mt-5  p-2 py-4 p-md-5 mb-5  bg-light shadow"
+        style="background-color: rgb(255, 255, 255); ">
 
-            <div class="form-group">
-                <label for="password">Mật khẩu</label>
-                <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" name="password">
-            </div>
-
-            {{#if err_message}}
-            <div id="error_message" class="alert alert-danger">
-                {{err_message}}
+            {{#if redirect_message}}
+            <div id="redirect_message" class="alert alert-info">
+                {{redirect_message}}
             </div>
             {{/if}}
+            <h2>Đăng nhập</h2>
+            <hr>
+            <br>
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="username">Tài khoản</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tài khoản">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Đăng nhập</button>
-            <a class="btn btn-danger" href="/auth/forget-password">Bạn đã quên mật khẩu?</a>
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu"
+                        name="password">
+                </div>
 
-            <div class="omb_login mt-5">
-                <div class="row omb_socialButtons">
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="facebook" class="btn btn-lg btn-block omb_btn-facebook">
-                            <i class="fa fa-facebook visible-xs"></i>
-                            <span class="hidden-xs">Facebook</span>
-                        </a>
-                    </div>
+                {{#if err_message}}
+                <div id="error_message" class="alert alert-danger">
+                    {{err_message}}
+                </div>
+                {{/if}}
 
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="google" class="btn btn-lg btn-block omb_btn-google">
-                            <i class="fa fa-google-plus visible-xs"></i>
-                            <span class="hidden-xs">Google</span>
-                        </a>
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                <a class="btn btn-danger" href="/auth/forget-password">Bạn đã quên mật khẩu?</a>
+
+                <div class="omb_login mt-4">
+                    <div class="row omb_socialButtons">
+                        
+                        <div class="col-xs-4 col-sm-6 my-1">
+                            <a href="facebook" class="btn btn-lg btn-block omb_btn-facebook">
+                                <i class="fa fa-facebook visible-xs"></i>
+                                <span class="hidden-xs">Facebook</span>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 my-1">
+                            <a href="google" class="btn btn-lg btn-block omb_btn-google">
+                                <i class="fa fa-google-plus visible-xs"></i>
+                                <span class="hidden-xs">Google</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </form>
-
+            </form>
     </div>
 </div>
 
