@@ -18,6 +18,7 @@ New tasks:
    Chỉnh hàm auth để phân quyền.
    Chỉnh link trong trang profile để đưa qua.
 Testing:
+   chặn writer này ko coi được writer khác bằng cách sửa id trên đường dẫn
 
 
 - Linh: 

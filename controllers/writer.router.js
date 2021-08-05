@@ -3,18 +3,23 @@ const router = express.Router();
 const category_model = require('../models/category.model')
 const tag_model = require('../models/tag.model')
 const path = require('path');
+const auth = require('../middlewares/auth.mdw');
 const article_model = require('../models/article.model');
 const writer_model = require('../models/writer.model');
 const { add } = require('../models/category.model');
 const { add_tag } = require('../models/tag.model');
 
-router.get('/:writer_id/add', async function (req, res) {
+router.get('/:writer_id/add', auth.auth, auth.auth_writer, async function (req, res) {
     const writer_id = req.params.writer_id;
     if (isNaN(parseInt(writer_id))) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
     }
+    if (+writer_id !== req.session.authUser.user_id) {
+        return res.redirect('/writers/'+req.session.authUser.user_id+'/add');
+    }
+
     const main_cats = await category_model.get_main_cats();
     const tags = await tag_model.get_tags();
 
@@ -32,7 +37,7 @@ router.get('/:writer_id/add', async function (req, res) {
     }
 })
 
-router.post('/:writer_id/add', async function (req, res) {
+router.post('/:writer_id/add', auth.auth, auth.auth_writer, async function (req, res) {
     const writer_id = req.params.writer_id;
     if (isNaN(parseInt(writer_id))) {
         res.status(404);
@@ -104,12 +109,15 @@ router.post('/:writer_id/add', async function (req, res) {
     res.redirect('/writers/' + writer_id + '/articles');
 })
 
-router.get('/:writer_id/articles', async function (req, res) {
+router.get('/:writer_id/articles', auth.auth, auth.auth_writer, async function (req, res) {
     const id = req.params.writer_id || 0;
     if (isNaN(id)) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
+    }
+    if (+id !== req.session.authUser.user_id) {
+        return res.redirect('/writers/'+req.session.authUser.user_id+'/articles');
     }
     const if_exist = await writer_model.is_exist(id);
     if (!if_exist[0][0]) {
@@ -162,7 +170,7 @@ router.get('/:writer_id/articles', async function (req, res) {
     });
 })
 
-router.get('/:writer_id/edit/:article_id', async function (req, res) {
+router.get('/:writer_id/edit/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     const article_id = req.params.article_id || 0;
     const writer_id = req.params.writer_id;
 
@@ -170,6 +178,9 @@ router.get('/:writer_id/edit/:article_id', async function (req, res) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
+    }
+    if (+writer_id !== req.session.authUser.user_id) {
+        return res.redirect('/writers/'+req.session.authUser.user_id+'/edit/' + article_id);
     }
     const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
     if (!if_exist[0][0]) {
@@ -196,7 +207,7 @@ router.get('/:writer_id/edit/:article_id', async function (req, res) {
     })
 })
 
-router.post('/:writer_id/edit/:article_id', async function (req, res) {
+router.post('/:writer_id/edit/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     const article_id = req.params.article_id;
     const writer_id = req.params.writer_id;
 
@@ -307,7 +318,7 @@ router.post('/:writer_id/edit/:article_id', async function (req, res) {
     res.redirect('/writers/' + writer_id + '/articles');
 })
 
-router.get('/get_content_cat_tag/:article_id', async function (req, res) {
+router.get('/get_content_cat_tag/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     const article_id = req.params.article_id;
 
     if (isNaN(parseInt(article_id))) {
@@ -315,7 +326,6 @@ router.get('/get_content_cat_tag/:article_id', async function (req, res) {
         res.render('vwError/viewNotFound');
         return;
     }
-
     const content_cat = await writer_model.get_content_cat(req.params.article_id || 0);
     const tags = await tag_model.get_tags_by_id(req.params.article_id || 0);
     var cat_id = content_cat[0][0].category_id;
@@ -360,7 +370,7 @@ async function get_main_sub_cat(category_id) {
     };
 }
 
-router.get('/:writer_id/submitted/:article_id', async function (req, res) {
+router.get('/:writer_id/submitted/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     const article_id = req.params.article_id || 0;
     const writer_id = req.params.writer_id;
     const article = await writer_model.load_article_by_id(article_id);
@@ -368,6 +378,9 @@ router.get('/:writer_id/submitted/:article_id', async function (req, res) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
+    }
+    if (+writer_id !== req.session.authUser.user_id) {
+        return res.redirect('/writers/'+req.session.authUser.user_id+'/submitted/' + article_id);
     }
     const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
     if (!if_exist[0][0]) {
@@ -380,7 +393,7 @@ router.get('/:writer_id/submitted/:article_id', async function (req, res) {
     })
 })
 
-router.get('/:writer_id/published/:article_id', async function (req, res) {
+router.get('/:writer_id/published/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     const article_id = req.params.article_id || 0;
     const writer_id = req.params.writer_id;
     
@@ -388,6 +401,9 @@ router.get('/:writer_id/published/:article_id', async function (req, res) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
+    }
+    if (+writer_id !== req.session.authUser.user_id) {
+        return res.redirect('/writers/'+req.session.authUser.user_id+'/published/' + article_id);
     }
     const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
     if (!if_exist[0][0]) {

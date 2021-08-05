@@ -19,7 +19,7 @@ router.get('/', async function(req, res) {
 
     // number of articles on 1 page
     const limit = 10;
-    const page = req.query.page || 1;
+    var page = req.query.page || 1;
     if (page < 1) page = 1;
 
     var type = 'article_title';

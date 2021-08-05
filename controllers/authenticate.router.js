@@ -373,7 +373,7 @@ router.post('/reset-password/', not_auth, async function (req, res) {
  * Change-password API => must sign-in
  * TODO: Chan login google facebook doi mk.
  */
-router.post('/change-password', auth, async function (req, res) {
+router.post('/change-password', auth.auth, async function (req, res) {
   const is_log_in_by_third_party = req.session.authUser.facebook_id || req.session.authUser.google_id;
 
   if (is_log_in_by_third_party) {
@@ -407,7 +407,7 @@ router.post('/change-password', auth, async function (req, res) {
 });
 
 
-router.post('/change-name', auth, async function (req, res) {
+router.post('/change-name', auth.auth, async function (req, res) {
   // Get username from session.
   const user_id = req.session.authUser.user_id;
   await authenticate_model.change_name_by_user_id(user_id, req.body.name);
@@ -419,7 +419,7 @@ router.post('/change-name', auth, async function (req, res) {
 });
 
 
-router.post('/change-dob', auth, async function (req, res) {
+router.post('/change-dob', auth.auth, async function (req, res) {
   // Get username from session.
   const user_id = req.session.authUser.user_id;
   const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
@@ -431,7 +431,7 @@ router.post('/change-dob', auth, async function (req, res) {
   res.redirect("../profile");
 });
 
-router.post('/change-gender', auth, async function (req, res) {
+router.post('/change-gender', auth.auth, async function (req, res) {
   // Get username from session.
   const user_id = req.session.authUser.user_id;
   await authenticate_model.change_gender_by_user_id(user_id, req.body.gender);
@@ -450,7 +450,7 @@ router.post('/change-gender', auth, async function (req, res) {
 /** 
  * Log-out
 */
-router.post('/log-out', auth, async function (req, res) {
+router.post('/log-out', auth.auth, async function (req, res) {
   if (req.session) {
     req.session.destroy(function (err) {
       if (err) {
