@@ -41,7 +41,7 @@ router.get('/:editor_id/reviews', async function (req, res) {
 router.get('/:editor_id/review/:article_id', async function (req, res) {
     const article_id = req.params.article_id || 0;
     const editor_id = req.params.editor_id;
-    if (isNaN(parseInt(editor_id))) {
+    if (isNaN(parseInt(editor_id)) || isNaN(parseInt(article_id))) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
@@ -60,13 +60,23 @@ router.get('/:editor_id/review/:article_id', async function (req, res) {
         res.render('vwError/viewNotFound');
         return;
     }
-
 });
 
 router.post('/:editor_id/review/:article_id', async function (req, res) {
     const editor_id = req.params.editor_id;
     const article_id = req.params.article_id;
-
+    if (isNaN(parseInt(editor_id)) || isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await editor_model.if_article_belong_editor(editor_id, article_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    
     var article = req.body;
     //get tag and delete from body
     var tags = req.body.tags;

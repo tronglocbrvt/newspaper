@@ -1,7 +1,13 @@
 <form method="post" enctype="multipart/form-data" id="form1">
+    {{#if is_rejected}}
+    <div class="reject-div p-3 mb-3">
+        <label for="comment" class="text-dark">Lí do từ chối:</label>
+        <textarea class="form-control" id="comment" name="comment" rows="2" disabled>{{comment}}</textarea>
+    </div>
+    {{/if}}
     <div class="form-check mb-3">
         <input class="form-check-input" type="checkbox" value="" id="is_premium" name="is_premium" {{#if
-            article.is_premium}}checked{{/if}} readonly>
+            article.is_premium}}checked{{/if}} disabled>
         <label class="form-check-label" for="is_premium">
             PREMIUM
         </label>
@@ -32,16 +38,16 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <input type="text" name="category_id" class="form-control" id="category" readonly>
-                {{!-- <option value="0">---------</option> --}}
-                {{!-- {{#each main_cats}}
-                <option value="{{category_id}}">{{category_name}}</option>
-                {{/each}} --}}
+            {{!-- <option value="0">---------</option> --}}
+            {{!-- {{#each main_cats}}
+            <option value="{{category_id}}">{{category_name}}</option>
+            {{/each}} --}}
             </input>
         </div>
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <input type="text" name="sub_category" class="form-control" id="sub_category" readonly>
-                {{!-- <option value="0">---------</option> --}}
+            {{!-- <option value="0">---------</option> --}}
             </input>
         </div>
     </div>
@@ -57,15 +63,6 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
 <script src="/static/js/writer/writer.view.js"></script>
-{{!-- <script>
-    $(document).ready(function () {
-        $('#content').summernote({
-            placeholder: 'Nhập nội dung',
-            tabsize: 2,
-            height: 300
-        });
-    });
-</script> --}}
 {{/section}}
 
 {{#section 'css'}}

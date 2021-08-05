@@ -13,9 +13,10 @@
                                 <h3>QUẢN LÝ CHUYÊN MỤC CHÍNH</h3>
                                 {{#if message}}
                                 <center>
-                                <div id="error_message" class="alert alert-success" style="margin-top: 30px; width: 80%; text-align: left">
-                                    {{message}}
-                                </div>
+                                    <div id="error_message" class="alert alert-success"
+                                        style="margin-top: 30px; width: 80%; text-align: left">
+                                        {{message}}
+                                    </div>
                                 </center>
                                 {{/if}}
                                 <span class="float-right" style="margin-right: 120px;"><a
@@ -26,39 +27,42 @@
 
                         <!--table start-->
                         <center>
-                            <table class="table table-striped" style="width:80%">
-                                <thead>
-                                    <tr>
-                                        <th class="border-bottom-0 text-center">ID</th>
-                                        <th class="border-bottom-0 text-center">Tên chuyên mục</th>
-                                        <th class="border-bottom-0 text-center">Xem danh sách bài báo</th>
-                                        <th class="border-bottom-0 text-center">Chỉnh sửa chuyên mục</th>
-                                        <th class="border-bottom-0 text-center">Chuyên mục con</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each categories}}
-                                    <tr>
-                                        <td class="text-center">{{category_id}}</td>
-                                        <td class="text-center">{{category_name}}</td>
-                                        <td class="text-center">
-                                            <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
-                                                href="/categories/{{category_id}}"><i class="fa fa-eye"></i> Xem</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0 px-3"
-                                                href="/admin/categories/{{category_id}}"><i class="fa fa-pencil"
-                                                    aria-hidden="true"></i> Chỉnh sửa</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
-                                                href="/admin/categories/{{category_id}}/subs"><i class="fa fa-eye"></i>
-                                                Xem</a>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="width:80%">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-bottom-0 text-center">ID</th>
+                                            <th class="border-bottom-0 text-center">Tên chuyên mục</th>
+                                            <th class="border-bottom-0 text-center">Xem danh sách bài báo</th>
+                                            <th class="border-bottom-0 text-center">Chỉnh sửa chuyên mục</th>
+                                            <th class="border-bottom-0 text-center">Chuyên mục con</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each categories}}
+                                        <tr>
+                                            <td class="text-center">{{category_id}}</td>
+                                            <td class="text-center">{{category_name}}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                    href="/categories/{{category_id}}"><i class="fa fa-eye"></i> Xem</a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                    href="/admin/categories/{{category_id}}"><i class="fa fa-pencil"
+                                                        aria-hidden="true"></i> Chỉnh sửa</a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0 px-3"
+                                                    href="/admin/categories/{{category_id}}/subs"><i
+                                                        class="fa fa-eye"></i>
+                                                    Xem</a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
                         </center>
                         <!--end table-->
                         <!--Pagination-->

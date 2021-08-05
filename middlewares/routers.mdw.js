@@ -15,6 +15,7 @@ module.exports = function (app) {
     app.use('/admin/users',require('../controllers/admin.user.router'));
     app.use('/editors', require('../controllers/editor.router'));
     app.use('/admin/categories', require('../controllers/admin.categories.router'));
+    app.use('/admin/articles', require('../controllers/admin.articles.router'));
     app.use('/admin/categories/:category_id', function (req, res, next) {
         req.cat_id = req.params.category_id;
         next();

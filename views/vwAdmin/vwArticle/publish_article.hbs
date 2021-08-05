@@ -53,9 +53,9 @@
 <hr>
 <form method="POST" id="form">
     <div class="row">
-        <div class="col-md-5 mb-3">
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="accept">
+        <div class="col-md-6 offset-md-3 mb-3">
+            <div class="form-check mb-3" hidden>
+                <input class="form-check-input" type="checkbox" id="accept" checked>
                 <label class="form-check-label text-success" for="accept">
                     DUYỆT
                 </label>
@@ -63,8 +63,7 @@
             <div class="accept-div p-3">
                 <div class="form-group">
                     <label for="category" class="text-dark">Đặt chuyên mục</label>
-                    <input type="text" class="form-control" id="main_cat_readonly" readonly>
-                    <select type="text" class="form-control" name="main_cat_reset" id="main_cat_reset" hidden>
+                    <select type="text" class="form-control" name="main_cat_reset" id="main_cat_reset">
                         {{#each main_cats}}
                         <option value="{{category_id}}">{{category_name}}</option>
                         {{/each}}
@@ -72,16 +71,14 @@
                 </div>
                 <div class="form-group">
                     <label for="sub_category" class="text-dark">Đặt chuyên mục con</label>
-                    <input type="text" class="form-control" id="sub_cat_readonly" readonly></input>
-                    <select type="text" class="form-control" name="sub_cat_reset" id="sub_cat_reset" hidden></select>
+                    <select type="text" class="form-control" name="sub_cat_reset" id="sub_cat_reset"></select>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <label for="tags" class="text-dark col-md-6">Chọn tags</label>
                         <div class="col-md-6 mb-3" id="tag-alert-area" style="color: red;"></div>
                     </div>
-                    <input type="text" id="tag_readonly" class="form-control" disabled>
-                    <div class="input-group" id="tag-group" hidden>
+                    <div class="input-group" id="tag-group">
                         <input type="text" list="tag-list" class="form-control" id="tags" />
                         <datalist id="tag-list">
                             {{#each tags}}
@@ -95,35 +92,21 @@
                         </div>
                     </div>
                 </div>
-                <div id="tag-area-reset" hidden></div>
+                <div id="tag-area-reset"></div>
                 <div class="form-group">
                     <div class="row">
                         <label class="text-dark col-md-6">Chọn thời điểm đăng</label>
                         <div id="date-alert-area" class="col-md-6" style="color: red;"></div>
                     </div>
-                    <input type="text" id="date_readonly" class="form-control" disabled>
-                    <input id="publish-time" name="publish_time" type="text" class="form-control" hidden>
+                    <input id="publish-time" name="publish_time" type="text" class="form-control">
                 </div>
-            </div>
-        </div>
-        <div class="col-md-5 offset-md-1 mb-3">
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="reject">
-                <label class="form-check-label text-danger" for="reject">
-                    TỪ CHỐI
-                </label>
-            </div>
-            <div class="reject-div p-3">
-                <label for="comment" class="text-dark">Lí do từ chối:</label>
-                <textarea class="form-control" id="comment" name="comment" placeholder="Vui lòng nhập lí do..." rows="10"
-                    disabled></textarea>
             </div>
         </div>
     </div>
     <div class="text-center mb-3">
         <button type="submit" class="btn btn-success" id="submit">
             <i class="fa fa-check" aria-hidden="true"></i>
-            Hoàn tất
+            Xuất bản
         </button>
     </div>
 </form>
@@ -132,7 +115,7 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/editor/editor.view.js"></script>
+<script src="/static/js/admin/publish_article.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
     integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>

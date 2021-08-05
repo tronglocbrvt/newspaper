@@ -25,12 +25,9 @@ Fix:
    trang chủ (frontend - backend)
    Trang chu:
    * Nổi bật 1 tuần : đk thời gian + đk is out standing.
-   * mói nhất dễ.
-   * đọc nhiều dễ.
    * mỗi chuyên mục tổng views, lấy ra cái nhiều nhất. Mỗi cái lấy ra 1 bài.
 New Tasks:
    *Quản lý bài viết.
-   *Fix bugs lộc Logs
 
 - Phuc:
 Fix:

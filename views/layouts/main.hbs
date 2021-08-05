@@ -11,17 +11,77 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="shortcut icon" href="#" />
+    <style>
+        #dropdown-category::after {
+            content: none;
+        }
+    </style>
     {{{_sections.css}}}
 </head>
 
 <body id="hello">
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2596be;">
+        <div class="d-lg-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    {{#each main_cat}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/categories/{{category_id}}"
+                            id="maincat{{category_id}}" role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            {{category_name}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="maincat{{category_id}}"
+                            id="dropdown{{category_id}}"></div>
+                    </li>
+                    {{/each}}
+                    <hr>
+                    {{#if auth}}
+                    <li class="nav-item">
+                        <a class="nav-link1" href="/profile"><i class="fa fa-user fa-lg"></i><span> PROFILES</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <form id="frmLogout" action="/auth/log-out" method="POST">
+                            <a class="nav-link1" href="javascript: $('#frmLogout').submit();"><i
+                                    class="fa fa-sign-out fa-lg"></i><span> ĐĂNG XUẤT</span></a>
+                        </form>
+                    </li>
+                    {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link1" href="/auth/sign-up"><i class="fa fa-user-plus fa-lg"></i><span> ĐĂNG
+                                KÝ</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link1" href="/auth/log-in"><i class="fa fa-sign-in fa-lg"></i><span> ĐĂNG
+                                NHẬP</span></a>
+                    </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link1 text-center" href="/"><i class="fa fa-bars fa-lg"></i><br><span>CHUYÊN
+                    <a class="nav-link1 text-center dropdown-toggle" id="dropdown-category" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars fa-lg"></i><br><span>CHUYÊN
                             MỤC</span></a>
+                    <div class="dropdown-menu w-100" aria-labelledby="dropdown-category">
+                        {{#each main_cat}}
+                        <div class="dropdown-item p-0">
+                            <div class="row">
+                                <div class="p-2" style="background-color: #2596be; width: 240px">
+                                    <a class="text-light ml-4" href="/categories/{{category_id}}">{{category_name}}</a>
+                                </div>
+                                <div class="p-2" id="side_maincat{{category_id}}"></div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -79,8 +139,8 @@
     </nav>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow d-none d-xl-block" id="nav-bar2">
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mx-auto">
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mx-auto d-flex flex-wrap justify-content-center px-5">
                 {{#each main_cat}}
                 <li class="nav-item">
                     <a class="nav-link2" href="/categories/{{category_id}}" id="{{category_id}}">{{category_name}}</a>
@@ -92,20 +152,7 @@
 
     <nav class="navbar navbar-expand-lg mb-3" style="background-color: #08749c;" id="sub-nav" hidden>
         <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mx-auto" id="ul-sub-nav">
-                <li class="nav-item">
-                    <a class="subnav-link" href="#">Hải sản</a>
-                </li>
-                <li class="nav-item">
-                    <a class="subnav-link" href="#">Ngân hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="subnav-link" href="#">Chứng khoán</a>
-                </li>
-                <li class="nav-item">
-                    <a class="subnav-link" href="#">Chứng khoán</a>
-                </li>
-            </ul>
+            <ul class="navbar-nav mx-auto" id="ul-sub-nav"></ul>
         </div>
     </nav>
 
