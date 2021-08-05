@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
+const env = require('../env');
 module.exports = {
     create_transporter: function () {
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 587,
             auth: {
-                user: 'llp.newspapers@gmail.com',
-                pass: 'LinhLocPhuc123'
+                user: env.email_username,
+                pass: env.email_password
             }
         });
     },

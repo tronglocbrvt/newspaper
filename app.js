@@ -18,7 +18,7 @@ require('./middlewares/view.mdw')(app);
 require('./middlewares/locals.mdw')(app);
 require('./middlewares/routers.mdw')(app);
 
-const PORT = 3000
-app.listen(PORT, function () {
+const PORT = 3000;
+app.listen(process.env.PORT || PORT, function () {
     console.log('Server listening at port ' + PORT);
 })

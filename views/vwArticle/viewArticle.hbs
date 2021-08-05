@@ -1,112 +1,114 @@
-{{!-- HBS VIEW for view a single article  --}}
+{{!-- HBS VIEW for view a single article --}}
 
 <div class="container-fluid col-sm-12 align-middle" style="font-size:19px;">
-
-    <div id="content" class = "container mt-5 p-5 mb-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+    <div id="content" class="container mt-5  p-1 py-4 p-md-5 mb-5  bg-light shadow"
+        style="background-color: rgb(255, 255, 255); ">
         <div class="d-flex justify-content-between">
             <div>
-            <!-- category -->
-                <div id = "category" class = "container text-uppercase">
+                <!-- category -->
+                <div id="category" class="container text-uppercase">
                     <a href={{this.article.maincate_ref}}>{{this.article.main_category}}</a>
                     /
                     <a href={{this.article.subcate_ref}}>{{this.article.sub_category}}</a>
-                </div> 
+                </div>
 
-            <!-- thoi gian dang -->
-                <div id = "date_published" class = "container">
+                <!-- thoi gian dang -->
+                <div id="date_published" class="container">
                     {{this.article.time_published}}
                 </div>
-                <div id = "views" class = "container">
+                <div id="views" class="container">
                     <i class="fa fa-eye" aria-hidden="true"> {{article.views_numbers}}</i>
                 </div>
             </div>
             {{#if this.premium}}
-                <div>
-                    <form method="POST" action="/articles/{{article.published_article_id}}/download">
-                        <input type="hidden" name="download" value="{{data}}"> 
-                        <button id="btnDownload" type="submit" class="btn-sm btn-primary mt-3"><i class="fa fa-download" aria-hidden="true"></i> Tải xuống</button>
-                    </form>
-                </div>
-            {{/if}} 
+            <div>
+                <form method="POST" action="/articles/{{article.published_article_id}}/download">
+                    <input type="hidden" name="download" value="{{data}}">
+                    <button id="btnDownload" type="submit" class="btn-sm btn-primary mt-3"><i class="fa fa-download"
+                            aria-hidden="true"></i> Tải xuống</button>
+                </form>
+            </div>
+            {{/if}}
         </div>
 
         <hr>
 
-        <div class = "jumbotron py-4 mt-3 mb-4">
-                <!-- Tieu de + Premium-->
-            <h1 id = "headlines" class = "container">
+        <div class="jumbotron py-4 mt-3 mb-4">
+            <!-- Tieu de + Premium-->
+            <h1 id="headlines" class="container">
                 {{#if this.article.is_premium}}
-                    <button type="button" class="btn btn-primary mb-2"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</button>
+                <button type="button" class="btn btn-primary mb-2"><i class="fa fa-diamond" aria-hidden="true"></i>
+                    Premium</button>
                 {{/if}}
                 <b>{{this.article.article_title}}</b>
             </h1>
-                <!-- Tom tat -->
-            <div id = "abstract" class = "container">
+            <!-- Tom tat -->
+            <div id="abstract" class="text-justify container">
                 {{this.article.article_abstract}}
             </div>
         </div>
-        
+
 
         <!-- Anh dai dien -->
-        <div id = "article_avatar" class = "container">
+        <div id="article_avatar" class="container">
             <figure class="text-center">
-            <img class="figure-img img-fluid rounded" src="{{this.article.avatar_url}}" alt="{{this.article.avatar_caption}}">
-            <figcaption class="figure-caption my-2">{{this.article.avatar_caption}}</figcaption>
+                <img class="figure-img img-fluid rounded" src="{{this.article.avatar_url}}"
+                    alt="{{this.article.avatar_caption}}">
+                <figcaption class="figure-caption my-2">{{this.article.avatar_caption}}</figcaption>
             </figure>
         </div>
 
         <hr>
-        
+
         <!-- noi dung -->
-        <div id = "main_details" class = "mx-5 my-5">
+        <div id="main_details" class="text-justify mx-5 my-5">
             {{{this.article.article_content}}}
         </div>
 
-            <!-- tag -->
-            <div id = "tag" class = "container">
-                {{#each this.tags}}
-                <a href="{{tag_link}}" class = "btn btn-secondary my-1">{{tag_name}}</a>
-                {{/each}}
-            </div>
-
+        <!-- tag -->
+        <div id="tag" class="container">
+            {{#each this.tags}}
+            <a href="{{tag_link}}" class="btn btn-secondary my-1">{{tag_name}}</a>
+            {{/each}}
         </div>
 
+    </div>
 
-    <div class = "container mt-3 p-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
 
+    <div class="container mt-3 p-1 py-4 p-md-5 bg-light shadow" style="background-color: rgb(255, 255, 255); ">
         <!-- comments -->
-        <div id = "comment" class = "container pb-3">
-        <h3 class="text-uppercase"> Bình luận </h3>
+        <div id="comment" class="container pb-3">
+            <h3 class="text-uppercase"> Bình luận </h3>
         </div>
 
 
-            <!-- writecomment -->
-        
+        <!-- writecomment -->
+
         <form id="frmComment" method="post">
 
-        <div id = "write_comment" class = "container d-flex">
-            <i class="fa fa-comment px-2" style="font-size:48px;"></i>
-            
-            <div class="input-group">
-            <textarea class="form-control" id = "comment" name = "comment" aria-label="With textarea"></textarea>
-            </div>
-        </div>
+            <div id="write_comment" class="container d-flex">
+                <i class="fa fa-comment px-2" style="font-size:48px;"></i>
 
-        
-        <div class= "d-flex flex-row-reverse">
-            {{#if auth}}
-                <button type = "submit" class = "btn btn-info mx-4 my-2">Gửi bình luận</button>
-            {{else}}
-                <button type = "submit" class = "btn btn-danger mx-4 my-2">Đăng nhập để gửi bình luận</button>
-            {{/if}}
-        </div>
+                <div class="input-group">
+                    <textarea class="form-control" id="comment" name="comment" aria-label="With textarea"></textarea>
+                </div>
+            </div>
+
+
+            <div class="d-flex flex-row-reverse">
+                {{#if auth}}
+                <button type="submit" class="btn btn-info mx-4 my-2">Gửi bình luận</button>
+                {{else}}
+                <button type="submit" class="btn btn-danger mx-4 my-2">Đăng nhập để gửi bình luận</button>
+                {{/if}}
+            </div>
 
         </form>
 
         <hr>
 
         {{#each this.comments}}
-        <div class="card bg-light shadow text-dark mx-5 my-3 px-2">
+        <div class="card bg-light shadow text-dark mx-md-5 mx-1 my-3 px-2">
             <div class="card-body">
                 <div class="d-flex d-flex justify-content-between">
                     <div class="text-primary">{{name}}</div>
@@ -119,31 +121,31 @@
             </div>
         </div>
         {{/each}}
-        
-        
+
+
 
     </div>
 
 
-    <div class = "container mt-3 mb-5 px-5 py-5 bg-light shadow" style="background-color: rgb(255, 255, 255); " >
+    <div class="container mt-3 mb-5 pt-4 p-1 p-md-5 bg-light shadow" style="background-color: rgb(255, 255, 255); ">
         <!-- bai viet cung chuyen muc-->
-        <div id = "same_category_article" class = "container mb-4">
+        <div id="same_category_article" class="container mb-4">
             <h3>CÓ THỂ BẠN QUAN TÂM</h3>
         </div>
         <hr>
-               
-        
+
+
         {{#each this.similar_articles}}
-        <div class="row my-3 mx-5 pb-4 border-bottom">
+        <div class="row my-3 mx-md-5 mx-1 pb-4 border-bottom">
             <div class="col-md-3">
-            <a class = "text-dark" href="{{ref}}">
-            <img style="width:100%" src="{{avatar_url}}" alt="{{avatar_caption}}">
-            </a>
+                <a class="text-dark" href="{{ref}}">
+                    <img style="width:100%" src="{{avatar_url}}" alt="{{avatar_caption}}">
+                </a>
             </div>
 
-            <div class ="col-md-9">
-                <a class = "title-link title-link:hover" href = "{{ref}}">
-                <h4>{{article_title}}</h4>
+            <div class="col-md-9">
+                <a class="title-link title-link:hover" href="{{ref}}">
+                    <h4>{{article_title}}</h4>
                 </a>
                 <div>{{article_abstract}}</div>
             </div>

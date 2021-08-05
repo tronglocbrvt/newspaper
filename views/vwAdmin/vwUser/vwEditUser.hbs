@@ -16,286 +16,294 @@
     </div>
     {{/if}}
     <form id="frmAdminEditUser" method="POST" action='/admin/users/patch/{{user_id}}'>
-      <div class="m-5" id="myTabContent">
-        <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+      <div class="form-group">
+        <div class="mx-2 m-md-5" id="myTabContent">
+          <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
 
-          <div class="row">
+            <div class="row">
 
-            <div class="col-3">
-              <label style="font-weight:bold;">UserID</label>
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">UserID:</label>
+              </div>
+
+              <div class="col-11  col-md-8">
+                <label style="font-weight:bold;">{{user_id}}</label>
+              </div>
+
             </div>
-
-            <div class="col-8">
-              <label style="font-weight:bold;">{{user_id}}</label>
-            </div>
-
-          </div>
-          <hr />
+            <hr />
 
 
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Tài khoản</label>
-            </div>
-            <div class="col-8">
-              {{#if user_name}}
-              <label style="font-weight:bold;">{{user_name}}</label>
-              {{else}}
-              <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
-              {{/if}}
-            </div>
-          </div>
-
-          <hr />
-
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Email</label>
-            </div>
-
-            <div class="col-8">
-              {{#if email}}
-              <label style="font-weight:bold;">{{email}}</label>
-              {{else}}
-              <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
-              {{/if}}
-            </div>
-          </div>
-
-          <hr />
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Xác thực</label>
-            </div>
-
-            <div class="col-8">
-              {{#if is_authenticated}}
-              <label style="font-weight:bold;">Đã xác thực</label>
-              {{else}}
-              <label style="font-weight:bold;">Chưa xác thực</label>
-              {{/if}}
-            </div>
-          </div>
-
-          <hr />
-
-
-          <div class="row">
-            <div class="col-3">
-              <label for="name" style="font-weight:bold;">Họ và tên</label>
-            </div>
-            <div class="col-8">
-              <input type="text" class="form-control" id="name" placeholder="{{name}}" value="{{name}}" name="name"
-                maxlength="100">
-              <div id="name_invalid" class="invalid-feedback">
-                Tên không hợp lệ.
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Tài khoản:</label>
+              </div>
+              <div class="col-11  col-md-8">
+                {{#if user_name}}
+                <label style="font-weight:bold;">{{user_name}}</label>
+                {{else}}
+                <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+                {{/if}}
               </div>
             </div>
-          </div>
 
+            <hr />
 
-          <hr />
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Email</label>
+              </div>
 
-          <div class="row">
-            <div class="col-3">
-              <label for="date_of_birth" style="font-weight:bold;">Ngày sinh: </label>
-            </div>
-            <div class="col-8">
-              <input readonly id="date_of_birth" width="276" name="raw_date_of_birth"
-                value="{{date_format_2 date_of_birth}}" placeholder="{{date_format_2 date_of_birth}}">
-              <div id="date_of_birth_invalid" class="invalid-feedback">
-                Ngày sinh không hợp lệ.
+              <div class="col-11  col-md-8">
+                {{#if email}}
+                <label style="font-weight:bold;">{{email}}</label>
+                {{else}}
+                <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+                {{/if}}
               </div>
             </div>
-          </div>
 
-          <hr />
+            <hr />
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Xác thực</label>
+              </div>
 
-
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Giới tính</label>
+              <div class="col-11  col-md-8">
+                {{#if is_authenticated}}
+                <label style="font-weight:bold;">Đã xác thực</label>
+                {{else}}
+                <label style="font-weight:bold;">Chưa xác thực</label>
+                {{/if}}
+              </div>
             </div>
 
-            <div class="col-8">
-              <select class="form-select" id="gender" name="gender">
-                {{{render_gender gender}}}
+            <hr />
+
+
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label for="name" style="font-weight:bold;">Họ và tên</label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input type="text" class="form-control" id="name" placeholder="{{name}}" value="{{name}}" name="name"
+                  maxlength="100">
+                <div id="name_invalid" class="invalid-feedback">
+                  Tên không hợp lệ.
+                </div>
+              </div>
+            </div>
+
+
+            <hr />
+
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label for="date_of_birth" style="font-weight:bold;">Ngày sinh: </label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input readonly id="date_of_birth" name="raw_date_of_birth" value="{{date_format_2 date_of_birth}}"
+                  placeholder="{{date_format_2 date_of_birth}}">
+                <div id="date_of_birth_invalid" class="invalid-feedback">
+                  Ngày sinh không hợp lệ.
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Giới tính</label>
+              </div>
+
+              <div class="col-11  col-md-8">
+                <select class="form-select" id="gender" name="gender">
+                  {{{render_gender gender}}}
+                </select>
+              </div>
+            </div>
+
+            <hr />
+
+
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Phân quyền premium</label>
+              </div>
+              <div class="col-11  col-md-8">
+                {{#if is_premium}}
+                <input id="checked_premium" name="check_premium" class="form-check-input" type="checkbox" checked
+                  style="margin:auto">
+                {{else}}
+                <input id="checked_premium" name="check_premium" class="form-check-input" type="checkbox"
+                  style="margin:auto">
+                {{/if}}
+              </div>
+            </div>
+
+            {{!-- Collapsed When not check--}}
+            {{#if is_premium}}
+            <div class="row collapse show my-3" id="change-time-premium">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input class="form-control" id="txtTimePremium" name="time_premium"
+                  placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
+                <div id="time_premium_invalid" class="invalid-feedback">
+                  Thời gian không hợp lệ.
+                </div>
+              </div>
+            </div>
+
+            {{else}}
+            <div class="row collapse my-3" id="change-time-premium">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH"
+                  value="">
+                <div id="time_premium_invalid" class="invalid-feedback">
+                  Thời gian không hợp lệ.
+                </div>
+              </div>
+
+
+            </div>
+            {{/if}}
+
+            <hr />
+
+
+
+
+            <div class="row">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Phân quyền phóng viên</label>
+              </div>
+              <div class="col-11  col-md-8">
+                {{#if is_writer}}
+                <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox" checked
+                  style="margin:auto">
+                {{else}}
+                <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox"
+                  style="margin:auto">
+                {{/if}}
+              </div>
+            </div>
+
+            {{!-- Collapsed When not check--}}
+
+            {{#if is_writer}}
+
+            <div class="row collapse show my-3" id="change-nickname">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:lighter;"><i>Bí danh</i></label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input id="nickname" name="nick_name" value="{{nick_name}}" placeholder="{{nick_name}}">
+              </div>
+            </div>
+
+            {{else}}
+            <div class="row collapse my-3" id="change-nickname">
+              <div class="col-11  col-md-3">
+                <label style="font-weight:lighter;"><i>Bí danh</i></label>
+              </div>
+              <div class="col-11  col-md-8">
+                <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
+              </div>
+            </div>
+            {{/if}}
+
+
+
+
+            <hr />
+
+
+
+
+            <div class="row">
+
+              <div class="col-11  col-md-3">
+                <label style="font-weight:bold;">Phân quyền biên tập viên</label>
+              </div>
+
+              <div class="col-11  col-md-8">
+                {{#if is_editor}}
+                <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox" checked
+                  style="margin:auto">
+                {{else}}
+                <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox"
+                  style="margin:auto">
+                {{/if}}
+              </div>
+
+            </div>
+          </div>
+
+          {{!-- EDITOR Collapsed When not check--}}
+          {{#if is_editor}}
+          <div class="my-3 row collapse show" id="change-assigned-categoríes">
+            <div class="col-11  col-md-3">
+              <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
+            </div>
+
+            <div class="col-11  col-md-8">
+              <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
+                aria-label="size 3 select example">
+                {{{render_categories categories selected_categories}}}
               </select>
             </div>
+
           </div>
-
-          <hr />
-
-
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Phân quyền premium</label>
-            </div>
-            <div class="col-8">
-              {{#if is_premium}}
-              <input id="checked_premium" name="check_premium" class="form-check-input" type="checkbox" checked
-                style="margin:auto">
-              {{else}}
-              <input id="checked_premium" name="check_premium" class="form-check-input" type="checkbox"
-                style="margin:auto">
-              {{/if}}
-            </div>
-          </div>
-
-          {{!-- Collapsed When not check--}}
-          {{#if is_premium}}
-          <div class="row collapse show" id="change-time-premium">
-            <div class="col-3">
-              <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
-            </div>
-            <div class="col-8">
-              <input class="form-control" id="txtTimePremium" name="time_premium"
-                placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
-              <div id="time_premium_invalid" class="invalid-feedback">
-                Thời gian không hợp lệ.
-              </div>
-            </div>
-          </div>
-
           {{else}}
-          <div class="row collapse" id="change-time-premium">
-            <div class="col-3">
-              <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
-            </div>
-            <div class="col-8">
-              <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH" value="">
-              <div id="time_premium_invalid" class="invalid-feedback">
-                Thời gian không hợp lệ.
-              </div>
+          <div class="my-3 row collapse" id="change-assigned-categoríes">
+
+            <div class="col-11  col-md-3">
+              <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
             </div>
 
+            <div class="col-11  col-md-8">
+              <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
+                aria-label="size 3 select example">
+                {{#each categories}}
+                <option value="{{category_id}}">{{category_name}}</option>
+                {{/each}}
+              </select>
+            </div>
 
           </div>
           {{/if}}
 
-          <hr />
-
-
-
-
-          <div class="row">
-            <div class="col-3">
-              <label style="font-weight:bold;">Phân quyền phóng viên</label>
-            </div>
-            <div class="col-8">
-              {{#if is_writer}}
-              <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox" checked
-                style="margin:auto">
-              {{else}}
-              <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox" style="margin:auto">
-              {{/if}}
-            </div>
-          </div>
-
-          {{!-- Collapsed When not check--}}
-
-          {{#if is_writer}}
-
-          <div class="row collapse show" id="change-nickname">
-            <div class="col-3">
-              <label style="font-weight:lighter;"><i>Bí danh</i></label>
-            </div>
-            <div class="col-8">
-              <input id="nickname" name="nick_name" value="{{nick_name}}" placeholder="{{nick_name}}">
-            </div>
-          </div>
-
-          {{else}}
-          <div class="row collapse" id="change-nickname">
-            <div class="col-3">
-              <label style="font-weight:lighter;"><i>Bí danh</i></label>
-            </div>
-            <div class="col-8">
-              <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
-            </div>
-          </div>
-          {{/if}}
-
-
-
 
           <hr />
 
+          <div class="d-flex flex-column flex-md-row">
+            <a class="my-1 mx-md-3 btn btn-primary" href="/admin/users/" role="button">
+              <i class="fa fa-backward" aria-hidden="true"></i>
+              Trở về
+            </a>
 
+            <button type="submit" class="my-1 btn btn-danger mx-md-3" formaction="/admin/users/del/{{user_id}}"
+              onclick="return confirm('Toàn bộ thông tin người dùng sẽ bị xóa - bao gồm cả thông tin từ các bảng liên quan.');">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              Xóa
+            </button>
 
-
-          <div class="row">
-
-            <div class="col-3">
-              <label style="font-weight:bold;">Phân quyền biên tập viên</label>
-            </div>
-
-            <div class="col-8">
-              {{#if is_editor}}
-              <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox" checked
-                style="margin:auto">
-              {{else}}
-              <input id="check_editor" name="check_editor" class="form-check-input" type="checkbox" style="margin:auto">
-              {{/if}}
-            </div>
-
-          </div>
-        </div>
-
-        {{!-- EDITOR Collapsed When not check--}}
-        {{#if is_editor}}
-        <div class="row collapse show" id="change-assigned-categoríes">
-          <div class="col-3">
-            <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
+            <button type="submit" class="my-1 btn btn-success mx-md-3">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Lưu
+            </button>
           </div>
 
-          <div class="col-8">
-            <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
-              aria-label="size 3 select example">
-              {{{render_categories categories selected_categories}}}
-            </select>
-          </div>
 
         </div>
-        {{else}}
-        <div class="row collapse" id="change-assigned-categoríes">
-
-          <div class="col-3">
-            <label style="font-weight:lighter;"><i>Phân công chuyên mục</i></label>
-          </div>
-
-          <div class="col-8">
-            <select id="categories_selected" name="categories_selected" class="form-select" multiple size="10"
-              aria-label="size 3 select example">
-              {{#each categories}}
-              <option value="{{category_id}}">{{category_name}}</option>
-              {{/each}}
-            </select>
-          </div>
-
-        </div>
-        {{/if}}
-
-
-        <hr />
-
-        <a class="btn btn-primary" href="/admin/users/" role="button">
-          <i class="fa fa-backward" aria-hidden="true"></i>
-          Trở về
-        </a>
-
-        <button type="submit" class="btn btn-danger ml-5" formaction="/admin/users/del/{{user_id}}"
-          onclick="return confirm('Toàn bộ thông tin người dùng sẽ bị xóa - bao gồm cả thông tin từ các bảng liên quan.');">
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-          Xóa
-        </button>
-
-        <button type="submit" class="btn btn-success ml-5">
-          <i class="fa fa-check" aria-hidden="true"></i>
-          Lưu
-        </button>
-
     </form>
   </div>
 </div>
