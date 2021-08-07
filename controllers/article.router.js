@@ -168,7 +168,9 @@ router.post("/:id/download", async function (req, res) {
       const template = hb.compile(resp, { strict: true });
       const result = template(data);
       const html = result;
-      const browser = await puppeteer.launch({ignoreDefaultArgs: ['--disable-extensions']});
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox','--disable-setuid-sandbox']});
       const page = await browser.newPage();
       await page.setContent(html);
       const pdf = await page.pdf({
