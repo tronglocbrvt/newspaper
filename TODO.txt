@@ -8,34 +8,38 @@
 8. Footer 
 9. sửa ngày
 
+Thêm icon views và icon premium vô tất cả.
 
-DEADLINES T5
+DEADLINES CN:
+
+// 
 - Loc: 
 Fix: 
-   Front end thêm thành công.
-   Xóa thư mục con (Rang buộc đếm số lượng subcats).
+ - Responsive.
+ - Pagnition.
+ - Tăng 2 views.
+ - Download.
 New tasks:
    Chỉnh hàm auth để phân quyền.
    Chỉnh link trong trang profile để đưa qua.
-Testing:
 
 
-- Linh: 
+// - Linh: 
 Fix: 
-   trang chủ (frontend - backend)
-   Trang chu:
-   * Nổi bật 1 tuần : đk thời gian + đk is out standing.
-   * mói nhất dễ.
-   * đọc nhiều dễ.
-   * mỗi chuyên mục tổng views, lấy ra cái nhiều nhất. Mỗi cái lấy ra 1 bài.
+   Them views + premium icon
+   Dieu chinh backend writers + editors.
+   Quản lý bài viết + Pagnition
+   Fix bugs lộc Logs.
+   Bug front-end
 New Tasks:
-   *Quản lý bài viết.
-   *Fix bugs lộc Logs
 
+// 
 - Phuc:
 Fix:
-   - Loc tai khoan theo loai users.
-   - chưa hiện form đăng ký.
+   - Responsive
+   - Them views + premium icon
+   - Dang nhap GG + FB
+   - Time-zones.
+   - Heroku.
 New tasks:
-   - Heroku: 
    - Fix bugs lộc Logs
