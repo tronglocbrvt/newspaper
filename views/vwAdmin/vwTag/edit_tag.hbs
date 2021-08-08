@@ -15,26 +15,40 @@
       </div>
       <div class="form-group">
         <label for="txtCatName">Tên tag</label>
-        <input type="text" class="form-control" id="txtTagName" name="tag_name" minlength="2" autofocus required
+        <input type="text" class="form-control" id="txtTagName" name="tag_name" minlength="2" maxlength="50" autofocus required
           value="{{tag_name}}">
         <div id="name_invalid" class="invalid-feedback">
                     Tag không đúng định dạng: phải có ít nhất 2 ký tự và theo định dạng #Tag hoặc #123
         </div>
       </div>
-      <a class="btn btn-primary" href="/admin/tags/" role="button">
-        <i class="fa fa-backward" aria-hidden="true"></i>
-        Trở về
-      </a>
-      <button type="submit" class="btn btn-danger ml-5" formaction="/admin/tags/{{tag_id}}/del" 
-      onclick="return confirm('Toàn bộ thông tin đến tag sẽ bị xóa - bao gồm việc xóa các tag ở các bài viết')";>
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-        Xóa
-      </button>
-      <button type="submit" class="btn btn-success ml-5" formaction="/admin/tags/{{tag_id}}/patch"
-      onclick="return confirm('Bạn có chắc chắn thay đổi không?')">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Lưu
-      </button>
+      <div class="d-flex flex-column flex-md-row">
+        <a
+          class="my-1 mx-md-3 btn btn-primary"
+          href="/admin/tags/"
+          role="button"
+        >
+          <i class="fa fa-backward" aria-hidden="true"></i>
+          Trở về
+        </a>
+
+        <button
+          type="submit"
+          class="my-1 btn btn-danger mx-md-3"
+          formaction="/admin/tags/{{tag_id}}/del" 
+          onclick="return confirm('Toàn bộ thông tin đến tag sẽ bị xóa - bao gồm việc xóa các tag ở các bài viết')";>
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+          Xóa
+        </button>
+
+        <button
+          type="submit"
+          class="my-1 btn btn-success mx-md-3"
+          formaction="/admin/tags/{{tag_id}}/patch"
+          onclick="return confirm('Bạn có chắc chắn thay đổi không?')">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Lưu
+        </button>
+      </div>
     </form>
   </div>
 </div>

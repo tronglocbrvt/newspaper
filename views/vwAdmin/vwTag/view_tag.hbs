@@ -10,15 +10,15 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h3>QUẢN LÝ TAGS</h3>
+                                <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link" aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ TAGS</h3>
                                  {{#if message}}
                                 <center>
-                                <div id="error_message" class="alert alert-success" style="margin-top: 30px; width: 80%; text-align: left">
+                                <div id="error_message" class="alert alert-success" style="margin-top: 30px; text-align: left">
                                     {{message}}
                                 </div>
                                 </center>
                                 {{/if}}
-                                <span class="float-right" style="margin-right: 120px;"><a
+                                <span class="float-right"><a
                                         class="btn btn-outline-primary" href="/admin/tags/add"><i
                                             class="fa fa-plus"></i> Thêm tag mới</a></span>
                             </div>
@@ -26,7 +26,8 @@
 
                         <!--table start-->
                         <center>
-                            <table class="table table-striped" style="width:80%">
+                            <div class="table-responsive">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="border-bottom-0 text-center">ID</th>
@@ -47,23 +48,20 @@
                                         <td class="text-center">
                                             <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0 px-3"
                                                 href="/admin/tags/{{tag_id}}"><i class="fa fa-pencil"
-                                                    aria-hidden="true"></i> Chỉnh sửa</a>
+                                                    aria-hidden="true"></i> Sửa</a>
                                         </td>
                                     </tr>
                                     {{/each}}
                                 </tbody>
                             </table>
+                            </div>
                         </center>
                         <!--end table-->
                         <!--Pagination-->
                         <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
                             <ul class="pagination">
                                 <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
-                                </li>
-                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang
-                                        trước</a>
+                                    <a class="page-link" href="?page=1" aria-disabled="true">&lt;&lt;</a>
                                 </li>
                                 {{#each this.page_numbers}}
                                 {{#if isCurrent}}
@@ -77,11 +75,7 @@
                                 {{/if}}
                                 {{/each}}
                                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang
-                                        tiếp</a>
-                                </li>
-                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
+                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
                                 </li>
                             </ul>
                         </nav>

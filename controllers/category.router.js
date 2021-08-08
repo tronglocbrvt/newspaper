@@ -66,11 +66,13 @@ router.get('/:category_id', async function(req, res) {
       hide: true
     });
     }
-
     // limit number of visible pages
     const limit_page = 5; 
     for (i = 0; i < n_pages; i++) {
         if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
             page_numbers[i].hide = false;
         }
         else if (+page - 3 <= i && i < +page + 2) {
@@ -115,8 +117,6 @@ router.get('/:category_id', async function(req, res) {
         n_pages,
         page_first: parseInt(page) === 1, // check first page 
         page_last: parseInt(page) === parseInt(n_pages), // check last page
-        next_page: parseInt(page) + 1 ,
-        previous_page: parseInt(page) - 1,
         empty_data: list[0].length === 0, // check empty data
     })
     }

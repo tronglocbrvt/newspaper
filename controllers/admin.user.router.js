@@ -36,6 +36,9 @@ router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
         if (+page < limit_page - 2 && i < limit_page) {
             page_numbers[i].hide = false;
         }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
         else if (+page - 3 <= i && i < +page + 2) {
             page_numbers[i].hide = false;
         }
@@ -52,8 +55,6 @@ router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
         n_pages,
         page_first: parseInt(page) === 1, // check first page 
         page_last: parseInt(page) === parseInt(n_pages), // check last page
-        next_page: parseInt(page) + 1,
-        previous_page: parseInt(page) - 1,
     });
 });
 

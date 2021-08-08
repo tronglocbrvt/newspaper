@@ -43,7 +43,7 @@ router.get('/', async function(req, res) {
     premium = (req.session.auth === true && time_now <= getTimeModule.get_time_from_date(req.session.authUser.time_premium)) ? 1 : 0;
     const total = await searchModel.count_result_from_search(keyword, type, premium, time_now/1000);
     let n_pages = Math.ceil(total[0][0].total / limit); // total page
-    console.log(total[0][0].total);
+
     // set status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
@@ -60,6 +60,9 @@ router.get('/', async function(req, res) {
         if (+page < limit_page - 2 && i < limit_page) {
             page_numbers[i].hide = false;
         }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
         else if (+page - 3 <= i && i < +page + 2) {
             page_numbers[i].hide = false;
         }
@@ -70,7 +73,7 @@ router.get('/', async function(req, res) {
   
     // get list articles based on keyword and criteria
     const list_articles = await searchModel.get_articles_from_search(keyword, type, offset, premium, time_now/1000);
-
+    console.log("so bai", list_articles[0].length);
     // get tags each article
     var tags = new Array();
     if (list_articles[0].length !== 0) {
@@ -89,8 +92,6 @@ router.get('/', async function(req, res) {
         page_numbers,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
-        next_page: parseInt(page) + 1 ,
-        previous_page: parseInt(page) - 1,
         n_pages,
         empty: list_articles[0].length === 0
     })

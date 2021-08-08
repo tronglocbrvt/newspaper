@@ -151,6 +151,9 @@ router.get('/:writer_id/articles', auth.auth, auth.auth_writer, async function (
         if (+page < limit_page - 2 && i < limit_page) {
             page_numbers[i].hide = false;
         }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
         else if (+page - 3 <= i && i < +page + 2) {
             page_numbers[i].hide = false;
         }

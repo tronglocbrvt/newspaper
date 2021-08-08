@@ -66,6 +66,9 @@ router.get('/subs', auth.auth, auth.auth_admin, async function(req, res) {
         if (+page < limit_page - 2 && i < limit_page) {
             page_numbers[i].hide = false;
         }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
         else if (+page - 3 <= i && i < +page + 2) {
             page_numbers[i].hide = false;
         }
@@ -109,7 +112,7 @@ router.get('/subs/:id', auth.auth, auth.auth_admin, async function(req, res) {
             main_cats[0][i].select = false;
     }
 
-    if (category[0][0] === undefined)
+    if (category === undefined)
     {
         return res.redirect('/admin/categories/' + req.cat_id + '/subs');
     }
