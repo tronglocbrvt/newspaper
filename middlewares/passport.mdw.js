@@ -15,7 +15,7 @@ passport.deserializeUser(function (obj, cb) {
 passport.use(new GoogleStrategy({
     clientID: '193740419851-12t4431fk4011feavrqired692kbtji9.apps.googleusercontent.com',
     clientSecret: 's3dd-Q3-N5Z5mx3NjFZhBtdl',
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: "https://test-db-llp-web.herokuapp.com" + "/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) 
   {
@@ -27,7 +27,7 @@ passport.use(new FacebookStrategy(
     {
       clientID: '552227225807906',
       clientSecret: '50918f0acce629751749ded2a149ebcf',
-      callbackURL: "http://localhost:3000/auth/facebook/callback",
+      callbackURL: "https://test-db-llp-web.herokuapp.com" + "/auth/facebook/callback",
     },
     function(accessToken, refreshToken, profile, done) {    
       done(null, profile);
