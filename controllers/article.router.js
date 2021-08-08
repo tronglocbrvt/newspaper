@@ -106,7 +106,8 @@ router.post("/:id", auth.auth, async function (req, res) {
   const published_article_id = req.params.id || 0;
   const content = req.body.comment;
   const time_comment = moment().format("YYYY-MM-DD HH:mm:ss");
-
+  console.log("TIME COMMENT: " + time_comment);
+  console.log("CONTENT COMMENT: " + content);
   const new_comment = {
     content: content,
     published_article_id: published_article_id,
