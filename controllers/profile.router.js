@@ -4,7 +4,8 @@ const auth = require('../middlewares/auth.mdw');
 const authenticate_model = require('../models/authenticate.model');
 const premium_form_db = require('../models/premium_forms.model.js')
 const getTimeModule = require('../utils/get_time.js');
-
+const env = require('../env.js');
+const time_zone_converter = require("../middlewares/timezone.mdw");
 
 function formatTime(s) {
     if (!s)
@@ -55,7 +56,7 @@ router.get('/', auth.auth, async function (req, res) {
             gender: genderToString(req.session.authUser.gender),
             email: req.session.authUser.email,
             user_id: req.session.authUser.user_id,
-            premium_date: req.session.authUser.time_premium,
+            premium_date: time_zone_converter.server_time_to_GMT_7(req.session.authUser.time_premium),
             is_log_in_by_third_party: is_log_in_by_third_party
         }
     );

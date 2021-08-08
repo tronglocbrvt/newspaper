@@ -12,15 +12,16 @@ const comment_model = require("../models/comment_model");
 const router = express.Router();
 const LIMIT_SIMILAR_ARTICLE = 5; // num of similar articles to get
 const auth = require("../middlewares/auth.mdw");
+const time_zone_converter = require("../middlewares/timezone.mdw");
 const getTimeModule = require("../utils/get_time.js");
 const moment = require("moment");
-
 /**
  * @param {s} String
  * @returns format time string
  */
-function formatTime(s) {
-  return moment(s).format("DD/MM/YYYY HH:mm:ss");
+function formatTime(s) 
+{
+  return time_zone_converter.server_time_to_GMT_7(moment(s)).format("DD/MM/YYYY HH:mm:ss");
 }
 
 /**
@@ -105,7 +106,7 @@ router.get("/:id", async function (req, res) {
 router.post("/:id", auth.auth, async function (req, res) {
   const published_article_id = req.params.id || 0;
   const content = req.body.comment;
-  const time_comment = moment().format("YYYY-MM-DD HH:mm:ss");
+  const time_comment = time_zone_converter.GMT_7_to_server_time(moment()).format("YYYY-MM-DD HH:mm:ss");
   console.log("TIME COMMENT: " + time_comment);
   console.log("CONTENT COMMENT: " + content);
   const new_comment = {

@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const N_HASHING_TIMES = 10;
 const moment = require('moment');
 const auth = require('../middlewares/auth.mdw');
+const time_zone_converter = require("../middlewares/timezone.mdw");
 
 // VIEW ALL USER API
 router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
@@ -80,6 +81,7 @@ router.get('/edit/:id', auth.auth, auth.auth_admin, async function (req, res) {
     }
     data.err_message = req.session.redirect_message;
     //console.log(data);
+    data.time_premium = time_zone_converter.server_time_to_GMT_7(data.time_premium);
     res.render('vwAdmin/vwUser/vwEditUser', data);
     delete req.session.redirect_message;
 });
@@ -93,7 +95,7 @@ router.post('/patch/:id', auth.auth, auth.auth_admin, async function (req, res) 
 
     const user_id = parseInt(req.params.id);
     const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
-    const time_premium = moment(req.body.time_premium, "DD/MM/YYYY HH").format("YYYY-MM-DD HH");
+    const time_premium = time_zone_converter.GMT_7_to_server_time(moment(req.body.time_premium, "DD/MM/YYYY HH")).format("YYYY-MM-DD HH");
 
     const user = await userModel.load_user_info_by_id(user_id);
     if (!user[0][0]) {
@@ -223,7 +225,7 @@ router.get('/add', auth.auth, auth.auth_admin, async function (req, res) {
 router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
     const hash = bcrypt.hashSync("admin", N_HASHING_TIMES); // Password is always admin
     const dob = moment(req.body.raw_date_of_birth, "DD/MM/YYYY").format("YYYY-MM-DD");
-    const time_premium = moment(req.body.time_premium, "DD/MM/YYYY HH").format("YYYY-MM-DD HH");
+    const time_premium = time_zone_converter.GMT_7_to_server_time(moment(req.body.time_premium, "DD/MM/YYYY HH")).format("YYYY-MM-DD HH"); // GMT+7 to server time
     //console.log(req.body);
     const new_user =
     {

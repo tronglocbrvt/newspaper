@@ -79,7 +79,7 @@ hbs.handlebars.registerHelper('date_format_2', function (str) {
 
 hbs.handlebars.registerHelper('date_time_format', function (str) {
   if (!str) return null;
-  const result = moment(str).format("DD/MM/YYYY HH");
+  const result = moment(str).format("DD/MM/YYYY HH") + ":00";
   return result;
 });
 

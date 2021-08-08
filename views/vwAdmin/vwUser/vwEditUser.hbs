@@ -4,7 +4,7 @@
 {{/section}}
 
 
-<div class="card m-5 ">
+<div class="card my-3 mx-1 m-md-5 ">
   <h2 class="card-header">
     Chi tiết người dùng
   </h2>
@@ -17,7 +17,7 @@
     {{/if}}
     <form id="frmAdminEditUser" method="POST" action='/admin/users/patch/{{user_id}}'>
       <div class="form-group">
-        <div class="mx-2 m-md-5" id="myTabContent">
+        <div class="m-md-5" id="myTabContent">
           <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
 
@@ -28,7 +28,7 @@
               </div>
 
               <div class="col-11  col-md-8">
-                <label style="font-weight:bold;">{{user_id}}</label>
+                <label>{{user_id}}</label>
               </div>
 
             </div>
@@ -41,9 +41,9 @@
               </div>
               <div class="col-11  col-md-8">
                 {{#if user_name}}
-                <label style="font-weight:bold;">{{user_name}}</label>
+                <label>{{user_name}}</label>
                 {{else}}
-                <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+                <label>Đăng nhập bên thứ 3</label>
                 {{/if}}
               </div>
             </div>
@@ -57,9 +57,9 @@
 
               <div class="col-11  col-md-8">
                 {{#if email}}
-                <label style="font-weight:bold;">{{email}}</label>
+                <label> {{email}}</label>
                 {{else}}
-                <label style="font-weight:bold;">Đăng nhập bên thứ 3</label>
+                <label>Đăng nhập bên thứ 3</label>
                 {{/if}}
               </div>
             </div>
@@ -72,9 +72,9 @@
 
               <div class="col-11  col-md-8">
                 {{#if is_authenticated}}
-                <label style="font-weight:bold;">Đã xác thực</label>
+                <label>Đã xác thực</label>
                 {{else}}
-                <label style="font-weight:bold;">Chưa xác thực</label>
+                <label>Chưa xác thực</label>
                 {{/if}}
               </div>
             </div>
@@ -148,7 +148,7 @@
             {{#if is_premium}}
             <div class="row collapse show my-3" id="change-time-premium">
               <div class="col-11  col-md-3">
-                <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
+                <label style="font-weight:lighter;"><i>Thời điểm hết hạn (GMT+7)</i></label>
               </div>
               <div class="col-11  col-md-8">
                 <input class="form-control" id="txtTimePremium" name="time_premium"
@@ -162,7 +162,7 @@
             {{else}}
             <div class="row collapse my-3" id="change-time-premium">
               <div class="col-11  col-md-3">
-                <label style="font-weight:lighter;"><i>Thời điểm hết hạn</i></label>
+                <label style="font-weight:lighter;"><i>Thời điểm hết hạn (GMT+7)</i></label>
               </div>
               <div class="col-11  col-md-8">
                 <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH"
