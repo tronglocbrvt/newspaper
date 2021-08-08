@@ -106,15 +106,13 @@ router.post("/:id", auth.auth, async function (req, res) {
   const published_article_id = req.params.id || 0;
   const content = req.body.comment;
   const time_comment = moment().format("YYYY-MM-DD HH:mm:ss");
-  console.log(time_comment);
-  // console.log(req.session.authUser);
+
   const new_comment = {
     content: content,
     published_article_id: published_article_id,
     time_comment: time_comment,
     user_id: req.session.authUser.user_id,
   };
-  console.log(new_comment);
   await comment_model.add_new_comment(new_comment);
   res.redirect("back");
 });
@@ -143,25 +141,7 @@ router.post("/:id/download", async function (req, res) {
   }
   let data_download = req.body.download;
   data = JSON.parse(data_download);
-  // const resp = await getTemplateHtml();
-  // console.log("Compile the template with handlebars")
-  // const template = hb.compile(resp, { strict: true });
-  // const result = template(data);
-  // const html = result;
-  // const browser = await puppeteer.launch();
-  // const page = await browser.newPage()
-  // await page.setContent(html)
-  // const pdf = await page.pdf({printBackground: true, format: 'A4', margin: {
-  //     top: "100px",
-  //     bottom: "100px",
-  //     left: "100px",
-  //     right: "100px"
-  // }
-  //  })
-  // await browser.close();
-  // res.contentType("application/pdf");
-  // res.send(pdf);
-  // console.log("PDF Generated");
+
   getTemplateHtml()
     .then(async (resp) => {
       console.log("Compile the template with handlebars");
@@ -170,7 +150,8 @@ router.post("/:id/download", async function (req, res) {
       const html = result;
       const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox','--disable-setuid-sandbox']});
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
       const page = await browser.newPage();
       await page.setContent(html);
       const pdf = await page.pdf({
