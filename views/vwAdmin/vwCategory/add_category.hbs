@@ -11,17 +11,27 @@
     <form method="POST">
       <div class="form-group">
         <label for="txtCatName">Tên chuyên mục mới</label>
-        <input type="text" class="form-control" id="txtCatName" name="category_name" autofocus required>
+        <input type="text" class="form-control" id="txtCatName" name="category_name" autofocus required minlength="2" maxlength="50"> 
       </div>
-      <a class="btn btn-primary" href="/admin/categories/" role="button">
-        <i class="fa fa-backward" aria-hidden="true"></i>
-        Trở về
-      </a>
-      <button type="submit" class="btn btn-success ml-4" formaction="/admin/categories"
-      onclick="return confirm('Bạn có chắc chắn muốn thêm chuyên mục này không?')">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Lưu
-      </button>
+      <div class="d-flex flex-column flex-md-row">
+        <a
+          class="my-1 mx-md-3 btn btn-primary"
+          href="/admin/categories/"
+          role="button"
+        >
+          <i class="fa fa-backward" aria-hidden="true"></i>
+          Trở về
+        </a>
+
+        <button
+          type="submit"
+          class="my-1 btn btn-success mx-md-3"
+          formaction="/admin/categories"
+          onclick="return confirm('Bạn có chắc chắn muốn thêm chuyên mục này không?')">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Lưu
+        </button>
+      </div>
     </form>
   </div>
 </div>

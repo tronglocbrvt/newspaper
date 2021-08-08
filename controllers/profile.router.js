@@ -57,7 +57,10 @@ router.get('/', auth.auth, async function (req, res) {
             email: req.session.authUser.email,
             user_id: req.session.authUser.user_id,
             premium_date: time_zone_converter.server_time_to_GMT_7(req.session.authUser.time_premium),
-            is_log_in_by_third_party: is_log_in_by_third_party
+            is_log_in_by_third_party: is_log_in_by_third_party,
+            is_admin: req.session.authUser.is_admin,
+            is_editor: req.session.authUser.is_editor,
+            is_writer: req.session.authUser.is_writer,
         }
     );
     delete req.session.redirect_message;

@@ -10,7 +10,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h2><b>QUẢN LÝ NGƯỜI DÙNG</b></h2>
+                                <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link" aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ NGƯỜI DÙNG</h3>
                                 <span class="float-right"><a class="btn btn-outline-primary" href="/admin/users/add"><i
                                             class="fa fa-plus"></i> Thêm người dùng
                                         mới</a></span>
@@ -102,12 +102,7 @@
                         <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
                             <ul class="pagination">
                                 <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page=1" aria-disabled="true">Trang đầu</a>
-                                </li>
-
-                                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Trang
-                                        trước</a>
+                                    <a class="page-link" href="?page=1" aria-disabled="true">&lt;&lt;</a>
                                 </li>
 
                                 {{#each this.page_numbers}}
@@ -123,13 +118,9 @@
                                 {{/if}}
 
                                 {{/each}}
+                            
                                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Trang
-                                        tiếp</a>
-                                </li>
-
-                                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">Trang cuối</a>
+                                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
                                 </li>
                             </ul>
 

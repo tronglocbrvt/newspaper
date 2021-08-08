@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col-sm-6 col-md-12 col-lg-6">
                 <!--thumbnail-->
-                <div class="ratio_360-202 image-wrapper">
+                <div class="ratio_360-202 image-wrapper ml-4">
                   <a href="/articles/{{published_article_id}}">
                     <img
                       class="img-fluid lazy loaded"
@@ -29,6 +29,7 @@
                       data-src="{{avatar_url}}"
                       alt="{{avatar_caption}}"
                       data-was-processed="true"
+                      style="width: 100%; height: auto;"
                     />
                   </a>
                 </div>
@@ -56,7 +57,7 @@
                   <div class="tags-area">
                     <div class="mb-2">
                       {{#each (lookup ../tags @index)}}
-                      <a class="btn btn-sm border" href="/tags/{{tag_id}}">{{tag_name}}</a>
+                      <a class="btn btn-sm border" style="text-align: left;" href="/tags/{{tag_id}}">{{tag_name}}</a>
                       {{/each}}
                     </div>
                   </div>
@@ -72,7 +73,7 @@
       <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
       <ul class="pagination">
         <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.previous_page}}" aria-disabled="true">Previous</a>
+          <a class="page-link" href="?page=1" aria-disabled="true">&lt;&lt;</a>
         </li>
         {{#each this.page_numbers}}
         {{#if isCurrent}}
@@ -86,7 +87,7 @@
         {{/if}}
         {{/each}}
         <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-          <a class="page-link" href="?page={{this.next_page}}" aria-disabled="true">Next</a>
+          <a class="page-link" href="?page={{this.n_pages}}" aria-disabled="true">&gt;&gt;</a>
         </li>
       </ul>
       </nav>

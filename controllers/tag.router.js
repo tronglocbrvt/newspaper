@@ -40,13 +40,28 @@ router.get('/:tag_id', async function(req, res) {
     const total = await articleModel.count_by_tag_id(tag_id, premium, time_now / 1000);
     let n_pages = Math.ceil(total[0][0].total / limit);
     
-    // get current page, default 1
+    // set status of current page is TRUE
     const page_numbers = [];
     for (i = 1; i <= n_pages; i++) {
     page_numbers.push({
       value: i,
-      isCurrent: i === +page
+      isCurrent: i === +page,
+      hide: true
     });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5; 
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
     }
 
     // set offset that pass to query in database
@@ -68,10 +83,9 @@ router.get('/:tag_id', async function(req, res) {
         tags,
         name_tag: name_tag.tag_name,
         page_numbers,
+        n_pages,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
-        next_page: parseInt(page) + 1 ,
-        previous_page: parseInt(page) - 1,
         empty: list[0].length === 0
     })
 });
