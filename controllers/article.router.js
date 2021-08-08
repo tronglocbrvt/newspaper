@@ -23,16 +23,12 @@ function formatTime(s) {
   return moment(s).format("DD/MM/YYYY HH:mm:ss");
 }
 
-let myFunc = function(req, res, next) {
-  next();
-}
-
 /**
  * API get Article by IDs
  * Input URL : id: published article id
  * Render page view a single paper
  */
-router.get("/:id", myFunc, async function (req, res) {
+router.get("/:id", async function (req, res) {
   // Get id
   const article_id = req.params.id || 0;
 
