@@ -7,7 +7,8 @@
 {{/section}}
 
 <div class="container-fluid col-sm-12 align-middle" style="font-size:19px;">
-    <div id="content" class="container mt-5  p-1 p-md-5 mb-5 bg-light shadow" style="background-color: rgb(255, 255, 255); ">
+    <div id="content" class="container mt-5  p-1 p-md-5 mb-5 bg-light shadow"
+        style="background-color: rgb(255, 255, 255); ">
         <div class="col-sm-12">
             {{#if redirect_message}}
             <div id="redirect_message" class="alert alert-info">
@@ -17,36 +18,34 @@
             <h2>Thông tin cá nhân</h2>
             <hr>
             <br>
-            <div class="mb-4 ml-5 d-flex">
-                <div class="d-flex justify-content-start">
-                    
-                    <!-- NAME and PREMIUM or NOT -->
-                    <div class="userData ml-3">
 
-                        <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{username}}</h2>
-
-                        {{#if is_premium}}
-                        <span class="badge badge-success">premium</span>
-                        {{else}}
-                        <span class="badge badge-secondary">normal</span>
-                        {{/if}}
-
-                    </div>
-
+            <div class="col-12 col-md-3 d-flex justify-content-start">
+                <!-- NAME and PREMIUM or NOT -->
+                <div class="userData ml-3">
+                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{username}}</h2>
+                    {{#if is_premium}}
+                    <span class="badge badge-success">premium</span>
+                    {{else}}
+                    <span class="badge badge-secondary">normal</span>
+                    {{/if}}
                 </div>
 
-                <div class="col-9 d-flex align-items-end flex-column align-self-center">
-                        {{#if is_writer}}
-                        <a role="button" href="/writers/{{user_id}}/articles" class="btn btn-primary my-2 btn-block" style="width:40%;"><i class="fa fa-pencil" aria-hidden="true"></i> &nbsp Dashboard Writer</a>
-                        {{/if}}
-                        {{#if is_editor}}
-                        <a type="button" href="/editors/{{user_id}}/reviews" class="btn btn-info mb-2 btn-block" style="width:40%;"><i class="fa fa-edit" aria-hidden="true"></i> &nbsp Dashboard Editor</a>
-                        {{/if}}
-                        {{#if is_admin}}
-                        <a type="button" href="/admin/dashboard" class="btn btn-secondary btn-block" style="width:40%;"><i class="fa fa-user" aria-hidden="true"></i> &nbsp Dashboard Admin</a>
-                        {{/if}}
-                </div>
             </div>
+
+            <div class="col-12 col-md-9 d-flex align-items-end flex-column align-self-center">
+                {{#if is_writer}}
+                <a role="button" href="/writers/{{user_id}}/articles" class="btn btn-primary my-2 btn-block"><i class="fa fa-pencil" aria-hidden="true"></i> &nbsp Dashboard Writer</a>
+                {{/if}}
+                {{#if is_editor}}
+                <a type="button" href="/editors/{{user_id}}/reviews" class="btn btn-info mb-2 btn-block"
+                    ><i class="fa fa-edit" aria-hidden="true"></i> &nbsp Dashboard Editor</a>
+                {{/if}}
+                {{#if is_admin}}
+                <a type="button" href="/admin/dashboard" class="btn btn-secondary btn-block" ><i
+                        class="fa fa-user" aria-hidden="true"></i> &nbsp Dashboard Admin</a>
+                {{/if}}
+            </div>
+
 
             <div class="m-5" id="myTabContent">
                 <div class="" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">

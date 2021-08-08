@@ -106,7 +106,7 @@ router.get("/:id", async function (req, res) {
 router.post("/:id", auth.auth, async function (req, res) {
   const published_article_id = req.params.id || 0;
   const content = req.body.comment;
-  const time_comment = time_zone_converter.GMT_7_to_server_time(moment()).format("YYYY-MM-DD HH:mm:ss");
+  const time_comment = moment().format("YYYY-MM-DD HH:mm:ss");
   console.log("TIME COMMENT: " + time_comment);
   console.log("CONTENT COMMENT: " + content);
   const new_comment = {
