@@ -1,7 +1,15 @@
 const db = require('../utils/db')
 
 module.exports = {
-    get_articles_by_id(id, offset){
+    get_count_articles(writer_id){
+        const sql = `select count(*) as total
+        from articles
+        where writer_id = ${writer_id};`
+
+        return db.raw(sql);
+    },
+
+    get_articles_by_id(id, offset, limit){
         const sql = `select article_id, article_title, writer_id,
         CASE
             WHEN is_published and article_id in (select pa.article_id
@@ -25,7 +33,9 @@ module.exports = {
             ELSE 0
          END AS published_article_id
         from articles
-        where writer_id = ${id}`;
+        where writer_id = ${id}
+        limit ${limit}
+        offset ${offset}`;
 
         return db.raw(sql);
     },

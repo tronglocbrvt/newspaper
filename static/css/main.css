@@ -11,7 +11,7 @@
 .nav-link2{
     color: gray;
     display: block;
-    padding: .6rem .5rem;
+    padding: .5rem .5rem;
     font-weight: 600;
 }
 
@@ -92,4 +92,9 @@
 
 .hide {
     display: none;
+}
+
+.reject-div{
+    border-radius: 5px;
+    background-color: rgba(217, 83, 79, 0.4);
 }

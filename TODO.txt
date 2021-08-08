@@ -32,6 +32,12 @@ Fix:
    Fix bugs lộc Logs.
    Bug front-end
 New Tasks:
+   trang chủ (frontend - backend)
+   Trang chu:
+   * Nổi bật 1 tuần : đk thời gian + đk is out standing.
+   * mỗi chuyên mục tổng views, lấy ra cái nhiều nhất. Mỗi cái lấy ra 1 bài.
+New Tasks:
+   *Quản lý bài viết.
 
 // 
 - Phuc:

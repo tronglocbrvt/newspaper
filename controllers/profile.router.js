@@ -26,7 +26,7 @@ function genderToString(gender) {
 }
 
 
-router.get('/', auth, async function (req, res) {
+router.get('/', auth.auth, async function (req, res) {
 
     // TODO : fix premium
     const is_premium = getTimeModule.get_time_now() <= getTimeModule.get_time_from_date(req.session.authUser.time_premium);
@@ -54,6 +54,7 @@ router.get('/', auth, async function (req, res) {
             dob: req.session.authUser.date_of_birth,
             gender: genderToString(req.session.authUser.gender),
             email: req.session.authUser.email,
+            user_id: req.session.authUser.user_id,
             premium_date: req.session.authUser.time_premium,
             is_log_in_by_third_party: is_log_in_by_third_party
         }
@@ -63,7 +64,7 @@ router.get('/', auth, async function (req, res) {
 });
 
 
-router.post('/sign-up-premium', auth, async function (req, res) 
+router.post('/sign-up-premium', auth.auth, async function (req, res) 
 {
     const sign_up_premium_form = 
     {

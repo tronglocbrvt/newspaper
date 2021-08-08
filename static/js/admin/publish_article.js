@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    var state = 0;
     var tag_list = [];
     var tags = [];
     const url = window.location.href;
@@ -71,34 +70,7 @@ $(document).ready(function () {
         }
     })
 
-    $("#accept").change(function(){
-        if(this.checked){
-            state = 1;
-            showStateAccept();
-            hideStateReject()
-        } else{
-            hideStateAccept();
-            state = 0;
-        }
-    })
-
-    $("#reject").change(function(){
-        if(this.checked){
-            state = 2;
-            showStateReject();
-            hideStateAccept();
-        } else {
-            hideStateReject();
-            state = 0;
-        }
-    })
-
     $("#form").submit(function(e){
-        if(state === 0){
-            alert('Vui lòng chọn DUYỆT hoặc TỪ CHỐI');
-            e.preventDefault();
-            return false;
-        }
         const tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
@@ -177,27 +149,5 @@ $(document).ready(function () {
         }
 
         return true;
-    }
-
-    function showStateAccept(){
-        $('#reject').prop('checked', false);
-        $("#main_cat_reset, #sub_cat_reset, #tag-area-reset, #tag-group, #publish-time").attr('hidden', false);
-        $("#main_cat_readonly, #sub_cat_readonly, #tag_readonly, #date_readonly").attr('hidden', true);
-        $("#publish-time").attr("required", true);
-    }
-
-    function hideStateAccept(){
-        $("#main_cat_reset, #sub_cat_reset, #tag-area-reset, #tag-group, #publish-time").attr('hidden', true);
-        $("#main_cat_readonly, #sub_cat_readonly, #tag_readonly, #date_readonly").attr('hidden', false);
-        $("#publish-time").attr("required", false);
-    }
-
-    function showStateReject(){
-        $('#accept').prop('checked', false);
-        $("#comment").attr('disabled', false).attr('required', true);
-    }
-
-    function hideStateReject(){
-        $("#comment").attr('disabled', true).attr('required', false);
     }
 });

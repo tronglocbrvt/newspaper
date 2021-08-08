@@ -3,9 +3,10 @@ const router = express.Router();
 const editor_model = require('../models/editor.model');
 const category_model = require('../models/category.model');
 const writer_model = require('../models/writer.model');
+const auth = require('../middlewares/auth.mdw');
 const tag_model = require("../models/tag.model");
 
-router.get('/:editor_id/reviews', async function (req, res) {
+router.get('/:editor_id/reviews', auth.auth, auth.auth_editor, async function (req, res) {
     const editor_id = req.params.editor_id;
 
     if (isNaN(parseInt(editor_id))) {
@@ -13,6 +14,11 @@ router.get('/:editor_id/reviews', async function (req, res) {
         res.render('vwError/viewNotFound');
         return;
     }
+
+    if (+editor_id !== req.session.authUser.user_id) {
+        return res.redirect('/editors/'+req.session.authUser.user_id+'/reviews');
+    }
+
     const if_exist = await editor_model.if_exist(editor_id);
     if (!if_exist[0][0]) {
         res.status(404);
@@ -38,13 +44,16 @@ router.get('/:editor_id/reviews', async function (req, res) {
     })
 });
 
-router.get('/:editor_id/review/:article_id', async function (req, res) {
+router.get('/:editor_id/review/:article_id', auth.auth, auth.auth_editor, async function (req, res) {
     const article_id = req.params.article_id || 0;
-    const editor_id = req.params.editor_id;
-    if (isNaN(parseInt(editor_id))) {
+    const editor_id = req.params.editor_id || 0;
+    if (isNaN(parseInt(editor_id)) || isNaN(parseInt(article_id))) {
         res.status(404);
         res.render('vwError/viewNotFound');
         return;
+    }
+    if (+editor_id !== req.session.authUser.user_id) {
+        return res.redirect('/editors/'+req.session.authUser.user_id+'/review/' + article_id);
     }
     const if_exist = await editor_model.if_article_belong_editor(editor_id, article_id);
     if (if_exist[0][0]) {
@@ -60,13 +69,23 @@ router.get('/:editor_id/review/:article_id', async function (req, res) {
         res.render('vwError/viewNotFound');
         return;
     }
-
 });
 
-router.post('/:editor_id/review/:article_id', async function (req, res) {
+router.post('/:editor_id/review/:article_id', auth.auth, auth.auth_editor, async function (req, res) {
     const editor_id = req.params.editor_id;
     const article_id = req.params.article_id;
-
+    if (isNaN(parseInt(editor_id)) || isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    const if_exist = await editor_model.if_article_belong_editor(editor_id, article_id);
+    if (!if_exist[0][0]) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
+    
     var article = req.body;
     //get tag and delete from body
     var tags = req.body.tags;

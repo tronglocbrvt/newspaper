@@ -1,5 +1,6 @@
 <div class="row">
-  <div class="col-md-7 col-sm-12 col-12" style="padding: 0">
+  <div class="col-lg-7 col-sm-12 col-12" style="padding: 0">
+
     <!-- Slideshow container -->
     <div class="slideshow-container">
       <!-- Full-width images with number and caption text -->
@@ -24,13 +25,12 @@
       {{/each}}
 
       <!-- Next and previous buttons -->
-      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+      <a class="prev" onclick="plusSlides(-1)"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+      <a class="next" onclick="plusSlides(1)"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
     </div>
     <br>
-
   </div>
-  <div class="col-md-5 col-sm-12 col-12">
+  <div class="col-lg-5 col-sm-12 col-12">
     <ul class="nav nav-pills" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="tab-javascript" data-toggle="tab" href="#content-javascript" role="tab"
@@ -95,13 +95,13 @@
 </div>
 <div class="row" style="margin-bottom: 20px;">
   {{#each hot_categories}}
-  <div class="col-sm-2 v-article">
-    <a href="/categories/{{parent_cat_id}}/subs/{{category_id}}" class="cat-link text-uppercase btn btn-secondary border mb-2 article-category"
+  <div class="col-sm-6 col-lg-3 v-article">
+    <a href="/categories/{{parent_cat_id}}" class="cat-link text-uppercase btn btn-primary border mb-2 article-category"
       style="font-size: medium;">{{category_name}}</a>
     <div class="card v-card">
       <a href="/articles/{{article_id}}">
-        <img class="card-img-top" src="{{avatar_url}}" alt="Nổi bật" style="width: 100%; max-height: 120px;"></a>
-      <a href="#" class="title-link v-card-content">{{article_title}}</a>
+        <img class="card-img-top" src="{{avatar_url}}" alt="Nổi bật" style="width: 100%; height: 140px;"></a>
+      <a href="/articles/{{article_id}}" class="title-link v-card-content">{{article_title}}</a>
       <div class="v-time">
         {{date_format time_published}}
       </div>

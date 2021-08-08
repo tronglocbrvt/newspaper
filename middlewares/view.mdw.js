@@ -102,7 +102,7 @@ hbs.handlebars.registerHelper('get_status_color', function (str) {
     return "dark";
 })
 
-hbs.handlebars.registerHelper('is_empty_editor', function(value){
+hbs.handlebars.registerHelper('is_empty_array', function(value){
   if(value.length < 1)
     return true
   return false
@@ -115,6 +115,7 @@ hbs.handlebars.registerHelper('gen_gender', function (value) {
     return "Nam";
   return "Khác"
 });
+
 hbs.handlebars.registerHelper('is_submitted', function (str) {
   if (str === "Chờ xét duyệt")
     return true;

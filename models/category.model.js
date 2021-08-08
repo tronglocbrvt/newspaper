@@ -129,5 +129,21 @@ module.exports={
     search_by_cat_name(cat_name) {
         const sql = `select * from categories where category_name = '${cat_name}'`;
         return db.raw(sql);
+    },
+
+    get_hot_categories(){
+        const sql = `select c.parent_category_id
+        from categories c,
+             published_articles pa,
+             articles a
+        where c.category_id = a.category_id
+          and a.article_id = pa.article_id
+          and pa.time_published < now()
+          and c.parent_category_id is not null
+        group by c.parent_category_id, c.parent_category_id
+        order by sum(pa.views_numbers) desc
+        limit 10;`;
+
+        return db.raw(sql);
     }
 }

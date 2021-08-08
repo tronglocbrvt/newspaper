@@ -1,10 +1,10 @@
 const express = require('express');
 const categoryModel = require('../models/category.model');
-
+const auth = require('../middlewares/auth.mdw');
 const router = express.Router();
 
 // Subcategory management
-router.get('/add', async function(req, res) {
+router.get('/add', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -16,7 +16,7 @@ router.get('/add', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/', async function(req, res) {
+router.post('/', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
@@ -34,7 +34,7 @@ router.post('/', async function(req, res) {
     }
 });
 
-router.get('/subs', async function(req, res) {
+router.get('/subs', auth.auth, auth.auth_admin, async function(req, res) {
     const cat_id = req.cat_id || 0;
     if (isNaN(parseInt(cat_id))) {
         res.status(404);
@@ -43,7 +43,7 @@ router.get('/subs', async function(req, res) {
     const limit = 10; // number of rows on 1 page
 
     // get current page, default 1
-    const page = req.query.page || 1;
+    var page = req.query.page || 1;
     if (page < 1) page = 1;
 
     // count articles by cat_id
@@ -91,7 +91,7 @@ router.get('/subs', async function(req, res) {
     delete req.session.redirect_message
 });
 
-router.get('/subs/:id', async function(req, res) {
+router.get('/subs/:id', auth.auth, auth.auth_admin, async function(req, res) {
     const cat_id = req.params.id;
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(cat_id))) {
         res.status(404);
@@ -109,7 +109,7 @@ router.get('/subs/:id', async function(req, res) {
             main_cats[0][i].select = false;
     }
 
-    if (category[0] === undefined)
+    if (category[0][0] === undefined)
     {
         return res.redirect('/admin/categories/' + req.cat_id + '/subs');
     }
@@ -123,13 +123,13 @@ router.get('/subs/:id', async function(req, res) {
     delete req.session.redirect_message;
 });
 
-router.post('/subs/:id/patch', async function(req, res) {
+router.post('/subs/:id/patch', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
     cat = await categoryModel.search_by_cat_name(req.body.category_name);
-    if (cat[0] === undefined) {
+    if (cat[0][0] === undefined) {
         await categoryModel.patch_subcat(req.params.id, req.body.cat_name, req.body.parent_category_id);
         req.session.redirect_message = 'Chỉnh sửa thành công';
         res.redirect('/admin/categories/' + req.cat_id + '/subs');
@@ -140,13 +140,13 @@ router.post('/subs/:id/patch', async function(req, res) {
     }
 });
 
-router.post('/subs/:id/del', async function(req, res) {
+router.post('/subs/:id/del', auth.auth, auth.auth_admin, async function(req, res) {
     if (isNaN(parseInt(req.cat_id)) || isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
     count = await categoryModel.count_articles_in_subcat(req.params.id);
-    if (count[0][0].count == 0) {
+    if (count[0][0].count === 0) {
         await categoryModel.delete(req.params.id);
         req.session.redirect_message = 'Xóa thành công';
     }

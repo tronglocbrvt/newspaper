@@ -54,18 +54,17 @@ module.exports =
         return db.raw(sql_query, params)
     },
 
-     /**
-     * @param {published_article_id} int id of the published article
-     * @Return return lists of comments òf the published_article_id
-     */
-    load_comments_of_published_articles_by_id(published_article_id)
-    {
+    /**
+    * @param {published_article_id} int id of the published article
+    * @Return return lists of comments òf the published_article_id
+    */
+    load_comments_of_published_articles_by_id(published_article_id) {
         const sql_query = `select c.*, u.name
         from comments as c,users as u
         where c.published_article_id = ? and u.user_id = c.user_id
         order by c.time_comment asc;
         `;
-        return db.raw(sql_query,published_article_id);
+        return db.raw(sql_query, published_article_id);
     },
 
     /**
@@ -74,7 +73,7 @@ module.exports =
      * @Return return lists of articles with the parent category and related
      */
     find_by_cat_id(cat_id, offset, premium, time) {
-        var params = { id: cat_id, offset: offset, premium: premium, time: time};
+        var params = { id: cat_id, offset: offset, premium: premium, time: time };
         const sql = `select articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id, p.views_numbers
         from articles, categories, categories as c, published_articles as p
         where categories.parent_category_id = :id
@@ -137,7 +136,7 @@ module.exports =
      * @Return return lists of articles with the subcategory and related
      */
     find_by_subcat_id(sub_id, offset, premium, time) {
-        var params = { id: sub_id, offset: offset, premium: premium, time: time};
+        var params = { id: sub_id, offset: offset, premium: premium, time: time };
         const sql = `select distinct articles.*, p.time_published, p.published_article_id, categories.category_name, c.category_name as name, c.category_id as id, p.views_numbers
         from articles, categories, published_articles as p, categories as c
         where categories.category_id = :id
@@ -165,7 +164,7 @@ module.exports =
             and c.category_id = articles.category_id
             and articles.is_premium <= ${premium}
             and unix_timestamp(p.time_published) <= ${time}`;
-        
+
         return db.raw(sql);
     },
 
@@ -175,7 +174,7 @@ module.exports =
      * @Return return lists of articles with the tag and related
      */
     find_by_tag_id(tag_id, offset, premium, time) {
-        var params = { id: tag_id, offset: offset, premium: premium, time: time};
+        var params = { id: tag_id, offset: offset, premium: premium, time: time };
         const sql = `select articles.*, p.time_published, p.published_article_id, tags.tag_name, c.category_name, c.parent_category_id, p.views_numbers
         from articles, tag_links as tl, published_articles as p, tags, categories as c
         where tl.tag_id = :id
@@ -195,8 +194,10 @@ module.exports =
         pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
         from published_articles pa, articles a, categories c
         where pa.is_outstanding = true
+        and pa.time_published < now()
         and pa.article_id = a.article_id
         and c.category_id = a.category_id
+        order by pa.time_published desc
         limit 4`;
         return db.raw(sql);
     },
@@ -206,6 +207,7 @@ module.exports =
         pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
+        and pa.time_published < now()
         and a.category_id = pa.article_id
         order by pa.time_published desc
         limit 10`;
@@ -217,24 +219,28 @@ module.exports =
         pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
         from published_articles pa, articles a, categories c
         where pa.article_id = a.article_id
+        and pa.time_published < now()
         and c.category_id = a.category_id
-        order by pa.views_numbers
+        order by pa.views_numbers desc
         limit 10`;
         return db.raw(sql);
     },
 
-    hot_categories() {
-        const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, pa.time_published as time_published,
+    get_latest_art_of_category(category_id) {
+        const sql = `select a.article_title as article_title, a.article_id as article_id, c2.category_name as category_name, pa.time_published as time_published,
         a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
-        from articles a, categories c, published_articles pa
-        where a.category_id = c.category_id
-        and a.category_id = pa.article_id
-        order by a.article_id asc
-        limit 10`;
+        from articles a, published_articles pa, categories c, categories c2
+        where a.article_id = pa.article_id
+        and c.category_id = a.category_id
+        and c2.category_id = c.parent_category_id
+        and c.parent_category_id = ${category_id}
+        and pa.time_published < now()
+        order by pa.time_published desc
+        limit 1`;
         return db.raw(sql);
     },
 
-    add(article){
+    add(article) {
         return db('articles').insert(article);
     },
 

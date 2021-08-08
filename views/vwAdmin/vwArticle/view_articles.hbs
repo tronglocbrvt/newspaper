@@ -1,0 +1,88 @@
+<!--Content start-->
+<main id="content">
+    <!--Container-->
+    <div class="container c-mobile">
+        <div class="row">
+            <!--Start include wrapper-->
+            <div class="include-wrapper pb-5 col-12">
+                <div class="row mt-4 py-3">
+                    <!--content-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <h3>Quản lý bài báo</h3>
+                            </div>
+                        </div>
+                        {{#each types}}
+                        <a class="btn btn-{{get_status_color this}} mb-3" data-toggle="collapse" href="#col{{@index}}" role="button"
+                            aria-expanded="false" aria-controls="col{{@index}}" onclick="clickCollapse()">
+                            {{this}}
+                        </a>
+                        {{/each}}
+                        {{#each articles}}
+                        {{#if (is_empty_array this)}}
+                        <h4 class="collapse text-primary" id="col{{@index}}">Không có bài báo</h4>
+                        {{else}}
+                        <div class="collapse" id="col{{@index}}">
+                            <!--table start-->
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="d-flex">
+                                            <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
+                                            <th class="border-bottom-0 col-md-4" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
+                                            <th class="border-bottom-0 col-md-2" scope="col">Tác giả</th>
+                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Xem</th>
+                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Xóa</th>
+                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Sửa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each this}}
+                                        <tr  class="d-flex">
+                                            <th scope="row" class="col-md-1">{{article_id}}</th>
+                                            <td style="font-weight: 600;" class="col-md-4">{{article_title}}</td>
+                                            <td class="col-md-2">{{category_name}}</td>
+                                            <td class="col-md-2">{{writer_alias}}</td>
+                                            <td class="text-center col-md-1">
+                                                <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/view/{{article_id}}"
+                                                    title="Xem bài báo"><i class="fa fa-eye"></i> Xem</a>
+                                            </td>
+                                            <td class="text-center col-md-1">
+                                                <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/publish/{{article_id}}"
+                                                    title="Xem bài báo"><i class="fa fa-trash"></i> Xóa</a>
+                                            </td>
+                                            <td class="text-center col-md-1">
+                                                <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/edit/{{article_id}}"
+                                                    title="Xem bài báo"><i class="fa fa-pencil"></i> Sửa</a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--end table-->
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{{#section 'js'}}
+<script>
+    $("#col0").addClass('show');
+
+    function clickCollapse() {
+        $(".show").removeClass('show');
+    }
+</script>
+
+{{/section}}
