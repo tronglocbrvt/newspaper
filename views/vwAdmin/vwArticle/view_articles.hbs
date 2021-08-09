@@ -127,12 +127,7 @@
             <ul class="pagination">
                 <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
                     <a class="page-link" onclick="clickPage(1)"
-                        aria-disabled="true">Trang đầu</a>
-                </li>
-                <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link"
-                        onclick="clickPage({{previous_page}})"
-                        aria-disabled="true">Trang trước</a>
+                        aria-disabled="true">&lt;&lt;</a>
                 </li>
                 {{#each this.page_numbers}}
                 {{#if isCurrent}}
@@ -147,14 +142,8 @@
                 {{/if}}
                 {{/each}}
                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link"
-                        onclick="clickPage({{next_page}})"
-                        aria-disabled="true">Trang tiếp</a>
-                </li>
-                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
                     <a class="page-link" onclick="clickPage({{n_pages}})"
-                        aria-disabled="true">Trang
-                        cuối</a>
+                        aria-disabled="true">&gt;&gt;/a>
                 </li>
             </ul>
         </nav>
