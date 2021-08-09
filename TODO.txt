@@ -1,16 +1,11 @@
 // TODO:
-1. Download.
-2. Chua co trang editor - Tinh nang 4. ok 
-3. Trang cua Quan Tri version.
-4. Trang chu: fix. 
-6. Quan tri vien.
-7. Sai duong dan -> Loi 500 ok 
-8. Footer 
-9. sửa ngày
 
 Thêm icon views và icon premium vô tất cả.
 
+
 DEADLINES CN:
+
+/----------------------------------------------------------------------------------------/
 
 // - Loc: 
 Fix: 
@@ -18,27 +13,25 @@ Fix:
  - Chỉnh link trong trang profile để đưa qua.
  - Chinh ham time trong tag va categories.
  - Log bugs
+ - Fix bug phan quyen admin
+
+
+/----------------------------------------------------------------------------------------/
 
 
 // - Linh: 
 Fix: 
-   Them views + premium icon.
    Dieu chinh backend writers + editors. 
    Fix bug Quản lý bài viết + Pagnition.
+   Chinh ham time trong tag va categories.
    Fix bugs lộc Logs.
-   Bug front-end
-New Tasks:
-   trang chủ (frontend - backend)
-   Trang chu:
-   * Nổi bật 1 tuần : đk thời gian + đk is out standing.
-   * mỗi chuyên mục tổng views, lấy ra cái nhiều nhất. Mỗi cái lấy ra 1 bài.
-New Tasks:
-   *Quản lý bài viết.
+
+/----------------------------------------------------------------------------------------/
 
 // - Phuc:
 Fix:
-   - Responsive
+   - Responsive --- huhu
    - Them views + premium icon
    - Tai chinh kinh doanh ngan lai
-New tasks:
    - Fix bugs lộc Logs
+/----------------------------------------------------------------------------------------/
