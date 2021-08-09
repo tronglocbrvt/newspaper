@@ -269,6 +269,7 @@ $('#frmRegister').on('submit', function (e) {
 
 $('#frmAdminAddUser').on('submit', function (e) {
     console.log("check form");
+
     e.preventDefault();
     validTestPassed = true;
 
@@ -352,13 +353,14 @@ $('#frmAdminAddUser').on('submit', function (e) {
         $("#password").val("");
         $("#password_confirm").val("");
     }
+    clickedFlag = false;
 });
 
 $('#frmAdminEditUser').on('submit', function (e) {
-    console.log("check form");
+    console.log("CHECK FORM");
     e.preventDefault();
     validTestPassed = true;
-
+    // if (!clickedFlag) return;
     ///////////////////////////////////////////////////
 
     const name = $('#name').val();
@@ -367,11 +369,11 @@ $('#frmAdminEditUser').on('submit', function (e) {
         $('#name').addClass("border border-danger");
         validTestPassed = false;
     }
-    else {
+    else 
+    {
         $('#name_invalid').hide()
         $('#name').removeClass("border border-danger");
     }
-
 
 
     ///////////////////////////////////////////////////

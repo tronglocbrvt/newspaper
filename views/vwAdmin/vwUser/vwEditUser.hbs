@@ -2,7 +2,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/static/js/datetimepicker/jquery.datetimepicker.css" />
 {{/section}}
-
+{{#section 'js'}}
+<script>
+  var editFlag = false;
+</script>
+{{/section}}
 
 <div class="card my-3 mx-1 m-md-5 ">
   <h2 class="card-header">
@@ -296,7 +300,7 @@
               Xóa
             </button>
 
-            <button type="submit" class="my-1 btn btn-success mx-md-3">
+            <button type="submit" class="my-1 btn btn-success mx-md-3"
               <i class="fa fa-check" aria-hidden="true"></i>
               Lưu
             </button>

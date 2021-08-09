@@ -9,65 +9,13 @@ const moment = require('moment');
 const auth = require('../middlewares/auth.mdw');
 const time_zone_converter = require("../middlewares/timezone.mdw");
 
-// VIEW ALL USER API
-router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
-    const limit = 20; // number of rows on 1 page
-    // get current page, default 1
-
-    var page = req.query.page || 1;
-    if (page < 1) page = 1;
-
-    // count articles by cat_id
-    const total = await userModel.count_users();
-    let n_pages = Math.ceil(total[0][0].total / limit); // get total page
-
-    // set status of current page is TRUE
-    const page_numbers = [];
-    for (i = 1; i <= n_pages; i++) {
-        page_numbers.push({
-            value: i,
-            isCurrent: i === +page,
-            hide: true
-        });
-    }
-
-    // limit number of visible pages
-    const limit_page = 5;
-    for (i = 0; i < n_pages; i++) {
-        if (+page < limit_page - 2 && i < limit_page) {
-            page_numbers[i].hide = false;
-        }
-        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
-            page_numbers[i].hide = false;
-        }
-        else if (+page - 3 <= i && i < +page + 2) {
-            page_numbers[i].hide = false;
-        }
-    }
-
-    // set offset that pass to query in database
-    const offset = (page - 1) * limit;
-    const listAllUsers = await userModel.all(offset);
-
-    //console.log(listAllUsers[0][0]);
-    res.render('vwAdmin/vwUser/vwShowAllUsers', {
-        users: listAllUsers[0],
-        page_numbers,
-        n_pages,
-        page_first: parseInt(page) === 1, // check first page 
-        page_last: parseInt(page) === parseInt(n_pages), // check last page
-    });
-});
-
-
-
 // -- VIEW USER API --
 router.get('/edit/:id', auth.auth, auth.auth_admin, async function (req, res) {
     if (isNaN(parseInt(req.params.id))) {
         res.status(404);
         return res.render('vwError/viewNotFound');
     }
-    
+
     const user_id = parseInt(req.params.id);
     const user = await userModel.load_user_info_by_id(user_id);
     if (!user[0][0]) {
@@ -219,7 +167,7 @@ router.post('/del/:id', auth.auth, auth.auth_admin, async function (req, res) {
 // -- ADD USER API --
 router.get('/add', auth.auth, auth.auth_admin, async function (req, res) {
     const list = await categoryModel.get_main_cats();
-    //console.log(list[0]);
+    console.log(list[0]);
     res.render('vwAdmin/vwUser/vwAddUser', { categories: list[0] });
 });
 
@@ -279,6 +227,145 @@ router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
     }
     res.redirect("");
 });
+
+
+// VIEW ALL USER API
+router.get('/:filter', auth.auth, auth.auth_admin, async function (req, res) 
+{
+    const limit = 20; // number of rows on 1 page
+    // get current page, default 1
+    var page = req.query.page || 1;
+    if (page < 1) page = 1;
+
+    // count articles by cat_id
+    var total = null;
+    switch (req.params.filter) {
+        case "all":
+            total = await userModel.countfilter(0, 0, 0);
+            break;
+        case "normal":
+            total = await userModel.countfilterNot(0, 1, 1);
+            break;
+        case "premium":
+            total = await userModel.countfilter(1, 0, 0);
+            break;
+        case "writer":
+            total = await userModel.countfilter(0, 1, 0);
+            break;
+        case "editor":
+            total = await userModel.countfilter(0, 0, 1);
+            break;
+        default:
+            res.status(404);
+            return res.render('vwError/viewNotFound');
+    }
+
+    let n_pages = Math.ceil(total[0][0].total / limit); // get total page
+    // set status of current page is TRUE
+    const page_numbers = [];
+    for (i = 1; i <= n_pages; i++) {
+        page_numbers.push({
+            value: i,
+            isCurrent: i === +page,
+            hide: true
+        });
+    }
+    // limit number of visible pages
+    const limit_page = 5;
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
+    }
+    // set offset that pass to query in database
+    const offset = (page - 1) * limit;
+
+    // Filter
+    var listAllUsers = null;
+    switch (req.params.filter) {
+        case "normal":
+            listAllUsers = await userModel.filterNot(offset, 0, 1, 1);
+            break;
+        case "premium":
+            listAllUsers = await userModel.filter(offset, 1, 0, 0);
+            break;
+        case "writer":
+            listAllUsers = await userModel.filter(offset, 0, 1, 0);
+            break;
+        case "editor":
+            listAllUsers = await userModel.filter(offset, 0, 0, 1);
+            break;
+        default:
+            res.status(404);
+            return res.render('vwError/viewNotFound');
+    }
+
+    // render
+    res.render('vwAdmin/vwUser/vwShowAllUsers', {
+        users: listAllUsers[0],
+        page_numbers,
+        n_pages,
+        page_first: parseInt(page) === 1, // check first page 
+        page_last: parseInt(page) === parseInt(n_pages), // check last page
+    });
+});
+
+
+router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
+    const limit = 20; // number of rows on 1 page
+    // get current page, default 1
+
+    var page = req.query.page || 1;
+    if (page < 1) page = 1;
+
+    // count articles by cat_id
+    const total = await userModel.countfilter(0, 0, 0);
+    let n_pages = Math.ceil(total[0][0].total / limit); // get total page
+
+    // set status of current page is TRUE
+    const page_numbers = [];
+    for (i = 1; i <= n_pages; i++) {
+        page_numbers.push({
+            value: i,
+            isCurrent: i === +page,
+            hide: true
+        });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5;
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
+    }
+
+    // set offset that pass to query in database
+    const offset = (page - 1) * limit;
+    const listAllUsers = await userModel.filter(offset, 0, 0, 0);
+
+    //console.log(listAllUsers[0][0]);
+    res.render('vwAdmin/vwUser/vwShowAllUsers', {
+        users: listAllUsers[0],
+        page_numbers,
+        n_pages,
+        page_first: parseInt(page) === 1, // check first page 
+        page_last: parseInt(page) === parseInt(n_pages), // check last page
+    });
+});
+
 
 
 module.exports = router

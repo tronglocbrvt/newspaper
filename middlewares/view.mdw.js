@@ -36,6 +36,12 @@ hbs.handlebars.registerHelper('render_gender', function (gender) {
     <option selected value="1">Nam</option>
     <option  value="0">Nữ</option>`
   }
+  else
+  {
+    return `<option selected value="-1">Khác</option>
+    <option value="1">Nam</option>
+    <option value="0">Nữ</option>` 
+  }
 });
 
 

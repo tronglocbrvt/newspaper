@@ -8,12 +8,22 @@
                 <div class="row mt-4 py-3">
                     <!--content-->
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 mb-4">
-                                <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link" aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ NGƯỜI DÙNG</h3>
-                                <span class="float-right"><a class="btn btn-outline-primary" href="/admin/users/add"><i
-                                            class="fa fa-plus"></i> Thêm người dùng
-                                        mới</a></span>
+                        <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link"
+                                    aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ NGƯỜI DÙNG</h3>
+                        <div class="d-flex justify-content-center">
+                            <div class="tags-area my-2">
+                                <a class="my-2 btn btn-outline-primary" href="/admin/users">Xem toàn bộ</a>
+                                <a class="my-2 btn btn-outline-primary" href="/admin/users/normal">Người dùng bình
+                                    thường</a>
+                                <a class="my-2 btn btn-outline-primary" href="/admin/users/premium">Người dùng
+                                    premium</a>
+                                <a class="my-2 btn btn-outline-primary" href="/admin/users/writer">Phóng viên</a>
+                                <a class="my-2 btn btn-outline-primary" href="/admin/users/editor">Biên tập
+                                    viên</a>
+                                <a class="my-2 btn btn-outline-danger" href="/admin/users/add"><i
+                                        class="fa fa-plus"></i>
+                                    Thêm người dùng
+                                    mới</a>
                             </div>
                         </div>
                         <!--table start-->
@@ -118,7 +128,7 @@
                                 {{/if}}
 
                                 {{/each}}
-                            
+
                                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
                                     <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
                                 </li>

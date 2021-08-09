@@ -23,6 +23,54 @@ module.exports =
         FROM users limit 20 offset ?`;
         return db.raw(sql_query, offset);
     },
+    countfilter(is_premium, is_writer, is_editor)
+    {
+        const sql_query = `select count(*) as total
+        FROM users
+        WHERE
+        ((users.time_premium is not null) and (users.time_premium > NOW())) >= :is_premium
+        and users.is_writer >= :is_writer
+        and users.is_editor >= :is_editor
+        and users.is_admin = false;`
+        return db.raw(sql_query, { is_premium: is_premium, is_writer: is_writer, is_editor: is_editor });
+    },  
+
+    countfilterNot(is_premium, is_writer, is_editor)
+    {
+        const sql_query = `select count(*) as total
+        FROM users
+        WHERE
+        ((users.time_premium is not null) and (users.time_premium > NOW())) <= :is_premium
+        and users.is_writer <= :is_writer
+        and users.is_editor <= :is_editor
+        and users.is_admin = false;`
+        return db.raw(sql_query, { is_premium: is_premium, is_writer: is_writer, is_editor: is_editor });
+    },     
+
+    filter(offset, is_premium, is_writer, is_editor) {
+        const sql_query = `SELECT users.*, (users.time_premium is not null and users.time_premium > NOW()) as is_premium
+        FROM users
+        WHERE
+        ((users.time_premium is not null) and (users.time_premium > NOW())) >= :is_premium
+        and users.is_writer >= :is_writer
+        and users.is_editor >= :is_editor
+        and users.is_admin = false
+        limit 20 offset :offset;`;
+        return db.raw(sql_query, { is_premium: is_premium, is_writer: is_writer, is_editor: is_editor, offset: offset });
+    }
+    ,
+    filterNot(offset, is_premium, is_writer, is_editor) {
+        const sql_query = `SELECT users.*, (users.time_premium is not null and users.time_premium > NOW()) as is_premium
+        FROM users
+        WHERE
+        ((users.time_premium is not null) and (users.time_premium > NOW())) <= :is_premium
+        and users.is_writer <= :is_writer
+        and users.is_editor <= :is_editor
+        and users.is_admin = false
+        limit 20 offset :offset;`;
+        return db.raw(sql_query, { is_premium: is_premium, is_writer: is_writer, is_editor: is_editor, offset: offset });
+    }
+    ,
 
     count_users() {
         const sql = `select count(*) as total
@@ -86,7 +134,7 @@ module.exports =
         const sql = `update writers
         set nick_name = :nick_name
         where user_id = :user_id;`
-        return db.raw(sql, {nick_name: nick_name, user_id: user_id });
+        return db.raw(sql, { nick_name: nick_name, user_id: user_id });
     }
     ,
     insertWriter(user_id, nick_name) {
