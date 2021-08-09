@@ -18,7 +18,6 @@ Fix:
 
 /----------------------------------------------------------------------------------------/
 
-
 // - Linh: 
 Fix: 
    Dieu chinh backend writers + editors. 
@@ -26,11 +25,12 @@ Fix:
    Chinh ham time trong tag va categories.
    Fix bugs lộc Logs.
    Bug front-end
-
+   find home.js va file css. f12
 // - Phuc:
 Fix:
    - Responsive --- huhu
    - Them views + premium icon
    - Tai chinh kinh doanh ngan lai
+   - Chinh bi danh cho writer
    - Fix bugs lộc Logs
 /----------------------------------------------------------------------------------------/
