@@ -6,8 +6,6 @@ const path = require('path');
 const auth = require('../middlewares/auth.mdw');
 const article_model = require('../models/article.model');
 const writer_model = require('../models/writer.model');
-const { add } = require('../models/category.model');
-const { add_tag } = require('../models/tag.model');
 
 router.get('/:writer_id/add', auth.auth, auth.auth_writer, async function (req, res) {
     const writer_id = req.params.writer_id;
