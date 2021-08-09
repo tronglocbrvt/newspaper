@@ -15,8 +15,11 @@
         <div class="big-title">
           <a href="/articles/{{article_id}}" class="title-link">{{article_title}}</a>
         </div>
-        <div style="font-size: large;">
-          <span class="d-sm-inline me-1" style="margin-left: 30px;">
+        <div style="font-size: large; margin-left: 30px;">
+          {{#if is_premium}}
+          <i class="fa fa-diamond" aria-hidden="true"></i>
+          {{/if}}
+          <span class="d-sm-inline me-1">
             <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
           </span>
           <span class="date">&nbsp;{{date_format time_published}}</span>
@@ -56,6 +59,9 @@
               </a>
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
+                {{#if is_premium}}
+                <i class="fa fa-diamond" aria-hidden="true"></i>
+                {{/if}}
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
@@ -76,10 +82,14 @@
               </a>
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
+                {{#if is_premium}}
+                <i class="fa fa-diamond" aria-hidden="true"></i>
+                {{/if}}
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
-                <span class="date">&nbsp;{{date_format time_published}}</span>
+                <span class="date">&nbsp;{{date_format time_published}} &nbsp;</span>
+                <i class="fa fa-eye" aria-hidden="true"> {{views}}</i>
               </div>
             </div>
           </div>

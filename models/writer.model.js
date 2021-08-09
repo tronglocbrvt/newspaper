@@ -1,6 +1,13 @@
 const db = require('../utils/db')
 
 module.exports = {
+    get_writers(){
+        const sql = `select *
+        from writers
+        order by nick_name`;
+        return db.raw(sql);
+    }, 
+
     get_count_articles(writer_id){
         const sql = `select count(*) as total
         from articles

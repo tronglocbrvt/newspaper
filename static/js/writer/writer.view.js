@@ -29,17 +29,6 @@ $(document).ready(function () {
         });
     });
 
-    function set_sub_cats(id, data) {
-        $('#sub_category').empty();
-        sub_cats = data.filter(cat => cat.parent_category_id === +id);
-        for (let i = 0; i < sub_cats.length; i++) {
-            var element = $('<option></option>').attr('value', sub_cats[i].category_id).text(sub_cats[i].category_name);
-            $('#sub_category').append(element);
-        }
-        const empty_element = $('<option></option>').attr('value', 0).text('---------');
-        $('#sub_category').append(empty_element);
-    }
-
     function add_tag(input_tag) {
         if (tags.includes(input_tag)) {
             if (tag_list.includes(input_tag)) {
@@ -51,7 +40,6 @@ $(document).ready(function () {
                 else {
                     var element = $('<div class="btn-group mr-3 mb-3" role="group"></div>');
                     var tag_btn = $('<div class="btn btn-outline-primary"></div>').text(input_tag);
-                    var delete_icon = $('<i class="fa fa-trash"></i>')
                     element.append(tag_btn);
                     $('#tag-area').append(element);
                     tag_list.push(input_tag);
