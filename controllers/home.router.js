@@ -1,5 +1,4 @@
 const express = require('express');
-const { most_news, hot_categories } = require('../models/article.model');
 const router = express.Router();
 const article_model = require('../models/article.model');
 const category_model = require('../models/category.model');

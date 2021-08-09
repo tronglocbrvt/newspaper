@@ -8,20 +8,77 @@ const editor_model = require('../models/editor.model');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    var published_art = await admin_model.get_published_art(10, 0);
-    var tobe_published_art = await admin_model.get_tobe_published_art(10, 0);
-    var submitted_art = await admin_model.get_submitted_art(10, 0);
-    var draft_art = await admin_model.get_draft_art(10, 0);
-    var rejected_art = await admin_model.get_rejected_art(10, 0);
-    var articles = [];
-    articles.push(published_art[0])
-    articles.push(tobe_published_art[0]);
-    articles.push(submitted_art[0]);
-    articles.push(draft_art[0]);
-    articles.push(rejected_art[0]);
+    //get queries
+    const page = req.query.page || 1;
+    if (page < 1) page = 1;
+    const tab = req.query.tab || 0;
+    const writer_id = req.query.writer || 0;
+    const main_cat = req.query.main_cat || 0;
+    const sub_cat = req.query.sub_cat || 0;
+    const tag_id = req.query.tag || 0;
+    var sub_cats = [[]];
+
+    // number of articles on 1 page
+    const limit = 10;
+
+    const total = await admin_model.get_articles_by_filter(10, 0, +tab, +writer_id, +main_cat, +sub_cat, +tag_id, true);
+    let n_pages = Math.ceil(total[0].length / limit); // total page
+
+    // set status of current page is TRUE
+    const page_numbers = [];
+    for (i = 1; i <= n_pages; i++) {
+        page_numbers.push({
+            value: i,
+            isCurrent: i === +page,
+            hide: true
+        });
+    }
+
+    // limit number of visible pages
+    const limit_page = 5;
+    for (i = 0; i < n_pages; i++) {
+        if (+page < limit_page - 2 && i < limit_page) {
+            page_numbers[i].hide = false;
+        }
+        else if (+page - 3 <= i && i < +page + 2) {
+            page_numbers[i].hide = false;
+        }
+    }
+
+    // set offset that pass to query in database
+    const offset = (page - 1) * limit;
+
+    //get articles tab by tab and push to all articles
+    var articles = await admin_model.get_articles_by_filter(limit, offset, +tab, +writer_id, +main_cat, +sub_cat, +tag_id);
+
+    //get filter data
+    const main_cats = await category_model.get_main_cats();
+    const tags = await tag_model.get_tags();
+    const writers = await writer_model.get_writers();
+    if(+main_cat !== 0)
+        sub_cats = await category_model.get_sub_cats_by_cat_id(main_cat);
+
     res.render('vwAdmin/vwArticle/view_articles.hbs', {
         types: ['Đã xuất bản', 'Chờ xuất bản', 'Chờ xét duyệt', 'Bản nháp', 'Từ chối'],
-        articles: articles
+        articles: articles[0],
+        page_numbers,
+        page_first: parseInt(page) === 1,
+        page_last: parseInt(page) === parseInt(n_pages),
+        next_page: parseInt(page) + 1,
+        previous_page: parseInt(page) - 1,
+        n_pages: n_pages,
+        is_empty: articles[0].length === 0,
+        is_show_pagination: n_pages > 2,
+        tab: +tab,
+        main_cats: main_cats[0],
+        tags: tags[0],
+        writers: writers[0],
+        writer_filter: +writer_id,
+        tag_filter: +tag_id,
+        main_cat_filter: +main_cat,
+        sub_cat_filter: +sub_cat,
+        sub_cats: sub_cats[0],
+        is_publishable: +tab === 2
     })
 })
 

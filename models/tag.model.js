@@ -3,7 +3,8 @@ const db = require('../utils/db')
 module.exports = {
     get_tags() {
         const sql = `select t.tag_name as tag_name, t.tag_id as tag_id
-        from tags t`;
+        from tags t
+        order by t.tag_name`;
         return db.raw(sql);
     },
 

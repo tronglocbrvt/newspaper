@@ -4,7 +4,7 @@
     <div class="container c-mobile">
         <div class="row">
             <!--Start include wrapper-->
-            <div class="include-wrapper pb-5 col-12">
+            <div class="include-wrapper pb-3 col-12">
                 <div class="row mt-4 py-3">
                     <!--content-->
                     <div class="col-md-12">
@@ -14,52 +14,101 @@
                             </div>
                         </div>
                         {{#each types}}
-                        <a class="btn btn-{{get_status_color this}} mb-3" data-toggle="collapse" href="#col{{@index}}" role="button"
-                            aria-expanded="false" aria-controls="col{{@index}}" onclick="clickCollapse()">
+                        <a class="btn btn-dark mb-3" id="btn{{@index}}" data-toggle="collapse" href="#col{{@index}}"
+                            role="button" aria-expanded="false" aria-controls="col{{@index}}"
+                            onclick="clickCollapse(this.id)">
                             {{this}}
                         </a>
                         {{/each}}
-                        {{#each articles}}
-                        {{#if (is_empty_array this)}}
-                        <h4 class="collapse text-primary" id="col{{@index}}">Không có bài báo</h4>
+                        <form class="row mb-3 ml-1">
+                            <div class="form-group pr-3">
+                                <label for="writer" class="text-primary"><b>TÁC GIẢ &nbsp;</b></label>
+                                <select name="category_id" class="form-control" id="writers"
+                                    onchange="clickWriter(this.value)" />
+                                    <option value="0">Tất cả</option>
+                                    {{#each writers}}
+                                    <option value="{{writer_id}}">{{nick_name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="form-group pr-3">
+                                <label for="main_cat" class="text-primary"><b>CHUYÊN MỤC &nbsp;</b></label>
+                                <select name="category_id" class="form-control" id="main_cat" onchange="clickMainCat(this.value)" />
+                                    <option value="0">Tất cả</option>
+                                    {{#each main_cats}}
+                                    <option value="{{category_id}}">{{category_name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="form-group pr-3">
+                                <label for="sub_cat" class="text-primary"><b>CHUYÊN MỤC CON &nbsp;</b></label>
+                                <select name="category_id" class="form-control" id="sub_cat" onchange="clickSubCat(this.value)" />
+                                <option value="0">Tất cả</option>
+                                    {{#each sub_cats}}
+                                    <option value="{{category_id}}">{{category_name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tags" class="text-primary"><b>TAG &nbsp;</b></label>
+                                <select name="category_id" class="form-control" id="tags" onchange="clickTag(this.value)" />
+                                <option value="0">Tất cả</option>
+                                {{#each tags}}
+                                <option value="{{tag_id}}">{{tag_name}}</option>
+                                {{/each}}
+                                </select>
+                            </div>
+                        </form>
+                        {{#if is_empty}}
+                        <h4 class="collapse show text-primary">Không có bài báo</h4>
                         {{else}}
-                        <div class="collapse" id="col{{@index}}">
+                        <div class="collapse show">
                             <!--table start-->
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr class="d-flex">
                                             <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0 col-md-4" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}3{{else}}4{{/if}}" scope="col">Tiêu đề</th>
                                             <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
-                                            <th class="border-bottom-0 col-md-2" scope="col">Tác giả</th>
+                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}1{{else}}2{{/if}}" scope="col">Tác giả</th>
                                             <th class="border-bottom-0 col-md-1 text-center" scope="col">Xem</th>
                                             <th class="border-bottom-0 col-md-1 text-center" scope="col">Xóa</th>
                                             <th class="border-bottom-0 col-md-1 text-center" scope="col">Sửa</th>
+                                            {{#if is_publishable}}
+                                            <th class="border-bottom-0 col-md-2 text-center" scope="col">Xuất bản</th>
+                                            {{/if}}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each this}}
-                                        <tr  class="d-flex">
+                                        {{#each articles}}
+                                        <tr class="d-flex">
                                             <th scope="row" class="col-md-1">{{article_id}}</th>
-                                            <td style="font-weight: 600;" class="col-md-4">{{article_title}}</td>
+                                            <td style="font-weight: 600;" class="col-md-{{#if ../is_publishable}}3{{else}}4{{/if}}">{{article_title}}</td>
                                             <td class="col-md-2">{{category_name}}</td>
-                                            <td class="col-md-2">{{writer_alias}}</td>
+                                            <td class="col-md-{{#if ../is_publishable}}1{{else}}2{{/if}}">{{writer_alias}}</td>
                                             <td class="text-center col-md-1">
                                                 <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/view/{{article_id}}"
-                                                    title="Xem bài báo"><i class="fa fa-eye"></i> Xem</a>
+                                                    href="/admin/articles/view/{{article_id}}" title="Xem bài báo"><i
+                                                        class="fa fa-eye"></i> Xem</a>
                                             </td>
                                             <td class="text-center col-md-1">
                                                 <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/publish/{{article_id}}"
-                                                    title="Xem bài báo"><i class="fa fa-trash"></i> Xóa</a>
+                                                    href="#" title="Xem bài báo"><i
+                                                        class="fa fa-trash"></i> Xóa</a>
                                             </td>
                                             <td class="text-center col-md-1">
-                                                <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/edit/{{article_id}}"
-                                                    title="Xem bài báo"><i class="fa fa-pencil"></i> Sửa</a>
+                                                <a class="btn btn-secondary btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/edit/{{article_id}}" title="Xem bài báo"><i
+                                                        class="fa fa-pencil"></i> Sửa</a>
                                             </td>
+                                            {{#if ../is_publishable}}
+                                            <td class="text-center col-md-2">
+                                                <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/publish/{{article_id}}" title="Xem bài báo"><i
+                                                        class=""></i> Xuất bản</a>
+                                            </td>
+                                            {{/if}}
                                         </tr>
                                         {{/each}}
                                     </tbody>
@@ -68,21 +117,59 @@
                             <!--end table-->
                         </div>
                         {{/if}}
-                        {{/each}}
                     </div>
                 </div>
             </div>
         </div>
+        <!--Pagination-->
+        {{#if is_show_pagination}}
+        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 10px;">
+            <ul class="pagination">
+                <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" onclick="clickPage(1)"
+                        aria-disabled="true">Trang đầu</a>
+                </li>
+                <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link"
+                        onclick="clickPage({{previous_page}})"
+                        aria-disabled="true">Trang trước</a>
+                </li>
+                {{#each this.page_numbers}}
+                {{#if isCurrent}}
+                <li class="page-item {{#if isCurrent}}active{{/if}}">
+                    <a class="page-link" href="javascript:;">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item {{#if hide}}hide{{/if}}">
+                    <a class="page-link"
+                        onclick="clickPage({{value}})">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link"
+                        onclick="clickPage({{next_page}})"
+                        aria-disabled="true">Trang tiếp</a>
+                </li>
+                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" onclick="clickPage({{n_pages}})"
+                        aria-disabled="true">Trang
+                        cuối</a>
+                </li>
+            </ul>
+        </nav>
+        {{/if}}
     </div>
 </main>
 
 {{#section 'js'}}
 <script>
-    $("#col0").addClass('show');
-
-    function clickCollapse() {
-        $(".show").removeClass('show');
-    }
+    var tab = "{{tab}}";
+    var writer_id = "{{writer_filter}}";
+    var main_cat = "{{main_cat_filter}}";
+    var sub_cat = "{{sub_cat_filter}}";
+    var tag_id = "{{tag_filter}}";
+    var page = 1;
 </script>
-
+<script src="/static/js/admin/view_articles.js"></script>
 {{/section}}

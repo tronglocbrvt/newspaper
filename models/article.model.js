@@ -191,7 +191,7 @@ module.exports =
 
     hot_news() {
         const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, 
-        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
+        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id, is_premium
         from published_articles pa, articles a, categories c
         where pa.is_outstanding = true
         and pa.time_published < now()
@@ -204,11 +204,11 @@ module.exports =
 
     latest_news() {
         const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, 
-        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
+        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id, is_premium
         from articles a, categories c, published_articles pa
         where a.category_id = c.category_id
         and pa.time_published < now()
-        and a.category_id = pa.article_id
+        and a.article_id = pa.article_id
         order by pa.time_published desc
         limit 10`;
         return db.raw(sql);
@@ -216,7 +216,7 @@ module.exports =
 
     most_news() {
         const sql = `select a.article_title as article_title, a.article_id as article_id, a.category_id as category_id, c.category_name as category_name, 
-        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
+        pa.time_published as time_published, a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id, pa.views_numbers as views, is_premium
         from published_articles pa, articles a, categories c
         where pa.article_id = a.article_id
         and pa.time_published < now()
@@ -228,7 +228,7 @@ module.exports =
 
     get_latest_art_of_category(category_id) {
         const sql = `select a.article_title as article_title, a.article_id as article_id, c2.category_name as category_name, pa.time_published as time_published,
-        a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id
+        a.avatar_url as avatar_url, c.parent_category_id as parent_cat_id, is_premium
         from articles a, published_articles pa, categories c, categories c2
         where a.article_id = pa.article_id
         and c.category_id = a.category_id
