@@ -8,16 +8,35 @@ module.exports = {
         return db.raw(sql);
     }, 
 
-    get_count_articles(writer_id){
-        const sql = `select count(*) as total
-        from articles
-        where writer_id = ${writer_id};`
+    get_articles_by_writer(id, offset, limit, tab, is_total){
+        var limit_offset = "";
+        if (is_total === false)
+            limit_offset = `limit ${limit}
+                            offset ${offset}`;
+        var tab_constraint = '';
+        switch (tab){
+            case '1':
+                tab_constraint = `and is_published = true and article_id in (select pa.article_id
+                    from published_articles pa
+                    where pa.time_published <= now())`;
+                break;
+            case '2':
+                tab_constraint = `and is_published = true and article_id in (select pa.article_id
+                    from published_articles pa
+                    where pa.time_published > now())`;
+                break;
+            case '3':
+                tab_constraint = 'and is_submitted = true';
+                break;
+            case '4':
+                tab_constraint = 'and is_draft = true';
+                break;
+            case '5':
+                tab_constraint = 'and is_rejected = true';
+                break;
+        }
 
-        return db.raw(sql);
-    },
-
-    get_articles_by_id(id, offset, limit){
-        const sql = `select article_id, article_title, writer_id,
+        const sql = `select article_id, article_title, writer_id, category_name,
         CASE
             WHEN is_published and article_id in (select pa.article_id
                                                 from published_articles pa
@@ -30,20 +49,13 @@ module.exports = {
             WHEN is_draft
                 THEN 'Bản nháp'
             ELSE 'Chờ xuất bản'
-         END AS status,
-        CASE
-            WHEN article_id in (select pa.article_id
-                             from published_articles pa)
-                THEN (select pa.published_article_id
-                             from published_articles pa
-                             where pa.article_id = articles.article_id)
-            ELSE 0
-         END AS published_article_id
-        from articles
+         END AS status
+        from articles a, categories c
         where writer_id = ${id}
-        limit ${limit}
-        offset ${offset}`;
+        and c.category_id = a.category_id ${tab_constraint}
+        ${limit_offset}`;
 
+        console.log(sql);
         return db.raw(sql);
     },
     
@@ -98,6 +110,14 @@ module.exports = {
     delete_rejected_article(article_id){
         const sql = `delete from rejected_articles
         where article_id = ${article_id}`;
+
+        return db.raw(sql);
+    },
+
+    get_writerid_by_userid(user_id){
+        const sql = `select writer_id
+        from writers
+        where user_id = ${user_id}`;
 
         return db.raw(sql);
     }

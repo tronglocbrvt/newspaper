@@ -30,24 +30,25 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <input type="text" class="form-control" id="category" readonly>
-            {{!-- <option value="0">---------</option> --}}
-            {{!-- {{#each main_cats}}
-            <option value="{{category_id}}">{{category_name}}</option>
-            {{/each}} --}}
             </input>
         </div>
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <input type="text" class="form-control" id="sub_category" readonly>
-            {{!-- <option value="0">---------</option> --}}
             </input>
         </div>
     </div>
     <label for="tags">TAGS</label>
-    <div class="mb-2" id="tag-area"></div>
+    <div class="mb-2" id="tag-area">
+        {{#each tags}}
+        <div class="btn-group mr-3 mb-3" role="group">
+            <div class="btn btn-outline-primary">{{tag_name}}</div>
+        </div>
+        {{/each}}
+    </div>
     <div class="form-group">
         <label for="content">NỘI DUNG</label>
-        <div id="content" readonly></div>
+        <div id="content" readonly>{{{article.article_content}}}</div>
     </div>
 </form>
 <hr>
@@ -81,9 +82,6 @@
                     <div class="input-group" id="tag-group">
                         <input type="text" list="tag-list" class="form-control" id="tags" />
                         <datalist id="tag-list">
-                            {{#each tags}}
-                            <option value="{{tag_name}}">{{tag_name}}</option>
-                            {{/each}}
                         </datalist>
                         <div class="input-group-append">
                             <div class="btn btn-primary" id="btn-add-tag">
@@ -92,7 +90,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="tag-area-reset"></div>
+                <div id="tag-area-reset">
+                </div>
                 <div class="form-group">
                     <div class="row">
                         <label class="text-dark col-md-6">Chọn thời điểm đăng</label>
@@ -115,11 +114,15 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/admin/publish_article.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
     integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script>
+    var main_cat = "{{parent_cat.id}}";
+    var main_cat_name = "{{parent_cat.name}}";
+    var sub_cat = "{{article.category_id}}";
+</script>
+<script src="/static/js/admin/publish_article.js"></script>
 {{/section}}
 
 {{#section 'css'}}

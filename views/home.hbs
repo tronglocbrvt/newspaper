@@ -60,7 +60,7 @@
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
                 {{#if is_premium}}
-                <i class="fa fa-diamond" aria-hidden="true"></i>
+                <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
                 {{/if}}
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
@@ -83,7 +83,7 @@
               <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
               <div class="h-time">
                 {{#if is_premium}}
-                <i class="fa fa-diamond" aria-hidden="true"></i>
+                <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
                 {{/if}}
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
@@ -113,6 +113,9 @@
         <img class="card-img-top" src="{{avatar_url}}" alt="Nổi bật" style="width: 100%; height: 140px;"></a>
       <a href="/articles/{{article_id}}" class="title-link v-card-content">{{article_title}}</a>
       <div class="v-time">
+        {{#if is_premium}}
+        <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
+        {{/if}}
         {{date_format time_published}}
       </div>
     </div>

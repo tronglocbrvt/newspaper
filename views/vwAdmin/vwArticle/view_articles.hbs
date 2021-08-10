@@ -11,6 +11,8 @@
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link" aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ BÀI VIẾT</h3>
+                                <span class="float-right" style="mr-auto"><a class="btn btn-outline-primary"
+                                        href="/writers/add"><i class="fa fa-plus"></i> Viết bài mới</a></span>
                             </div>
                         </div>
                         {{#each types}}
@@ -69,12 +71,11 @@
                                     <thead>
                                         <tr class="d-flex">
                                             <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}3{{else}}4{{/if}}" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}4{{else}}5{{/if}}" scope="col">Tiêu đề</th>
                                             <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
                                             <th class="border-bottom-0 col-md-{{#if is_publishable}}1{{else}}2{{/if}}" scope="col">Tác giả</th>
                                             <th class="border-bottom-0 col-md-1 text-center" scope="col">Xem</th>
                                             <th class="border-bottom-0 col-md-1 text-center" scope="col">Xóa</th>
-                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Sửa</th>
                                             {{#if is_publishable}}
                                             <th class="border-bottom-0 col-md-2 text-center" scope="col">Xuất bản</th>
                                             {{/if}}
@@ -84,7 +85,7 @@
                                         {{#each articles}}
                                         <tr class="d-flex">
                                             <th scope="row" class="col-md-1">{{article_id}}</th>
-                                            <td style="font-weight: 600;" class="col-md-{{#if ../is_publishable}}3{{else}}4{{/if}}">{{article_title}}</td>
+                                            <td style="font-weight: 600;" class="col-md-{{#if ../is_publishable}}4{{else}}5{{/if}}">{{article_title}}</td>
                                             <td class="col-md-2">{{category_name}}</td>
                                             <td class="col-md-{{#if ../is_publishable}}1{{else}}2{{/if}}">{{writer_alias}}</td>
                                             <td class="text-center col-md-1">
@@ -94,19 +95,14 @@
                                             </td>
                                             <td class="text-center col-md-1">
                                                 <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
-                                                    href="#" title="Xem bài báo"><i
+                                                    href="/admin/articles/delete/{{article_id}}" title="Xem bài báo"><i
                                                         class="fa fa-trash"></i> Xóa</a>
-                                            </td>
-                                            <td class="text-center col-md-1">
-                                                <a class="btn btn-secondary btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/edit/{{article_id}}" title="Xem bài báo"><i
-                                                        class="fa fa-pencil"></i> Sửa</a>
                                             </td>
                                             {{#if ../is_publishable}}
                                             <td class="text-center col-md-2">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/publish/{{article_id}}" title="Xem bài báo"><i
-                                                        class=""></i> Xuất bản</a>
+                                                    href="/admin/articles/publish/{{article_id}}" title="Xem bài báo">
+                                                     Xuất bản</a>
                                             </td>
                                             {{/if}}
                                         </tr>
@@ -121,18 +117,12 @@
                 </div>
             </div>
         </div>
-        <!--Pagination-->
+                <!--Pagination-->
         {{#if is_show_pagination}}
-        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 10px;">
+        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
             <ul class="pagination">
-                <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link" onclick="clickPage(1)"
-                        aria-disabled="true">Trang đầu</a>
-                </li>
-                <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link"
-                        onclick="clickPage({{previous_page}})"
-                        aria-disabled="true">Trang trước</a>
+                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" onclick="clickPage(1)" aria-disabled="true">&lt;&lt;</a>
                 </li>
                 {{#each this.page_numbers}}
                 {{#if isCurrent}}
@@ -141,20 +131,12 @@
                 </li>
                 {{else}}
                 <li class="page-item {{#if hide}}hide{{/if}}">
-                    <a class="page-link"
-                        onclick="clickPage({{value}})">{{value}}</a>
+                    <a class="page-link" onclick="clickPage({{value}})">{{value}}</a>
                 </li>
                 {{/if}}
                 {{/each}}
                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link"
-                        onclick="clickPage({{next_page}})"
-                        aria-disabled="true">Trang tiếp</a>
-                </li>
-                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link" onclick="clickPage({{n_pages}})"
-                        aria-disabled="true">Trang
-                        cuối</a>
+                    <a class="page-link" onclick="clickPage({{n_pages}})" aria-disabled="true">&gt;&gt;</a>
                 </li>
             </ul>
         </nav>
