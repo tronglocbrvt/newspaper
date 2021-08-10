@@ -14,42 +14,37 @@
                             </div>
                         </div>
                         {{#each categories}}
-                        <a class="btn btn-success mb-3" data-toggle="collapse" href="#col{{@index}}" role="button"
-                            aria-expanded="false" aria-controls="col{{@index}}" onclick="clickCollapse()">
+                        <a class="btn btn-dark mb-3" id="btn{{category_id}}" onclick="clickTab(this.id)">
                             {{category_name}}
                         </a>
                         {{/each}}
-                        {{#each articles_all}}
-                        {{#if (is_empty_array this)}}
-                        <h4 class="collapse text-primary" id="col{{@index}}">Không có bài báo chờ</h4>
+                        {{#if is_empty}}
+                        <h4 class="collapse show text-primary">Không có bài báo chờ</h4>
                         {{else}}
-                        <div class="collapse" id="col{{@index}}">
+                        <div class="collapse show">
                             <!--table start-->
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="border-bottom-0" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0" scope="col">Tiêu đề</th>
-                                            <th class="border-bottom-0" scope="col">Chuyên mục con</th>
-                                            <th class="border-bottom-0" scope="col">Tác giả</th>
-                                            {{!-- <th class="d-none d-sm-block border-bottom-0" scope="col">date</th>
-                                            --}}
-                                            <th class="border-bottom-0 text-center" scope="col">&nbsp;</th>
+                                            <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
+                                            <th class="border-bottom-0 col-md-4" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
+                                            <th class="border-bottom-0 col-md-2" scope="col">Tác giả</th>
+                                            <th class="border-bottom-0 text-center col-md-1" scope="col">&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each this}}
+                                        {{#each articles}}
                                         <tr>
-                                            <th scope="row">{{article_id}}</th>
-                                            <td style="font-weight: 600;">{{article_title}}</td>
-                                            <td>{{category_name}}</td>
-                                            <td>{{writer_alias}}</td>
-                                            {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
-                                            <td class="text-center">
+                                            <th class="col-md-1" scope="row">{{article_id}}</th>
+                                            <td class="col-md-4" style="font-weight: 600;">{{article_title}}</td>
+                                            <td class="col-md-2">{{category_name}}</td>
+                                            <td class="col-md-2">{{writer_alias}}</td>
+                                            <td class="text-center col-md-1">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/editors/{{../../editor_id}}/review/{{article_id}}"
-                                                    title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a>
+                                                    href="/editors/review/{{article_id}}" title="Xem bài báo"><i
+                                                        class="fa fa-eye"></i> Xem</a>
                                             </td>
                                         </tr>
                                         {{/each}}
@@ -59,20 +54,45 @@
                             <!--end table-->
                         </div>
                         {{/if}}
-                        {{/each}}
                     </div>
                 </div>
             </div>
         </div>
+        <!--Pagination-->
+        {{#if is_show_pagination}}
+        <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
+            <ul class="pagination">
+                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" href="?tab={{tab}}&page=1" aria-disabled="true">&lt;&lt;</a>
+                </li>
+                {{#each this.page_numbers}}
+                {{#if isCurrent}}
+                <li class="page-item {{#if isCurrent}}active{{/if}}">
+                    <a class="page-link" href="javascript:;">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item {{#if hide}}hide{{/if}}">
+                    <a class="page-link" href="?tab={{tab}}&page={{value}}">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" href="?tab={{tab}}&page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
+                </li>
+            </ul>
+        </nav>
+        {{/if}}
     </div>
 </main>
 
 {{#section 'js'}}
 <script>
-    $("#col0").addClass('show');
+    var tab = "{{tab}}";
+    $(`#btn${tab}`).removeClass('btn-dark').addClass('btn-success');
 
-    function clickCollapse() {
-        $(".show").removeClass('show');
+    function clickTab(id) {
+        id = id.substr(3, id.length);
+        window.location.href = `/editors/reviews?tab=${id}`;
     }
 </script>
 

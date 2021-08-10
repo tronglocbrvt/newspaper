@@ -3,6 +3,13 @@ const db = require('../utils/db')
 module.exports = {
     get_tags() {
         const sql = `select t.tag_name as tag_name, t.tag_id as tag_id
+        from tags t`;
+        return db.raw(sql);
+    },
+
+    //get tags ordered by name
+    get_tags_ordered(){
+        const sql = `select t.tag_name as tag_name, t.tag_id as tag_id
         from tags t
         order by t.tag_name`;
         return db.raw(sql);
@@ -64,6 +71,14 @@ module.exports = {
 
     search_by_tag_name(tag_name) {
         const sql = `select * from tags where tag_name = '${tag_name}'`;
+        return db.raw(sql);
+    },
+
+    get_names_by_art_id(article_id){
+        const sql = `select tag_name
+        from tag_links tl, tags t
+        where tl.tag_id = t.tag_id
+        and tl.article_id = ${article_id}`;
         return db.raw(sql);
     }
 }

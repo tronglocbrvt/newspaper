@@ -12,43 +12,51 @@
                             <div class="col-12 mb-4">
                                 <h3>QUẢN LÝ BÀI BÁO</h3>
                                 <span class="float-right" style="mr-auto"><a class="btn btn-outline-primary"
-                                        href="/writers/1/add"><i class="fa fa-plus"></i> Viết bài mới</a></span>
+                                        href="/writers/add"><i class="fa fa-plus"></i> Viết bài mới</a></span>
                             </div>
                         </div>
-
+                        {{#each types}}
+                        <a class="btn btn-dark mb-3" id="btn{{@index}}" onclick="clickTab(this.id)">
+                            {{this}}
+                        </a>
+                        {{/each}}
+                        {{#if is_empty}}
+                        <h4 class="collapse show text-primary">Không có bài báo</h4>
+                        {{else}}
                         <!--table start-->
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="border-bottom-0" scope="col">Mã bài</th>
-                                        <th class="border-bottom-0" scope="col">Tiêu đề</th>
-                                        <th class="border-bottom-0" scope="col">Tình trạng</th>
-                                        {{!-- <th class="d-none d-sm-block border-bottom-0" scope="col">date</th> --}}
-                                        <th class="border-bottom-0 text-center" scope="col">&nbsp;</th>
+                                        <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
+                                        <th class="border-bottom-0 col-md-5" scope="col">Tiêu đề</th>
+                                        <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục</th>
+                                        <th class="border-bottom-0 col-md-2" scope="col">Tình trạng</th>
+                                        <th class="border-bottom-0 text-center col-md-2" scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {{#each articles}}
                                     <tr>
-                                        <th scope="row">{{article_id}}</th>
-                                        <td style="font-weight: 600;">{{article_title}}</td>
-                                        <td><span class="text-{{get_status_color status}}">{{status}}</span></td>
-                                        {{!-- <td><span class="text-muted">Oct 25, 2019</span></td> --}}
-                                        <td class="text-center">{{#if (is_editable status)}}
+                                        <th scope="row" class="col-md-1">{{article_id}}</th>
+                                        <td style="font-weight: 600;" class="col-md-5">{{article_title}}</td>
+                                        <td class="col-md-2">{{category_name}}</td>
+                                        <td class="col-md-2"><span
+                                                class="text-{{get_status_color status}}">{{status}}</span></td>
+                                        <td class="text-center col-md-2">{{#if (is_editable status)}}
                                             <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                                href="/writers/{{writer_id}}/edit/{{article_id}}" title="Chỉnh sửa"><i
+                                                href="/writers/edit/{{article_id}}" title="Chỉnh sửa"><i
                                                     class="fa fa-pencil"></i> Chỉnh
                                                 sửa</a>
                                             {{else}}
                                             {{#if (is_submitted status)}}
                                             <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                                href="/writers/{{writer_id}}/submitted/{{article_id}}"
-                                                title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a>
+                                                href="/writers/submitted/{{article_id}}" title="Xem bài báo"><i
+                                                    class="fa fa-eye"></i> Xem bài</a>
                                             {{else}}<a
                                                 class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
-                                                href="/writers/{{writer_id}}/published/{{article_id}}"
-                                                title="Xem bài báo"><i class="fa fa-eye"></i> Xem bài</a> {{/if}}
+                                                href="/writers/published/{{article_id}}" title="Xem bài báo"><i
+                                                    class="fa fa-eye"></i> Xem bài</a> {{/if}}
                                             {{/if}}
                                         </td>
                                     </tr>
@@ -57,16 +65,18 @@
                             </table>
                         </div>
                         <!--end table-->
+                        {{/if}}
                     </div>
                     {{!-- end content --}}
                 </div>
             </div>
         </div>
         <!--Pagination-->
+        {{#if is_show_pagination}}
         <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
             <ul class="pagination">
                 <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link" href="?page=1" aria-disabled="true">&lt;&lt;</a>
+                    <a class="page-link" href="?tab={{tab}}&page=1" aria-disabled="true">&lt;&lt;</a>
                 </li>
                 {{#each this.page_numbers}}
                 {{#if isCurrent}}
@@ -75,14 +85,28 @@
                 </li>
                 {{else}}
                 <li class="page-item {{#if hide}}hide{{/if}}">
-                    <a class="page-link" href="?page={{value}}">{{value}}</a>
+                    <a class="page-link" href="?tab={{tab}}&page={{value}}">{{value}}</a>
                 </li>
                 {{/if}}
                 {{/each}}
                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link" href="?page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
+                    <a class="page-link" href="?tab={{tab}}&page={{n_pages}}" aria-disabled="true">&gt;&gt;</a>
                 </li>
             </ul>
         </nav>
+        {{/if}}
     </div>
 </main>
+
+{{#section 'js'}}
+<script>
+    var tab = "{{tab}}";
+    $(`#btn${tab}`).removeClass('btn-dark').addClass('btn-success');
+
+    function clickTab(id) {
+        id = id.substr(3, id.length);
+        window.location.href = `/writers/articles?tab=${id}`;
+    }
+</script>
+<script src="/static/js/admin/view_articles.js"></script>
+{{/section}}
