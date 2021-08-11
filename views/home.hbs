@@ -22,7 +22,7 @@
           <span class="d-sm-inline me-1">
             <a class="fw-bold" href="/categories/{{category_id}}">{{category_name}}</a>
           </span>
-          <span class="date">&nbsp;{{date_format time_published}}</span>
+          <span class="date">&nbsp;{{formatTime time_published}}</span>
         </div>
       </div>
       {{/each}}
@@ -65,7 +65,7 @@
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
-                <span class="date">&nbsp;{{date_format time_published}}</span>
+                <span class="date">&nbsp;{{formatTime time_published}}</span>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
                 <span class="d-none d-sm-inline me-1">
                   <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
                 </span>
-                <span class="date">&nbsp;{{date_format time_published}} &nbsp;</span>
+                <span class="date">&nbsp;{{formatTime time_published}} &nbsp;</span>
                 <i class="fa fa-eye" aria-hidden="true"> {{views}}</i>
               </div>
             </div>
@@ -116,7 +116,7 @@
         {{#if is_premium}}
         <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
         {{/if}}
-        {{date_format time_published}}
+        {{formatTime time_published}}
       </div>
     </div>
   </div>
