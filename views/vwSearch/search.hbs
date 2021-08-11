@@ -42,7 +42,6 @@
                 <!--thumbnail-->
                 <div class="ratio_360-202 image-wrapper mx-4">
                   <a href="/articles/{{published_article_id}}">
-<<<<<<< HEAD
                     <img
                       class="img-fluid lazy loaded"
                       src="{{avatar_url}}"
@@ -51,10 +50,6 @@
                       data-was-processed="true"
                       style="width: 100%; height: auto;"
                     />
-=======
-                    <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}"
-                      alt="{{avatar_caption}}" data-was-processed="true" />
->>>>>>> dev-linh
                   </a>
                 </div>
               </div>
@@ -70,7 +65,7 @@
                       <a class="fw-bold"
                         href="/categories/{{parent_category_id}}/subs/{{category_id}}">{{category_name}}</a>
                     </span>
-                    <time datetime={{time_published}}>{{date_format time_published}}</time>
+                    <time datetime={{time_published}}>{{formatTime time_published}}</time>
                     <i class="fa fa-eye ml-3" aria-hidden="true"> {{views_numbers}}</i>
                     {{#if is_premium}}
                     <button type="button" class="btn-sm btn-primary ml-4"><i class="fa fa-diamond"

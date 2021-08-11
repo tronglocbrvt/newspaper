@@ -1,6 +1,7 @@
 const exphbs = require('express-handlebars');
 const hbs_sections = require('express-handlebars-sections');
 const moment = require('moment');
+const time_zone_converter = require("../middlewares/timezone.mdw");
 var hbs = exphbs.create({});
 
 // register new function
@@ -87,6 +88,10 @@ hbs.handlebars.registerHelper('date_time_format', function (str) {
   if (!str) return null;
   const result = moment(str).format("DD/MM/YYYY HH") + ":00";
   return result;
+});
+
+hbs.handlebars.registerHelper('formatTime', function(s) {
+  return time_zone_converter.server_time_to_GMT_7(moment(s)).format("DD/MM/YYYY HH:mm:ss");
 });
 
 hbs.handlebars.registerHelper('is_editable', function (str) {
