@@ -14,7 +14,7 @@
                             </div>
                         </div>
                         {{#each categories}}
-                        <a class="btn btn-dark mb-3" id="btn{{category_id}}" onclick="clickTab(this.id)">
+                        <a class="btn btn-dark mb-3" id="btn{{@index}}" onclick="clickTab(this.id)">
                             {{category_name}}
                         </a>
                         {{/each}}
