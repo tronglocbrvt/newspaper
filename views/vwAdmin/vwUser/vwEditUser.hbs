@@ -15,6 +15,17 @@
       {{err_message}}
     </div>
     {{/if}}
+
+    <div class="form-group">
+      <form class="float-md-right" id="frmDeleteUser" method="POST" action="/admin/users/del/{{user_id}}">
+        <button type="submit" class="float-md-right my-1 btn btn-danger mx-md-3"
+          onclick="return confirm('Toàn bộ thông tin người dùng sẽ bị xóa - bao gồm cả thông tin từ các bảng liên quan.');">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+          Xóa người dùng
+        </button>
+      </form>
+    </div>
+
     <form id="frmAdminEditUser" method="POST" action='/admin/users/patch/{{user_id}}'>
       <div class="form-group">
         <div class="m-md-5" id="myTabContent">
@@ -284,25 +295,16 @@
 
           <hr />
 
-          <div class="d-flex flex-column flex-md-row">
+          <div class="d-flex flex-column flex-md-row justify-content-center">
             <a class="my-1 mx-md-3 btn btn-primary" href="/admin/users/" role="button">
               <i class="fa fa-backward" aria-hidden="true"></i>
               Trở về
             </a>
-
-            <button type="submit" class="my-1 btn btn-danger mx-md-3" formaction="/admin/users/del/{{user_id}}"
-              onclick="return confirm('Toàn bộ thông tin người dùng sẽ bị xóa - bao gồm cả thông tin từ các bảng liên quan.');">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-              Xóa
-            </button>
-
-            <button type="submit" class="my-1 btn btn-success mx-md-3"
+            <button type="submit" class="my-1 btn btn-success mx-md-3">
               <i class="fa fa-check" aria-hidden="true"></i>
               Lưu
             </button>
           </div>
-
-
         </div>
     </form>
   </div>

@@ -48,6 +48,7 @@ router.post('/patch/:id', auth.auth, auth.auth_admin, async function (req, res) 
 
     const user = await userModel.load_user_info_by_id(user_id);
     if (!user[0][0]) {
+        console.log("REDIRECT");
         return res.redirect('/admin/users');
     }
 
