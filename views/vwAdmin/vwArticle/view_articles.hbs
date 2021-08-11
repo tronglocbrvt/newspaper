@@ -121,9 +121,14 @@
         {{#if is_show_pagination}}
         <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
             <ul class="pagination">
+<<<<<<< HEAD
+                <li class="page-item {{#if this.page_first}} disabled {{else}} enabled {{/if}}">
+                    <a class="page-link" onclick="clickPage(1)" aria-disabled="true">&lt;&lt;</a>
+=======
                 <li class="page-item {{#if page_first}} disabled {{else}} enabled {{/if}}">
                     <a class="page-link" onclick="clickPage(1)"
                         aria-disabled="true">&lt;&lt;</a>
+>>>>>>> main
                 </li>
                 {{#each this.page_numbers}}
                 {{#if isCurrent}}
@@ -137,8 +142,7 @@
                 {{/if}}
                 {{/each}}
                 <li class="page-item {{#if this.page_last}} disabled {{else}} enabled {{/if}}">
-                    <a class="page-link" onclick="clickPage({{n_pages}})"
-                        aria-disabled="true">&gt;&gt;</a>
+                    <a class="page-link" onclick="clickPage({{n_pages}})" aria-disabled="true">&gt;&gt;</a>
                 </li>
             </ul>
         </nav>

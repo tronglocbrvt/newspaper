@@ -113,8 +113,13 @@ router.get('/view/:article_id', auth.auth, auth.auth_admin, async function (req,
     })
 })
 
-router.get('/delete/:article_id', async function(req, res){
+router.get('/delete/:article_id', auth.auth, auth.auth_admin, async function(req, res){
     const article_id = req.params.article_id || 0;
+    if (isNaN(parseInt(article_id))) {
+        res.status(404);
+        res.render('vwError/viewNotFound');
+        return;
+    }
     const tab = req.query.tab || 0;
     await article_model.delete(article_id);
     res.redirect(`/admin/articles?tab=${tab}`);

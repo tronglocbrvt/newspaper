@@ -16,7 +16,15 @@ router.get('/reviews', auth.auth, auth.auth_editor, async function (req, res) {
     editor_id = editor_id[0][0].editor_id;
 
     //get tab
-    var cat_id = req.query.tab || 0;
+    var tab = req.query.tab || 0;
+
+    var editor_cats = await editor_model.get_categories_by_editor(editor_id);
+    if(editor_cats[0].length === 0){
+        res.redirect('/');
+        return;
+    }
+    
+    var cat_id = editor_cats[0][+tab].category_id;
 
     var if_belong = await editor_model.if_category_belong_editor(editor_id, +cat_id);
     if (!if_belong[0][0]) {
@@ -59,13 +67,12 @@ router.get('/reviews', auth.auth, auth.auth_editor, async function (req, res) {
     // set offset that pass to query in database
     const offset = (page - 1) * limit;
 
-    var editor_cats = await editor_model.get_categories_by_editor(editor_id);
     var articles = await editor_model.get_articles_by_editor_category(editor_id, +cat_id, limit, offset);
 
     res.render('vwEditors/view_articles', {
         articles: articles[0],
         categories: editor_cats[0],
-        tab: +cat_id,
+        tab: +tab,
         is_empty: articles[0].length === 0,
         //pagination
         page_numbers,
