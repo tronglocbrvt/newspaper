@@ -35,13 +35,14 @@ module.exports =
      * @param {limit_length} int length of lists of articles to load
      * @Return return lists of articles with the same category as the published_article_id
      */
-    load_random_published_articles_with_same_category(published_article_id, limit_length) {
+    load_random_published_articles_with_same_category(published_article_id, limit_length) 
+    {
         const params =
         {
             p_id: published_article_id,
             lim: limit_length
         };
-        const sql_query = `select CONCAT('/articles/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url
+        const sql_query = `select CONCAT('/articles/',p.published_article_id) as ref, a.article_title, a.article_abstract, a.avatar_url, a.is_premium
         from articles as a, published_articles as p, published_articles as p_ref, articles as a_ref
         where
             p_ref.published_article_id = :p_id

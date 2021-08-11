@@ -444,6 +444,19 @@ router.post('/change-gender', auth.auth, async function (req, res) {
 });
 
 
+router.post('/change-nick-name', auth.auth,auth.auth_writer, async function (req, res) {
+  // Get username from session.
+  const user_id = req.session.authUser.user_id;
+  await authenticate_model.change_writer_nickname_by_user_id(user_id, req.body.nickname);
+
+  // change session
+  console.log("changed nick_name");
+
+  res.redirect("../profile");
+});
+
+
+
 //----------------------------------------------------------------------------------
 
 

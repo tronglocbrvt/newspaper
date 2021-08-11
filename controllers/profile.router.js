@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth.mdw');
 const authenticate_model = require('../models/authenticate.model');
+const writer_model = require('../models/writer.model');
+
 const premium_form_db = require('../models/premium_forms.model.js')
 const getTimeModule = require('../utils/get_time.js');
 const env = require('../env.js');
 const time_zone_converter = require("../middlewares/timezone.mdw");
+const writerModel = require('../models/writer.model');
 
 function formatTime(s) {
     if (!s)
@@ -42,7 +45,12 @@ router.get('/', auth.auth, async function (req, res) {
     else if (req.session.authUser.google_id)
         user_name = "Người dùng Google: " + req.session.authUser.google_id;
 
-
+    var nick_name = null;
+    if (req.session.authUser.is_writer)
+    {
+        nick_name = await writerModel.find_writer_nickname_by_userID(req.session.authUser.user_id);
+        nick_name=nick_name[0][0].nick_name;
+    }
     console.log(req.session.authUser);
 
     res.render('vwProfile/profile',
@@ -61,6 +69,7 @@ router.get('/', auth.auth, async function (req, res) {
             is_admin: req.session.authUser.is_admin,
             is_editor: req.session.authUser.is_editor,
             is_writer: req.session.authUser.is_writer,
+            nick_name:nick_name
         }
     );
     delete req.session.redirect_message;
