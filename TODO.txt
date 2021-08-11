@@ -29,8 +29,8 @@ Fix:
 // - Phuc:
 Fix:
    - Responsive --- huhu
-   - Them views + premium icon
-   - Tai chinh kinh doanh ngan lai
+   //- Them views + premium icon
+   - Tai chinh kinh doanh ngan lai - Later
    - Chinh bi danh cho writer
    - Fix bugs lộc Logs
 /----------------------------------------------------------------------------------------/

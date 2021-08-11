@@ -72,7 +72,6 @@
                         <div class="col-11 col-md-3">
                         </div>
 
-
                         <div class="col-11 col-md-8">
                             <form id="frmName" method="post" action="../auth/change-name">
                                 <div class="form-group">
@@ -221,6 +220,48 @@
 
                     </div>
 
+                    <hr />
+
+
+                    <div class="row">
+                        <div class="col-11 col-md-3">
+                            <label style="font-weight:bold;">Bí danh</label>
+                        </div>
+                        <div class="col-11 col-md-8">
+                            {{#if nick_name}}
+                            {{nick_name}}
+                            {{else}}
+                            Không có dữ liệu.
+                            {{/if}}
+
+                        </div>
+                        <div class="col-11 col-md-1">
+                            <button class="btn btn-outline-info p-1"><i class="fa fa-edit fa-lg" data-toggle="collapse"
+                                    data-target="#change-nick-name"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 collapse" id="change-nick-name">
+
+                        <div class="col-11 col-md-3">
+                        </div>
+
+                        <div class="col-11 col-md-8">
+                            <form id="frmNickName" method="post" action="../auth/change-nick-name">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="name" placeholder="Bí danh" name="nickname"
+                                        maxlength="100">
+                                    <div id="name_invalid" class="invalid-feedback">
+                                        Bí danh không hợp lệ.
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-11 col-md-1">
+                            <button type="submit" form="frmNickName" value="Submit" class="btn btn-outline-success p-1"><i
+                                    class="fa fa-check fa-lg"></i></button>
+                        </div>
+                    </div>
                     <hr />
 
                 </div>

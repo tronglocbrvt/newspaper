@@ -1,13 +1,20 @@
 const db = require('../utils/db')
 
 module.exports = {
-    get_writers(){
+    get_writers() {
         const sql = `select *
         from writers
         order by nick_name`;
         return db.raw(sql);
-    }, 
+    },
 
+    get_count_articles(writer_id) {
+        const sql = `select count(*) as total
+        from articles
+        where writer_id = ${writer_id};`
+
+        return db.raw(sql);
+    },
     get_articles_by_writer(id, offset, limit, tab, is_total){
         var limit_offset = "";
         if (is_total === false)
@@ -58,15 +65,15 @@ module.exports = {
         console.log(sql);
         return db.raw(sql);
     },
-    
-    load_article_by_id(article_id){
+
+    load_article_by_id(article_id) {
         const sql_query = `select *
         from articles
         where article_id = ?;`
         return db.raw(sql_query, article_id);
     },
 
-    get_content_cat(article_id){
+    get_content_cat(article_id) {
         const sql_content_cat = `select article_content, category_id
         from articles
         where article_id = ?`;
@@ -74,7 +81,7 @@ module.exports = {
         return content_cat = db.raw(sql_content_cat, article_id);
     },
 
-    patch_article(article){
+    patch_article(article) {
         const id = article.article_id;
         delete article.article_id;
         return db('articles')
@@ -82,7 +89,7 @@ module.exports = {
             .update(article);
     },
 
-    get_rejected_comment(article_id){
+    get_rejected_comment(article_id) {
         const sql = `select editor_comments
         from rejected_articles
         where article_id = ${article_id}`;
@@ -90,7 +97,7 @@ module.exports = {
         return db.raw(sql);
     },
 
-    is_exist(writer_id){
+    is_exist(writer_id) {
         const sql = `select *
         from writers
         where writer_id = ${writer_id}`;
@@ -98,7 +105,7 @@ module.exports = {
         return db.raw(sql);
     },
 
-    if_article_belong_writer(writer_id, article_id){
+    if_article_belong_writer(writer_id, article_id) {
         const sql = `select *
         from articles
         where writer_id = ${writer_id}
@@ -107,18 +114,22 @@ module.exports = {
         return db.raw(sql);
     },
 
-    delete_rejected_article(article_id){
+    delete_rejected_article(article_id) {
         const sql = `delete from rejected_articles
         where article_id = ${article_id}`;
 
         return db.raw(sql);
     },
-
+    find_writer_nickname_by_userID(user_id) {
+        const sql = `select writers.nick_name
+        from writers
+        where user_id = :user_id;`
+        return db.raw(sql, { user_id: user_id });
+    },
     get_writerid_by_userid(user_id){
         const sql = `select writer_id
         from writers
         where user_id = ${user_id}`;
-
         return db.raw(sql);
     }
 }

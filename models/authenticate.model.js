@@ -18,9 +18,8 @@ module.exports =
     findByUserID(user_id) {
         return db('users').where('user_id', user_id);
     },
-    findByGoogleID(googleID)
-    {
-        
+    findByGoogleID(googleID) {
+
         const params =
         {
             gid: googleID
@@ -31,9 +30,8 @@ module.exports =
                 where gu.user_id = u.user_id and gu.google_id = :gid`;
         return db.raw(sql_query, params);
     },
-    findByFacebookID(facebookID)
-    {
-        
+    findByFacebookID(facebookID) {
+
         const params =
         {
             fbid: facebookID
@@ -111,33 +109,35 @@ module.exports =
 
     },
 
+    change_writer_nickname_by_user_id(user_id, nick_name) {
+        const sql_query = `UPDATE writers
+    SET nick_name = :nick_name
+    WHERE writers.user_id = :uid;`;
+    return db.raw(sql_query,{uid:user_id,nick_name:nick_name})
+    }
+    ,
 
 
     // OTP API.
-    insertToken(data)
-    {
+    insertToken(data) {
         return db('reset_password_commands').insert(data);
     }
     ,
-    
-    findToken(user_id, time)
-    {
-        return db('reset_password_commands').where('user_id', user_id).andWhere('expired_time','>',time).orderBy('expired_time','desc');
+
+    findToken(user_id, time) {
+        return db('reset_password_commands').where('user_id', user_id).andWhere('expired_time', '>', time).orderBy('expired_time', 'desc');
     }
     ,
 
-    insertAccountAuthenticationToken(data)
-    {
+    insertAccountAuthenticationToken(data) {
         return db('authenticate_email_commands').insert(data);
     },
 
-    findAccountAuthenticationToken(user_id, time)
-    {
-        return db('authenticate_email_commands').where('user_id', user_id).andWhere('expired_time','>',time).orderBy('expired_time','desc');
+    findAccountAuthenticationToken(user_id, time) {
+        return db('authenticate_email_commands').where('user_id', user_id).andWhere('expired_time', '>', time).orderBy('expired_time', 'desc');
     },
 
-    authenticate_by_user_id(user_id)
-    {
+    authenticate_by_user_id(user_id) {
         const params =
         {
             un: user_id,
@@ -149,8 +149,7 @@ module.exports =
     }
     ,
     // Add FB & GG users.
-    insertGoogleUser(googleID)
-    {
+    insertGoogleUser(googleID) {
         const params =
         {
             gid: googleID,
@@ -159,8 +158,7 @@ module.exports =
         return db.raw(sql_query, params);
     },
 
-    insertFacebookUser(facebookID)
-    {
+    insertFacebookUser(facebookID) {
         const params =
         {
             fbid: facebookID
