@@ -15,7 +15,7 @@
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
         <input type="text" class="form-control" name="article_title" id="title" maxlength="75"
-            value="{{this.article.article_title}}" readonly>
+            value="{{article.article_title}}" readonly>
     </div>
     <div class="form-group">
         <label for="abstract">TÓM TẮT</label>
@@ -38,16 +38,11 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <input type="text" name="category_id" class="form-control" id="category" readonly>
-            {{!-- <option value="0">---------</option> --}}
-            {{!-- {{#each main_cats}}
-            <option value="{{category_id}}">{{category_name}}</option>
-            {{/each}} --}}
             </input>
         </div>
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <input type="text" name="sub_category" class="form-control" id="sub_category" readonly>
-            {{!-- <option value="0">---------</option> --}}
             </input>
         </div>
     </div>
@@ -55,7 +50,7 @@
     <div class="mb-2" id="tag-area"></div>
     <div class="form-group">
         <label for="content">NỘI DUNG</label>
-        <div id="content" name="article_content" readonly></div>
+        <div id="content" name="article_content" readonly>{{{article.article_content}}}</div>
     </div>
 </form>
 

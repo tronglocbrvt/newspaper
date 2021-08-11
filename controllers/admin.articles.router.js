@@ -4,6 +4,7 @@ const writer_model = require('../models/writer.model');
 const category_model = require('../models/category.model');
 const tag_model = require('../models/tag.model');
 const editor_model = require('../models/editor.model');
+const article_model = require('../models/article.model');
 
 const router = express.Router();
 
@@ -53,7 +54,7 @@ router.get('/', async function (req, res) {
 
     //get filter data
     const main_cats = await category_model.get_main_cats();
-    const tags = await tag_model.get_tags();
+    const tags = await tag_model.get_tags_ordered();
     const writers = await writer_model.get_writers();
     if(+main_cat !== 0)
         sub_cats = await category_model.get_sub_cats_by_cat_id(main_cat);
@@ -61,6 +62,7 @@ router.get('/', async function (req, res) {
     res.render('vwAdmin/vwArticle/view_articles.hbs', {
         types: ['Đã xuất bản', 'Chờ xuất bản', 'Chờ xét duyệt', 'Bản nháp', 'Từ chối'],
         articles: articles[0],
+        //pagination
         page_numbers,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
@@ -68,8 +70,10 @@ router.get('/', async function (req, res) {
         previous_page: parseInt(page) - 1,
         n_pages: n_pages,
         is_empty: articles[0].length === 0,
-        is_show_pagination: n_pages > 2,
+        is_show_pagination: n_pages > 0,
+        //tab
         tab: +tab,
+        //filters
         main_cats: main_cats[0],
         tags: tags[0],
         writers: writers[0],
@@ -78,6 +82,7 @@ router.get('/', async function (req, res) {
         main_cat_filter: +main_cat,
         sub_cat_filter: +sub_cat,
         sub_cats: sub_cats[0],
+        //if is_submitted, publish button for admin
         is_publishable: +tab === 2
     })
 })
@@ -104,6 +109,13 @@ router.get('/view/:article_id', async function (req, res) {
         is_rejected: is_rejected,
         comment: comment
     })
+})
+
+router.get('/delete/:article_id', async function(req, res){
+    const article_id = req.params.article_id || 0;
+    const tab = req.query.tab || 0;
+    await article_model.delete(article_id);
+    res.redirect(`/admin/articles?tab=${tab}`);
 })
 
 router.get('/edit/:article_id', async function (req, res) {
@@ -224,11 +236,17 @@ router.get('/publish/:article_id', async function (req, res) {
         res.render('vwError/viewNotFound');
         return;
     }
+
     const article = await writer_model.load_article_by_id(article_id);
     const main_cats = await category_model.get_main_cats();
+    const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+    const tags = await tag_model.get_names_by_art_id(article[0][0].article_id);
+
     res.render("vwAdmin/vwArticle/publish_article", {
         article: article[0][0],
-        main_cats: main_cats[0]
+        main_cats: main_cats[0],
+        parent_cat: parent_cat[0][0],
+        tags: tags[0]
     })
 })
 
@@ -246,6 +264,8 @@ router.post('/publish/:article_id', async function (req, res) {
     var original_tags = req.body.original_tags;
     delete article['tags'];
     delete article['original_tags'];
+    console.log(tags);
+    console.log('orginal_Tags' + original_tags);
 
     //article_id
     article['article_id'] = req.params.article_id || 0;

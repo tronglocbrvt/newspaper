@@ -1,7 +1,12 @@
 const db = require("../utils/db");
 
 module.exports = {
-    get_articles_by_editor_category(editor_id, category_id){
+    get_articles_by_editor_category(editor_id, category_id, limit, offset, is_total = false){
+        var limit_offset = "";
+        if (is_total === false)
+            limit_offset = `limit ${limit}
+                            offset ${offset}`;
+
         const sql = `select a.article_title as article_title, w.nick_name as writer_alias, a.article_id as article_id, c.category_name as category_name
         from articles a, editor_category_links ecl, writers w, categories c
         where a.is_submitted = true
@@ -9,15 +14,27 @@ module.exports = {
         and a.category_id = c.category_id
         and a.category_id in (select category_id from categories where parent_category_id = ${category_id})
         and ecl.category_id = ${category_id}
-        and ecl.editor_id = ${editor_id}`;
+        and ecl.editor_id = ${editor_id}
+        ${limit_offset}`;
 
         return db.raw(sql);
     },
 
-    get_categories_by_editor(editor_id){
-        const sql = `select category_id
+    if_category_belong_editor(editor_id, category_id){
+        const sql = `select *
         from editor_category_links
-        where editor_id = ${editor_id}`;
+        where editor_id = ${editor_id}
+        and category_id = ${category_id}`;
+
+        return db.raw(sql);
+    },
+
+    
+    get_categories_by_editor(editor_id){
+        const sql = `select c.category_id as category_id, category_name
+        from editor_category_links tl, categories c
+        where tl.editor_id = ${editor_id}
+        and c.category_id = tl.category_id`;
 
         return db.raw(sql);
     },
@@ -46,6 +63,14 @@ module.exports = {
         and c.parent_category_id = ecl.category_id
         and ecl.editor_id = ${editor_id}
         and a.article_id = ${article_id}`;
+
+        return db.raw(sql);
+    },
+
+    get_editorid_by_userid(user_id){
+        const sql = `select editor_id
+        from editors
+        where user_id = ${user_id}`;
 
         return db.raw(sql);
     }

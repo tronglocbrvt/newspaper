@@ -1,59 +1,48 @@
 $(document).ready(function () {
     var tag_list = [];
     var tags = [];
-    const url = window.location.href;
-    const id = url.substr(url.lastIndexOf('/') + 1, url.length);
+
+    $('#category').val(main_cat_name);
+    $('#sub_category').val(main_cat_name);
+    $('#main_cat_reset').find(`option[value="${+main_cat}"]`).attr('selected', 'selected');
 
     $.ajax({
-        url: '/writers/get_content_cat_tag/' + id
-    }).done(function (data1) {
-        $("#content").html(data1.article_content);
-        $('#category').val(data1.main_category_name);
-        $('#sub_category').val(data1.sub_category_name);
-        $('#main_cat_reset').find(`option[value="${data1.main_category}"]`).attr('selected', 'selected');
-        // $('#sub_cat_reset').append(`<option selected>${data1.sub_category_name}</option>`);
-
-        $.ajax({
-            url: '/categories/getsubcats'
-        }).done(function (data2) {
-            set_sub_cats(data1.main_category, data2);
-            $('#main_cat_reset').on('change', function () {
-                set_sub_cats(+this.value, data2);
-            });
-
-            $('#sub_cat_reset').find(`option[value=${data1.sub_category}]`).attr('selected', 'selected');
+        url: '/categories/getsubcats'
+    }).done(function (data) {
+        set_sub_cats(main_cat, data);
+        $('#main_cat_reset').on('change', function () {
+            set_sub_cats(+this.value, data);
         });
 
-        $.ajax({
-            url: '/tags'
-        }).done(function (data3) {
-
-            data3.map(function (tag) {
-                tags.push(tag.tag_name);
-            });
-
-            data1.tags.map(function (tag) {
-                add_tag(tag.tag_name);
-                add_tag_reset(tag.tag_name);
-                tag_list.push(tag.tag_name);
-            })
-
-            const ori_tags = tag_list.toString();
-            $("<input />").attr("type", "hidden")
-                .attr("name", "original_tags")
-                .attr("value", ori_tags)
-                .appendTo("#form");
-
-            $('#title').focus();
-
-            $('#btn-add-tag').click(function () {
-                var input_tag = $('#tags').val();
-                add_tag_reset(input_tag);
-                tag_list.push(input_tag);
-            });
-
-        });
+        $('#sub_cat_reset').find(`option[value=${sub_cat}]`).attr('selected', 'selected');
     });
+
+    $.ajax({
+        url: '/tags'
+    }).done(function (data) {
+        data.map(function (tag) {
+            tags.push(tag.tag_name);
+        });
+
+        $('.btn-outline-primary').map(function () {
+            add_tag_reset(this.innerHTML);
+            tag_list.push(this.innerHTML);
+        })
+
+        const ori_tags = tag_list.toString();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "original_tags")
+            .attr("value", ori_tags)
+            .appendTo("#form");
+
+        $('#title').focus();
+
+        $('#btn-add-tag').click(function () {
+            var input_tag = $('#tags').val();
+            add_tag_reset(input_tag);
+            tag_list.push(input_tag);
+        });
+    })
 
     jQuery('#publish-time').datetimepicker({
         format: 'd/m/Y H:i'
@@ -70,13 +59,12 @@ $(document).ready(function () {
         }
     })
 
-    $("#form").submit(function(e){
-        const tags = tag_list.toString();
+    $("#form").submit(function (e) {
+        const new_tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
-            .attr("value", tags)
+            .attr("value", new_tags)
             .appendTo("#form");
-            
         return true;
     })
 
@@ -87,16 +75,6 @@ $(document).ready(function () {
             var element = $('<option></option>').attr('value', sub_cats[i].category_id).text(sub_cats[i].category_name);
             $('#sub_cat_reset').append(element);
         }
-    }
-
-    function add_tag(input_tag) {
-        if (tags.includes(input_tag)) {
-            var element = $('<div class="btn-group mr-3 mb-3" role="group"></div>');
-            var tag_btn = $('<div class="btn btn-outline-primary"></div>').text(input_tag);
-            element.append(tag_btn);
-            $('#tag-area').append(element);
-        }
-        $('#tags').val('').focus();
     }
 
     function add_tag_reset(input_tag) {
@@ -147,7 +125,6 @@ $(document).ready(function () {
         if (date_picked.getTime() < today.getTime()) {
             return false;
         }
-
         return true;
     }
-});
+})

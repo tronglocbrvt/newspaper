@@ -250,5 +250,16 @@ module.exports =
         set views_numbers = views_numbers + 1 
         where published_article_id = ?`;
         return db.raw(sql, article_id);
+    },
+
+    async delete(article_id){
+        var sql = `delete from tag_links where article_id = ${article_id}`;
+        await db.raw(sql);
+        sql = `delete from published_articles where article_id = ${article_id}`;
+        await db.raw(sql);
+        sql = `delete from rejected_articles where article_id = ${article_id}`;
+        await db.raw(sql);
+        sql = `delete from articles where article_id = ${article_id}`;
+        await db.raw(sql);
     }
 }

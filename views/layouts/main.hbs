@@ -74,10 +74,10 @@
                         {{#each main_cat}}
                         <div class="dropdown-item p-0">
                             <div class="row">
-                                <div class="p-2" style="background-color: #2596be; width: 240px">
+                                <div class="p-2 col-3" style="background-color: #2596be;">
                                     <a class="text-light ml-4" href="/categories/{{category_id}}">{{category_name}}</a>
                                 </div>
-                                <div class="p-2" id="side_maincat{{category_id}}"></div>
+                                <div class="p-2 col-9 d-flex flex-wrap" id="side_maincat{{category_id}}"></div>
                             </div>
                         </div>
                         {{/each}}
