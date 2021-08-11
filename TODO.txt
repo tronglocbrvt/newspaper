@@ -51,6 +51,7 @@ Fix:
    + Nut Quay ve.
    + Published 
    + Published chua hien categories
+   + Chinh Time GMT trong timepublished
    + Responsive Main.
    + Thêm header + footer. 
    - find home.js va file css. f12
