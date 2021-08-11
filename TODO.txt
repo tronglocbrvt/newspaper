@@ -3,34 +3,60 @@
 Thêm icon views và icon premium vô tất cả.
 
 
-DEADLINES CN:
+DEADLINES T6:
+
+Loocj:
++ Categories + tags
++ Sub
++ Search
++ Download
++ premium
++ Phân trang
++ views
++ mã lỗi.
++ admin + cats + cate
+
+Linh:
++ Main 
++ Home
++ Writer
++ Editor
++ Admin Article
+
+Phuc:
++ Đăng nhập đăng kí đăng xuất, quen mk.
++ Xác thực.
++ View Article.
++ Profile.
++ ĐK premium.
++ Comments,
++ Admin Users.
++ DB
+Mỗi ng tìm ít nhất 20 lỗi.
+TEST TREN DEPLOYED.
+
 
 /----------------------------------------------------------------------------------------/
-
 // - Loc: 
 Fix: 
- - Responsive Profile.
- - Chỉnh link trong trang profile để đưa qua.
- - Chinh ham time trong tag va categories.
- - Log bugs
- - Fix bug phan quyen admin
+Categories dẫn qua articles lại.
+
+------------------------------------------------------------------------------------------
 
 
 /----------------------------------------------------------------------------------------/
-
 // - Linh: 
 Fix: 
-   Dieu chinh backend writers + editors. 
-   Fix bug Quản lý bài viết + Pagnition.
-   Chinh ham time trong tag va categories.
-   Fix bugs lộc Logs.
-   Bug front-end
-   find home.js va file css. f12
-// - Phuc:
+   + Nut Quay ve.
+   + Published 
+   + Published chua hien categories
+   + Responsive Main.
+   + Thêm header + footer. 
+   - find home.js va file css. f12
+------------------------------------------------------------------------------------------
+
+// Phuc:
 Fix:
-   - Responsive --- huhu
-   //- Them views + premium icon
-   - Tai chinh kinh doanh ngan lai - Later
-   - Chinh bi danh cho writer
-   - Fix bugs lộc Logs
+ // Fix check form delete
+ // Deploy lai
 /----------------------------------------------------------------------------------------/
