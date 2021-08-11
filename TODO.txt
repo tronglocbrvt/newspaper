@@ -62,5 +62,3 @@ Fix:
  // Fix check form delete
  // Deploy lai
 /----------------------------------------------------------------------------------------/
-
-mysql://b964575463e44b:d4d2891b@us-cdbr-east-04.cleardb.com/heroku_9706b160ff75fa8?reconnect=true
