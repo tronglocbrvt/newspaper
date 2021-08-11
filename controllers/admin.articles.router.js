@@ -5,10 +5,11 @@ const category_model = require('../models/category.model');
 const tag_model = require('../models/tag.model');
 const editor_model = require('../models/editor.model');
 const article_model = require('../models/article.model');
+const auth = require('../middlewares/auth.mdw');
 
 const router = express.Router();
 
-router.get('/', async function (req, res) {
+router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
     //get queries
     const page = req.query.page || 1;
     if (page < 1) page = 1;
@@ -41,6 +42,9 @@ router.get('/', async function (req, res) {
         if (+page < limit_page - 2 && i < limit_page) {
             page_numbers[i].hide = false;
         }
+        else if (+page >= n_pages - 1 && i >= n_pages - limit_page) {
+            page_numbers[i].hide = false;
+        }
         else if (+page - 3 <= i && i < +page + 2) {
             page_numbers[i].hide = false;
         }
@@ -66,8 +70,6 @@ router.get('/', async function (req, res) {
         page_numbers,
         page_first: parseInt(page) === 1,
         page_last: parseInt(page) === parseInt(n_pages),
-        next_page: parseInt(page) + 1,
-        previous_page: parseInt(page) - 1,
         n_pages: n_pages,
         is_empty: articles[0].length === 0,
         is_show_pagination: n_pages > 0,
@@ -87,7 +89,7 @@ router.get('/', async function (req, res) {
     })
 })
 
-router.get('/view/:article_id', async function (req, res) {
+router.get('/view/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     const article_id = req.params.article_id || 0;
 
     if (isNaN(parseInt(article_id))) {
@@ -118,7 +120,7 @@ router.get('/delete/:article_id', async function(req, res){
     res.redirect(`/admin/articles?tab=${tab}`);
 })
 
-router.get('/edit/:article_id', async function (req, res) {
+router.get('/edit/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     const article_id = req.params.article_id || 0;
 
     if (isNaN(parseInt(article_id))) {
@@ -147,7 +149,7 @@ router.get('/edit/:article_id', async function (req, res) {
     })
 })
 
-router.post('/edit/:article_id', async function (req, res) {
+router.post('/edit/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     var article = req.body;
     //article_id
     article['article_id'] = req.params.article_id || 0;
@@ -229,7 +231,7 @@ router.post('/edit/:article_id', async function (req, res) {
     res.redirect('/admin/articles');
 })
 
-router.get('/publish/:article_id', async function (req, res) {
+router.get('/publish/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     const article_id = req.params.article_id || 0;
     if (isNaN(parseInt(article_id))) {
         res.status(404);
@@ -250,7 +252,7 @@ router.get('/publish/:article_id', async function (req, res) {
     })
 })
 
-router.post('/publish/:article_id', async function (req, res) {
+router.post('/publish/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     const article_id = req.params.article_id;
     if (isNaN(parseInt(article_id))) {
         res.status(404);
