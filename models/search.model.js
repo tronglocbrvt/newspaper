@@ -17,7 +17,7 @@ module.exports={
             and MATCH(a.${type_search}) AGAINST('${keyword}' IN NATURAL LANGUAGE MODE)
             and a.is_premium <= ${premium}
             and unix_timestamp(p.time_published) <= ${time}
-        order by a.is_premium DESC, relevance DESC, a.article_id ASC
+        order by a.is_premium DESC, relevance DESC, p.time_published DESC, a.article_id ASC
         limit 10 offset ${offset}`;
 
         return db.raw(sql);

@@ -102,7 +102,7 @@ router.post('/:id/patch', auth.auth, auth.auth_admin, async function(req, res) {
         return res.render('vwError/viewNotFound');
     }
     tag = await tagModel.search_by_tag_name(req.body.tag_name);
-    if (tag[0] === undefined) {
+    if (tag[0][0] === undefined) {
         await tag_model.patch(req.params.id, req.body.tag_name);
         req.session.redirect_message = 'Chỉnh sửa thành công';
         res.redirect('/admin/tags');

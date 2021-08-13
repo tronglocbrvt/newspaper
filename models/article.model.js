@@ -83,7 +83,7 @@ module.exports =
             and p.article_id = articles.article_id
             and articles.is_premium <= :premium
             and unix_timestamp(p.time_published) <= :time
-        order by articles.is_premium DESC, articles.article_id ASC
+        order by articles.is_premium DESC, p.time_published DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
@@ -146,7 +146,7 @@ module.exports =
             and categories.parent_category_id = c.category_id
             and articles.is_premium <= :premium
             and unix_timestamp(p.time_published) <= :time
-        order by articles.is_premium DESC, articles.article_id ASC
+        order by articles.is_premium DESC, p.time_published DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
@@ -185,7 +185,7 @@ module.exports =
             and c.category_id = articles.category_id
             and articles.is_premium <= :premium
             and unix_timestamp(p.time_published) <= :time
-        order by articles.is_premium DESC, articles.article_id ASC
+        order by articles.is_premium DESC, p.time_published DESC, articles.article_id ASC
         limit 10 offset :offset`;
         return db.raw(sql, params);
     },
