@@ -57,7 +57,7 @@ $(document).ready(function () {
     });
 
     jQuery('#publish-time').datetimepicker({
-        format: 'd/m/Y H:i'
+        format: 'd/m/Y H'
     });
 
 
