@@ -95,7 +95,7 @@ router.get('/sign-up', not_auth, async function (req, res) {
   res.render('vwAuthentications/sign_up');
 });
 
-router.get('/is-username-available', not_auth, async function (req, res) {
+router.get('/is-username-available', async function (req, res) {
   const username = req.query.username;
   const user = await authenticate_model.findByUsername(username);
   if (user.length === 0)
@@ -103,7 +103,7 @@ router.get('/is-username-available', not_auth, async function (req, res) {
   return res.json(false);
 });
 
-router.get('/is-email-available', not_auth, async function (req, res) {
+router.get('/is-email-available', async function (req, res) {
   const email = req.query.email;
   const user = await authenticate_model.findByEmail(email);
   if (user.length === 0)
@@ -444,7 +444,7 @@ router.post('/change-gender', auth.auth, async function (req, res) {
 });
 
 
-router.post('/change-nick-name', auth.auth,auth.auth_writer, async function (req, res) {
+router.post('/change-nick-name', auth.auth, auth.auth_writer, async function (req, res) {
   // Get username from session.
   const user_id = req.session.authUser.user_id;
   await authenticate_model.change_writer_nickname_by_user_id(user_id, req.body.nickname);
@@ -521,7 +521,7 @@ router.get('/google/callback', not_auth,
     req.session.auth = true;
     req.session.authUser = user;
     const url = req.session.retUrl || '/';
-    console.log('url');
+    console.log('url = ' + url);
     res.redirect(url);
   }
 );
@@ -567,6 +567,7 @@ router.get("/facebook/callback", not_auth,
     req.session.authUser = user;
     const url = req.session.retUrl || '/';
     console.log(req.session.authUser);
+    console.log('url = ' + url);
     res.redirect(url);
   }
 );

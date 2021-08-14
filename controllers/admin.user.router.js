@@ -28,11 +28,13 @@ router.get('/edit/:id', auth.auth, auth.auth_admin, async function (req, res) {
         var selected_categories = await userModel.get_selected_cats_by_user_id(user_id);
         data.selected_categories = selected_categories[0];
     }
-    data.err_message = req.session.redirect_message;
-    //console.log(data);
+    data.err_message = req.session.err_message;
+    data.redirect_message = req.session.redirect_message;
+    console.log(data);
     data.time_premium = time_zone_converter.server_time_to_GMT_7(data.time_premium);
     res.render('vwAdmin/vwUser/vwEditUser', data);
     delete req.session.redirect_message;
+    delete req.session.err_message;
 });
 
 // post patch
@@ -78,7 +80,7 @@ router.post('/patch/:id', auth.auth, auth.auth_admin, async function (req, res) 
         const num_articles = await userModel.countNumArticles(user_id); // đếm số bài báo đã có của ng đó
         if (num_articles[0].length > 0 && num_articles[0][0].num) // đã có bài viết mà bị bắt xóa.
         {
-            req.session.redirect_message = 'Không thể  điều chỉnh - Do người dùng là tác giả - Cần xóa các bài do người này viết trước.';
+            req.session.err_message = 'Không thể  điều chỉnh - Do người dùng là tác giả - Cần xóa các bài do người này viết trước.';
             return res.redirect('/admin/users/edit/' + user_id);
         }
         await userModel.deleteWriter(user_id);
@@ -130,7 +132,8 @@ router.post('/patch/:id', auth.auth, auth.auth_admin, async function (req, res) 
     // Update one table user.
     console.log(editted_user);
     await userModel.updateUser(editted_user);
-    res.redirect('/admin/users/');
+    req.session.redirect_message = "Chỉnh sửa thành công.";
+    res.redirect("/admin/users/edit/" + user_id);
 });
 
 
@@ -154,12 +157,13 @@ router.post('/del/:id', auth.auth, auth.auth_admin, async function (req, res) {
     if (user.is_writer) {
         const num_articles = await userModel.countNumArticles(user.user_id);
         if (num_articles[0].length > 0 && num_articles[0][0].num) {
-            req.session.redirect_message = 'Không thể xóa - Do người dùng là tác giả - Cần xóa các bài do người này viết trước.';
+            req.session.err_message = 'Không thể xóa - Do người dùng là tác giả - Cần xóa các bài do người này viết trước.';
             return res.redirect('/admin/users/edit/' + user_id);
         }
     }
     console.log("Xóa hết đây các tình iu - Xóa lan sang comments, writers, editors, fb,google.");
     await userModel.deleteUser(user_id);
+    req.session.redirect_message = 'Xóa thành công.';
     res.redirect('/admin/users');
 });
 
@@ -169,7 +173,11 @@ router.post('/del/:id', auth.auth, auth.auth_admin, async function (req, res) {
 router.get('/add', auth.auth, auth.auth_admin, async function (req, res) {
     const list = await categoryModel.get_main_cats();
     console.log(list[0]);
-    res.render('vwAdmin/vwUser/vwAddUser', { categories: list[0] });
+    res.render('vwAdmin/vwUser/vwAddUser', {
+        categories: list[0],
+        redirect_message: req.session.redirect_message
+    });
+    delete req.session.redirect_message;
 });
 
 router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
@@ -226,13 +234,13 @@ router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
             console.log(req.body.categories_selected);
         }
     }
+    req.session.redirect_message = "Thêm thành công.";
     res.redirect("");
 });
 
 
 // VIEW ALL USER API
-router.get('/:filter', auth.auth, auth.auth_admin, async function (req, res) 
-{
+router.get('/:filter', auth.auth, auth.auth_admin, async function (req, res) {
     const limit = 20; // number of rows on 1 page
     // get current page, default 1
     var page = req.query.page || 1;
@@ -314,7 +322,9 @@ router.get('/:filter', auth.auth, auth.auth_admin, async function (req, res)
         n_pages,
         page_first: parseInt(page) === 1, // check first page 
         page_last: parseInt(page) === parseInt(n_pages), // check last page
+        redirect_message: req.session.redirect_message
     });
+    delete req.session.redirect_message;
 });
 
 
@@ -364,7 +374,9 @@ router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
         n_pages,
         page_first: parseInt(page) === 1, // check first page 
         page_last: parseInt(page) === parseInt(n_pages), // check last page
+        redirect_message: req.session.redirect_message
     });
+    delete req.session.redirect_message;
 });
 
 

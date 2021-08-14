@@ -4,15 +4,22 @@
 {{/section}}
 
 
-<div class="card my-3 mx-1 m-md-5 ">
+<div class="card my-3 mx-2 m-md-5 ">
   <h2 class="card-header">
     Chi tiết người dùng
   </h2>
 
   <div class="card-body">
+
     {{#if err_message}}
     <div id="error_message" class="alert alert-danger">
       {{err_message}}
+    </div>
+    {{/if}}
+
+    {{#if redirect_message}}
+    <div id="redirect_message" class="alert alert-info">
+      {{redirect_message}}
     </div>
     {{/if}}
 
@@ -161,12 +168,15 @@
               <div class="col-11  col-md-3">
                 <label style="font-weight:lighter;"><i>Thời điểm hết hạn (GMT+7)</i></label>
               </div>
+
               <div class="col-11  col-md-8">
-                <input class="form-control" id="txtTimePremium" name="time_premium"
+                <input readonly class="form-control" id="txtTimePremium" name="time_premium"
                   placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
+
                 <div id="time_premium_invalid" class="invalid-feedback">
                   Thời gian không hợp lệ.
                 </div>
+
               </div>
             </div>
 
@@ -176,7 +186,7 @@
                 <label style="font-weight:lighter;"><i>Thời điểm hết hạn (GMT+7)</i></label>
               </div>
               <div class="col-11  col-md-8">
-                <input class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH"
+                <input readonly class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH:mm"
                   value="">
                 <div id="time_premium_invalid" class="invalid-feedback">
                   Thời gian không hợp lệ.
@@ -367,7 +377,7 @@
   $.datetimepicker.setDateFormatter('moment');
   $('#txtTimePremium').datetimepicker(
     {
-      format: 'DD/MM/YYYY HH'
+      format: 'DD/MM/YYYY HH:mm'
     }
   );
   $('#date_of_birth').datetimepicker(

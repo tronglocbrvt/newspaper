@@ -333,53 +333,48 @@
 
 
                     <div id="sign-up-premium" class="collapse my-4 p-2 p-md-4 border border-light rounded shadow">
-                        <div class="jumbotron py-3">
-                            - Để đăng ký tài khoản premium vui lòng chuyển khoản đến số tài khoản : 6380205561534. Nội
-                            dung
-                            chuyển khoản: <br>
-                            "tên đăng nhập" - LLP News Premium - "tên gói đăng ký" <br>
-                            - Ví dụ: để đăng ký cho tài khoản ndhp2000 gói ba tháng, nội dung chuyển khoản sẽ là: <br>
-                            "ndhp2000 -LLP News Premium - 1" <br>
-                            - Bạn vui lòng điền thông tin chuyển khoản để chúng thôi kiểm tra và cập nhật tài
-                            khoản. <br>
-                            - Trong quá trình kiểm tra, nếu có sai sót chúng tôi sẽ chủ động liên hệ quý khách và xử lý
-                            hoàn
-                            tiền. <br>
+                        <div class="jumbotron my-1">
+                            <h4>Hướng dẫn đăng ký tài khoản premium</h4>
+                            <ol>
+                                <li>
+                                    Để đăng premium vui lòng chuyển khoản đến: .
+                                    <ul>
+                                        <li>Số tài khoản: 6380205561534</li>
+                                        <li>Chủ tài khoản: Nguyễn Đình Hoàng Phúc</li>
+                                        <li>Tên ngân hàng: Agribank chi nhánh Bình Thạnh</li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    Nội dung chuyển khoản: <b>{{user_id}} - LLPNEWS - [Số ngày đăng ký]</b>
+                                </li>
+
+                                <li>
+                                    Số tiền chuyển khoản: [Số ngày đăng ký]*1000đ. <i>(Ví dụ: nếu bạn đăng ký sử dụng 30
+                                        ngày thì số tiền chuyển là 30.000đ)</i>
+                                </li>
+
+                                <li> Trong quá trình kiểm tra, nếu có sai sót chúng tôi sẽ chủ động liên hệ quý khách và
+                                    xử
+                                    lý
+                                    hoàn
+                                    tiền.
+                                </li>
+
+                                <li>
+                                    Mọi thắc mắc xin vui lòng liên hệ:
+                                    <ul>
+                                        <li>Số điện thoại: 0358631075</li>
+                                        <li>
+                                            Email: <a
+                                                href="mailto:llp.newspapers@gmail.com">llp.newspapers@gmail.com</a>.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            Chân thành cảm ơn quý khác đã sử dụng dịch vụ của LLP Newspapers!
                         </div>
 
-
-                        <form id="frmSignUpPremium" action="/profile/sign-up-premium" method="post" class="mt-3">
-                            <div class="form-group">
-                                <label for="stk">Số tài khoản gửi tiền</label>
-                                <input type="text" class="form-control" id="stk" placeholder="6380205561534" name="stk">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ctk">Chủ tài khoản</label>
-                                <input type="text" class="form-control" id="ctk" placeholder="Nguyễn Đình Hoàng Phúc"
-                                    name="ctk">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="chi-nhanh">Tên ngân hàng và chi nhánh ngân hàng</label>
-                                <input type="text" class="form-control" id="chi-nhanh" name="chinhanh"
-                                    placeholder="Agribank - Chi nhánh Bình Thạnh">
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="goi-dang-ky">Chọn gói mà bạn muốn đăng ký</label>
-                                <select class="form-control" id="goi-dang-ky" name="goi">
-                                    <option value="1">1. Gói 3 tháng - 60.000đ</option>
-                                    <option value="2">2. Gói 6 tháng - 100.000đ</option>
-                                    <option value="3">3. Gói 12 tháng - 180.000đ</option>
-                                </select>
-                            </div>
-
-
-                            <button type="submit" class="btn btn-primary">Đăng ký premium</button>
-
-                        </form>
                     </div>
 
 
