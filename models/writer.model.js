@@ -62,7 +62,6 @@ module.exports = {
         and c.category_id = a.category_id ${tab_constraint}
         ${limit_offset}`;
 
-        console.log(sql);
         return db.raw(sql);
     },
 

@@ -6,6 +6,8 @@ const tag_model = require('../models/tag.model');
 const editor_model = require('../models/editor.model');
 const article_model = require('../models/article.model');
 const auth = require('../middlewares/auth.mdw');
+const time_zone_converter = require("../middlewares/timezone.mdw");
+const moment = require('moment');
 
 const router = express.Router();
 
@@ -125,117 +127,6 @@ router.get('/delete/:article_id', auth.auth, auth.auth_admin, async function(req
     res.redirect(`/admin/articles?tab=${tab}`);
 })
 
-router.get('/edit/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
-    const article_id = req.params.article_id || 0;
-
-    if (isNaN(parseInt(article_id))) {
-        res.status(404);
-        res.render('vwError/viewNotFound');
-        return;
-    }
-
-    const article = await writer_model.load_article_by_id(article_id);
-    const main_cats = await category_model.get_main_cats();
-    const tags = await tag_model.get_tags();
-    var is_rejected = false, comment;
-    if (article[0][0].is_rejected) {
-        comment = await writer_model.get_rejected_comment(article_id);
-        comment = comment[0][0].editor_comments;
-        is_rejected = true;
-    }
-
-    res.render("vwWriters/edit_article", {
-        article: article[0][0],
-        main_cats: main_cats[0],
-        tags: tags[0],
-        is_rejected: is_rejected,
-        comment: comment,
-        is_admin: true
-    })
-})
-
-router.post('/edit/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
-    var article = req.body;
-    //article_id
-    article['article_id'] = req.params.article_id || 0;
-
-    //get tag and delete from body
-    var tags = req.body.tags;
-    var original_tags = req.body.original_tags;
-    delete article['tags'];
-    delete article['original_tags'];
-
-    //category_id
-    const sub_category_id = +article['sub_category'];
-    if (sub_category_id !== 0) {
-        article['category_id'] = sub_category_id;
-    } else {
-        article['category_id'] = +article['category_id'];
-    }
-    delete article['sub_category'];
-
-    //avatar_url if updated
-    if (req.files !== null && 'avatar' in req.files) {
-        const file = req.files.avatar;
-        const savePath = Date.now() + '.png';
-        await file.mv('./static/images/' + savePath);
-        article['avatar_url'] = '/static/images/' + savePath;
-    }
-
-    //is_premium
-    if ('is_premium' in article) {
-        article['is_premium'] = 1;
-    } else {
-        article['is_premium'] = 0;
-    }
-
-    //call model to process
-    await writer_model.patch_article(article);
-    var id = req.params.article_id || 0;
-
-    //process tags
-    original_tags = original_tags.split(',');
-    tags = tags.split(',');
-
-    //get all tag names
-    var all_tags = await tag_model.get_tags();
-    all_tags = all_tags[0];
-
-    var all_tag_names = [];
-    all_tags.map(function (tag) {
-        all_tag_names.push(tag.tag_name);
-    });
-
-    //add tags
-    var add_tags = [];
-    for (let i = 0; i < tags.length; i++) {
-        if (original_tags.indexOf(tags[i]) === -1)
-            add_tags.push(tags[i]);
-    }
-
-    var insert_tag = { 'article_id': id };
-    for (let i = 0; i < add_tags.length; i++) {
-        var tag_id = all_tag_names.indexOf(add_tags[i]) + 1;
-        insert_tag['tag_id'] = tag_id;
-        await tag_model.add_tag(insert_tag);
-    }
-
-    //delete tags
-    var delete_tags = [];
-    for (let i = 0; i < original_tags.length; i++) {
-        if (tags.indexOf(original_tags[i]) === -1)
-            delete_tags.push(original_tags[i]);
-    }
-
-    for (let i = 0; i < delete_tags.length; i++) {
-        var tag_id = all_tag_names.indexOf(delete_tags[i]) + 1;
-        insert_tag['tag_id'] = tag_id;
-        await tag_model.delete_tag(insert_tag);
-    }
-
-    res.redirect('/admin/articles');
-})
-
 router.get('/publish/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
     const article_id = req.params.article_id || 0;
     if (isNaN(parseInt(article_id))) {
@@ -297,7 +188,7 @@ router.post('/publish/:article_id', auth.auth, auth.auth_admin, async function (
     //add to rejected_articles
     var article_publish = {};
     article_publish['article_id'] = article_id;
-    article_publish['time_published'] = formatDateTime(article['publish_time']);
+    article_publish['time_published'] = time_zone_converter.GMT_7_to_server_time(moment(article_publish['time_published'], "DD/MM/YYYY HH:mm")).format("YYYY-MM-DD HH");
 
     await editor_model.add_publish_article(article_publish);
 
@@ -349,18 +240,10 @@ router.post('/publish/:article_id', auth.auth, auth.auth_admin, async function (
     for (let i = 0; i < delete_tags.length; i++) {
         var tag_id = all_tag_names.indexOf(delete_tags[i]) + 1;
         insert_tag['tag_id'] = tag_id;
-        await tag_model.delete_tag(insert_tag);
+        await tag_model.delete_tag_article_link(insert_tag);
     }
 
     res.redirect(`/admin/articles`);
 })
-
-function formatDateTime(date) {
-    let dateComponents = date.split(' ');
-    let datePieces = dateComponents[0].split("/");
-    let timePieces = dateComponents[1].split(":");
-    res = `${datePieces[2]}-${datePieces[1]}-${datePieces[0]} ${timePieces[0]}:${timePieces[1]}:00`;
-    return res;
-}
 
 module.exports = router;

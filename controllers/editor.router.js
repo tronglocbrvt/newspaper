@@ -5,6 +5,8 @@ const category_model = require('../models/category.model');
 const writer_model = require('../models/writer.model');
 const auth = require('../middlewares/auth.mdw');
 const tag_model = require("../models/tag.model");
+const time_zone_converter = require("../middlewares/timezone.mdw");
+const moment = require('moment');
 
 router.get('/reviews', auth.auth, auth.auth_editor, async function (req, res) {
     //check if editor has been added to writers table
@@ -191,8 +193,8 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         //add to rejected_articles
         var article_publish = {};
         article_publish['article_id'] = article_id;
-        article_publish['time_published'] = formatDateTime(article['publish_time']);
 
+        article_publish['time_published'] = time_zone_converter.GMT_7_to_server_time(moment(article_publish['time_published'], "DD/MM/YYYY HH:mm")).format("YYYY-MM-DD HH");
         await editor_model.add_publish_article(article_publish);
 
         //delete uneccessary fields
@@ -243,19 +245,11 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         for (let i = 0; i < delete_tags.length; i++) {
             var tag_id = all_tag_names.indexOf(delete_tags[i]) + 1;
             insert_tag['tag_id'] = tag_id;
-            await tag_model.delete_tag(insert_tag);
+            await tag_model.delete_tag_article_link(insert_tag);
         }
     }
 
     res.redirect(`/editors/reviews`);
 });
-
-function formatDateTime(date) {
-    let dateComponents = date.split(' ');
-    let datePieces = dateComponents[0].split("/");
-    let timePieces = dateComponents[1].split(":");
-    res = `${datePieces[2]}-${datePieces[1]}-${datePieces[0]} ${timePieces[0]}:${timePieces[1]}:00`;
-    return res;
-}
 
 module.exports = router;

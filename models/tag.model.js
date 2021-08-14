@@ -19,7 +19,7 @@ module.exports = {
         return db('tag_links').insert(tag);
     },
 
-    delete_tag(tag){
+    delete_tag_article_link(tag){
         return db('tag_links')
             .where({
                 'tag_id': tag.tag_id,

@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="shortcut icon" href="https://icon-library.com/images/iformation-icon/iformation-icon-14.jpg" />
     <style>
         #dropdown-category::after {
             content: none;
@@ -94,6 +95,7 @@
                     </div>
                 </li>
             </ul>
+            <a class="navbar-brand" href="/"><img src="/static/images/logo.png" alt="Logo" style="height: 45px"></a>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link1 text-center" id="search"><i class="fa fa-search fa-lg"></i><br><span>TÌM
@@ -102,7 +104,6 @@
 
 
                 {{#if auth}}
-
                 <li class="nav-item">
                     <a class="nav-link1 text-center" href="/profile"><i
                             class="fa fa-user fa-lg"></i><br><span>PROFILES</span></a>
@@ -174,6 +175,34 @@
             </div>
         </div>
     </div>
+
+    {{!-- <footer class="page-footer font-small bg-primary pt-4">
+        <!-- Footer Links -->
+        <div class="container-fluid text-center text-md-left text-light">
+            <!-- Grid row -->
+            <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-4 mt-md-0 mt-3">
+                    <!-- Content -->
+                    <h5 class="text-uppercase">Lê Hạnh Linh</h5>
+                    <p>18120052</p>
+                </div>
+                <!-- Grid column -->
+                <div class="col-md-4 mt-md-0 mt-3">
+                    <!-- Content -->
+                    <h5 class="text-uppercase">Trương Trọng Lộc</h5>
+                    <p>18120197</p>
+                </div>
+                <!-- Grid column -->
+                <div class="col-md-4 mt-md-0 mt-3">
+                    <!-- Content -->
+                    <h5 class="text-uppercase">Nguyễn Đình Hoàng Phúc</h5>
+                    <p>18120513</p>
+                </div>
+                <!-- Grid row -->
+            </div>
+            <!-- Footer Links -->
+    </footer> --}}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
