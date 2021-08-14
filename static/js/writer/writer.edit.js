@@ -31,7 +31,6 @@ $(document).ready(function () {
 
             data1.tags.map(function (tag) {
                 add_tag(tag.tag_name);
-                tag_list.push(tag.tag_name);
             })
 
             const ori_tags = tag_list.toString();

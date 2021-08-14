@@ -20,12 +20,10 @@ Fix:
 
 // - Linh: 
 Fix: 
-   Dieu chinh backend writers + editors. 
-   Fix bug Quản lý bài viết + Pagnition.
-   Chinh ham time trong tag va categories.
    Fix bugs lộc Logs.
    Bug front-end
-   find home.js va file css. f12
+   search
+
 // - Phuc:
 Fix:
    - Responsive --- huhu

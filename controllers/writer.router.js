@@ -323,7 +323,7 @@ router.post('/edit/:article_id', auth.auth, auth.auth_writer, async function (re
     for (let i = 0; i < delete_tags.length; i++) {
         var tag_id = all_tag_names.indexOf(delete_tags[i]) + 1;
         insert_tag['tag_id'] = tag_id;
-        await tag_model.delete_tag(insert_tag);
+        await tag_model.delete_tag_article_link(insert_tag);
     }
 
     res.redirect('/writers/articles');

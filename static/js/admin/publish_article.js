@@ -61,6 +61,14 @@ $(document).ready(function () {
 
     $("#form").submit(function (e) {
         const new_tags = tag_list.toString();
+
+        date_picked = stringToDatetime($("#publish-time").val());
+        if (!isValidDate(date_picked)) {
+            alert('Vui lòng chọn ngày hợp lệ');
+            e.preventDefault();
+            return false;
+        }
+        
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", new_tags)
