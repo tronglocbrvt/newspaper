@@ -57,6 +57,7 @@ router.get('/', auth.auth, async function (req, res) {
         {
             err_message: req.session.change_password_error,
             redirect_message: req.session.redirect_message,
+            user_id: req.session.authUser.user_id,
             username: user_name,
             is_premium: is_premium,
             name: req.session.authUser.name,

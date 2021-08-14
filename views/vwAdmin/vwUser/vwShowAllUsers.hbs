@@ -10,6 +10,11 @@
                     <div class="col-md-12">
                         <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link"
                                     aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ NGƯỜI DÙNG</h3>
+                        {{#if redirect_message}}
+                        <div id="redirect_message" class="alert alert-info">
+                            {{redirect_message}}
+                        </div>
+                        {{/if}}
                         <div class="d-flex justify-content-center">
                             <div class="tags-area my-2">
                                 <a class="my-2 btn btn-outline-primary" href="/admin/users">Xem toàn bộ</a>

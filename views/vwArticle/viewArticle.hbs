@@ -52,9 +52,12 @@
         <!-- Anh dai dien -->
         <div id="article_avatar" class="container">
             <figure class="text-center">
+                {{#if this.article.avatar_url}}
                 <img class="figure-img img-fluid rounded" src="{{this.article.avatar_url}}"
+                    onerror="this.onerror=null; this.src='https://scontent.fsgn8-1.fna.fbcdn.net/v/t1.6435-9/128851635_5427040923980029_649285277980215436_n.png?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=yPQECiaQGjIAX95KZlC&_nc_ht=scontent.fsgn8-1.fna&oh=cdc2327cee160d4632da410fb076bb40&oe=613B8C45'"
                     alt="{{this.article.avatar_caption}}">
                 <figcaption class="figure-caption my-2">{{this.article.avatar_caption}}</figcaption>
+                {{/if}}
             </figure>
         </div>
 
@@ -139,15 +142,16 @@
         <div class="row my-3 mx-md-5 mx-1 pb-4 border-bottom">
             <div class="col-md-3">
                 <a class="text-dark" href="{{ref}}">
-                    <img style="width:100%" src="{{avatar_url}}" alt="{{avatar_caption}}">
+                    <img style="width:100%" src="{{avatar_url}}" alt="{{avatar_caption}}"
+                        onerror="this.onerror=null; this.src='https://scontent.fsgn8-1.fna.fbcdn.net/v/t1.6435-9/128851635_5427040923980029_649285277980215436_n.png?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=yPQECiaQGjIAX95KZlC&_nc_ht=scontent.fsgn8-1.fna&oh=cdc2327cee160d4632da410fb076bb40&oe=613B8C45'">
                 </a>
             </div>
 
-            <div class="col-md-9">
+            <div class=" col-md-9">
                 <a class="title-link title-link:hover" href="{{ref}}">
                     <h4>{{article_title}}
                         {{#if is_premium}}
-                        <i class="fa fa-diamond" aria-hidden="true"></i>
+                        <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
                         {{/if}}
                     </h4>
                 </a>
