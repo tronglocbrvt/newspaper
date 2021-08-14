@@ -194,7 +194,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         var article_publish = {};
         article_publish['article_id'] = article_id;
 
-        article_publish['time_published'] = time_zone_converter.GMT_7_to_server_time(moment(article_publish['time_published'], "DD/MM/YYYY HH:mm")).format("YYYY-MM-DD HH");
+        article_publish['time_published'] = time_zone_converter.GMT_7_to_server_time(moment(article['publish_time'], "DD/MM/YYYY HH")).format("YYYY-MM-DD HH");
         await editor_model.add_publish_article(article_publish);
 
         //delete uneccessary fields
