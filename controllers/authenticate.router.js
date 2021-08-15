@@ -400,10 +400,11 @@ router.post('/change-password', auth.auth, async function (req, res) {
   }
   else {
     req.session.change_password_error = 'Mật khẩu cũ không đúng.';
+    return res.redirect("../profile");
   }
   // password k luu nen khoi doi session
   req.session.redirect_message = 'Chúc mừng bạn đã đổi mật khẩu thành công.';
-  res.redirect("../profile");
+  return res.redirect("../profile");
 });
 
 

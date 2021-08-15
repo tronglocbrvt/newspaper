@@ -106,9 +106,9 @@
               </div>
               <div class="col-11  col-md-8">
                 <input type="text" class="form-control" id="name" placeholder="{{name}}" value="{{name}}" name="name"
-                  maxlength="100">
+                  maxlength="40">
                 <div id="name_invalid" class="invalid-feedback">
-                  Tên không hợp lệ.
+                  Tên không hợp lệ. Tên không được bỏ trống và chứa tối đa 40 kí tự.
                 </div>
               </div>
             </div>
@@ -124,7 +124,7 @@
                 <input readonly id="date_of_birth" name="raw_date_of_birth" value="{{date_format_2 date_of_birth}}"
                   placeholder="{{date_format_2 date_of_birth}}">
                 <div id="date_of_birth_invalid" class="invalid-feedback">
-                  Ngày sinh không hợp lệ.
+                  Ngày sinh không hợp lệ. Người dùng cần lớn hơn 10 tuổi để đăng ký.
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@
                   placeholder="{{date_time_format time_premium}}" value="{{date_time_format time_premium}}">
 
                 <div id="time_premium_invalid" class="invalid-feedback">
-                  Thời gian không hợp lệ.
+                  Thời gian không hợp lệ. Thời điểm hết hạn phải lớn hơn hiện tại.
                 </div>
 
               </div>
@@ -186,10 +186,10 @@
                 <label style="font-weight:lighter;"><i>Thời điểm hết hạn (GMT+7)</i></label>
               </div>
               <div class="col-11  col-md-8">
-                <input readonly class="form-control" id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH:mm"
-                  value="">
+                <input readonly class="form-control" id="txtTimePremium" name="time_premium"
+                  placeholder="DD/MM/YYYY HH:mm" value="">
                 <div id="time_premium_invalid" class="invalid-feedback">
-                  Thời gian không hợp lệ.
+                  Thời gian không hợp lệ. Thời điểm hết hạn phải lớn hơn hiện tại.
                 </div>
               </div>
 
@@ -226,7 +226,10 @@
                 <label style="font-weight:lighter;"><i>Bí danh</i></label>
               </div>
               <div class="col-11  col-md-8">
-                <input id="nickname" name="nick_name" value="{{nick_name}}" placeholder="{{nick_name}}">
+                <input id="nickname" name="nick_name" value="{{nick_name}}" placeholder="{{nick_name}}" maxlength="40">
+                <div id="nickname_invalid" class="invalid-feedback">
+                  Bí danh không hợp lệ. Bí danh phải từ 1-40 kí tự.
+                </div>
               </div>
             </div>
 
@@ -236,8 +239,12 @@
                 <label style="font-weight:lighter;"><i>Bí danh</i></label>
               </div>
               <div class="col-11  col-md-8">
-                <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
+                <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con" maxlength="40">
+                <div id="nickname_invalid" class="invalid-feedback">
+                  Bí danh không hợp lệ. Bí danh phải từ 1-40 kí tự.
+                </div>
               </div>
+
             </div>
             {{/if}}
 

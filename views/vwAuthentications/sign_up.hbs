@@ -13,9 +13,9 @@
 
             <div class="form-group">
                 <label for="name">Họ và tên</label>
-                <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name" maxlength="100">
+                <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name" maxlength="40">
                 <div id="name_invalid" class="invalid-feedback">
-                    Tên không hợp lệ.
+                    Tên không hợp lệ. Tên không được bỏ trống và chứa tối đa 40 kí tự.
                 </div>
             </div>
 
@@ -30,18 +30,18 @@
 
             <div class="form-group">
                 <label for="date_of_birth">Ngày sinh: </label>
-                <input readonly id="date_of_birth" name="raw_date_of_birth" placeholder="dd/mm/yyyy">
+                <input readonly id="date_of_birth" name="raw_date_of_birth">
                 <div id="date_of_birth_invalid" class="invalid-feedback">
-                    Ngày sinh không hợp lệ.
+                    Ngày sinh không hợp lệ. Bạn cần lớn hơn 10 tuổi để đăng ký.
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Email: </label>
                 <input class="form-control" id="email" type="text" name="email" placeholder="abc@example.com"
-                    maxlength="100" />
+                    maxlength="40" />
                 <div id="email_invalid" class="invalid-feedback">
-                    Email không hợp lệ.
+                    Email không hợp lệ. Độ dài tối đa email là 40 kí tự và đúng định dạng email.
                 </div>
                 <div id="email_duplicate" class="invalid-feedback">
                     Email đã tồn tại.
@@ -51,10 +51,10 @@
 
             <div class="form-group">
                 <label for="username">Tài khoản:</label>
-                <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" maxlength="32"
+                <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản" minlength="5" maxlength="20"
                     name="username">
                 <div id="username_invalid" class="invalid-feedback">
-                    Tài khoản không hợp lệ.
+                    Tài khoản không hợp lệ. Tài khoản từ 5-20 kí tự in thường hoặc số.
                 </div>
                 <div id="username_duplicate" class="invalid-feedback">
                     Tài khoản đã tồn tại.
@@ -64,19 +64,19 @@
             <div class="form-group">
 
                 <label for="password">Mật khẩu:</label>
-                <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" maxlength="32"
-                    name="raw_password">
+                <input id="password" type="password" class="form-control" minlength="8" maxlength="20"
+                    name="raw_password" placeholder="Nhập mật khẩu">
                 <div id="pswmeter"></div>
 
                 <div id="password_invalid" class="invalid-feedback">
-                    Mật khẩu quá đơn giản.
+                    Mật khẩu quá đơn giản. Mật khẩu từ 8-20 kí tự, phải có đủ kí tự in Thường, Hoa và Số.
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="password_confirm">Nhập lại mật khẩu:</label>
                 <input type="password" class="form-control" id="password_confirm" placeholder="Nhập lại mật khẩu"
-                    maxlength="32">
+                    minlength="8" maxlength="20">
                 <div id="password_confirm_invalid" class="invalid-feedback">
                     Mật khẩu nhập lại không khớp.
                 </div>

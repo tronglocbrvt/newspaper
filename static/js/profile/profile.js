@@ -47,7 +47,8 @@ function checkDate(dateString) {
 
     const dob = moment(dateString, "DD/MM/YYYY");
     console.log("DOB : " + dob + " - " + moment());
-    if (dob > moment()) return false;
+
+    if (dob > moment().subtract(10, 'years')) return false;
 
     // Parse the date parts to integers
     var parts = dateString.split("/");
@@ -75,23 +76,24 @@ function checkDate(dateString) {
 // Check Attributes are Valid or not? 
 function checkEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
+    return re.test(email) && (email.length <= 40);
 }
 
 function checkUsername(username) {
-    return (username.length > 0);
+    const re = /^[a-z0-9]+$/;
+    return re.test(username) && (username.length >=5 && username.length<=20);
 }
 
 // Check Attributes are Valid or not? 
 function checkPassword() {
-    if (parseInt(myPassMeter.getScore()) >= 3)
+    if (parseInt(myPassMeter.getScore()) >= 4)
         return true;
     return false;
 }
 
 // Check Attributes are Valid or not? 
 function checkName(name) {
-    return (name.length > 0);
+    return (name.length > 0) && (name.length<=40);
 }
 
 // Check Attributes are Valid or not? 
@@ -155,12 +157,6 @@ $('#frmChangePassword').on('submit', function (e) {
 });
 
 
-
-// Check Attributes are Valid or not? 
-function checkName(name) {
-    return (name.length > 0);
-}
-
 $('#frmName').on('submit', function (e) {
 
     e.preventDefault();
@@ -186,43 +182,30 @@ $('#frmName').on('submit', function (e) {
 
 });
 
+$('#frmNickName').on('submit', function (e) {
 
+    e.preventDefault();
+    validTestPassed = true;
 
-// Check Attributes are Valid or not? 
-function checkDate(dateString) {
-    if (dateString.length === 0) return false;
+    ///////////////////////////////////////////////////
 
-    // First check for the pattern
-    if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-        return false;
+    const nickname = $('#nickname').val();
+    if (!checkName(nickname)) {
+        $('#nickname_invalid').show();
+        $('#nickname').addClass("border border-danger");
+        validTestPassed = false;
+    }
+    else {
+        $('#nickname_invalid').hide()
+        $('#nickname').removeClass("border border-danger")
+    }
 
-    const dob = moment(dateString, "DD/MM/YYYY");
-    console.log("DOB : " + dob + " - " + moment());
-    if (dob > moment()) return false;
+    if (validTestPassed) {
+        console.log("submit");
+        $('#frmNickName').off('submit').submit();
+    }
 
-    // Parse the date parts to integers
-    var parts = dateString.split("/");
-    var day = parseInt(parts[0], 10);
-    var month = parseInt(parts[1], 10);
-    var year = parseInt(parts[2], 10);
-
-    console.log(day + " " + month + " " + year);
-
-    // Check the ranges of month and year
-    if (year < 1000 || year > 3000 || month == 0 || month > 12)
-        return false;
-
-    var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    // Adjust for leap years
-    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
-        monthLength[1] = 29;
-
-    // Check the range of the day
-    if (!(day > 0 && day <= monthLength[month - 1])) return false;
-    return true;
-}
-
+});
 
 $('#frmDOB').on('submit', function (e) {
 
