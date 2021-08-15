@@ -13,6 +13,8 @@ const moment = require('moment');
 const otp = require('otplib');
 var passport = require('passport');
 const randomstring = require("randomstring");
+const fetch = require('node-fetch');
+const { stringify } = require('querystring');
 // Mailer
 const transporter = email_helper.create_transporter();
 
@@ -572,6 +574,33 @@ router.get("/facebook/callback", not_auth,
     res.redirect(url);
   }
 );
+
+router.get('/is-captcha-available', async function (req, res) {
+  const capcha = req.query.captcha;
+  if (capcha === undefined || capcha === '' || capcha === null)
+    return res.json(false);
+
+  const secretKey = '6LcHkgEcAAAAAE-RbHOCa2BOjN-0p9iRHGYZ-kqn';
+
+  // Verify URL
+  const query = stringify({
+    secret: secretKey,
+    response: capcha,
+    remoteip: req.socket.remoteAddress
+  });
+  const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
+
+  // Make a request to verifyURL
+  const body = await fetch(verifyURL).then(res => res.json());
+
+  // If not successful
+  if (body.success !== undefined && !body.success)
+    return res.json(false);
+
+  // If successful
+  return res.json(true);
+
+});
 
 module.exports = router
 
