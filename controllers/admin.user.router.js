@@ -235,7 +235,7 @@ router.post('/add', auth.auth, auth.auth_admin, async function (req, res) {
         }
     }
     req.session.redirect_message = "Thêm thành công.";
-    res.redirect("");
+    res.redirect('/admin/users');
 });
 
 
