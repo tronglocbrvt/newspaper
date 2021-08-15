@@ -252,4 +252,8 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
     res.redirect(`/editors/reviews`);
 });
 
+router.get('/dashboard', auth.auth, auth.auth_editor, async function(req, res) {
+    res.render('vwEditors/dashboard');
+});
+
 module.exports = router;
