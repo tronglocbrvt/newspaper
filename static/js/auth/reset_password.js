@@ -1,6 +1,6 @@
 // Check Attributes are Valid or not? 
 function checkPassword() {
-    if (parseInt(myPassMeter.getScore()) >= 3)
+    if (parseInt(myPassMeter.getScore()) >= 4)
         return true;
     return false;
 }

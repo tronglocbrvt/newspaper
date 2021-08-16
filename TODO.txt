@@ -41,7 +41,6 @@ https://docs.google.com/document/d/1tyttsYjISMjBreJX-f-MdaU_DQ-72araDqYr4DEchOY/
 // - Loc: 
 Fix: 
 Categories dẫn qua articles lại.
-
 ------------------------------------------------------------------------------------------
 
 
@@ -54,8 +53,8 @@ Fix:
    + Chinh Time GMT trong timepublished
    + Responsive Main.
    + Thêm header + footer. 
-   - find home.js va file css. f12
-------------------------------------------------------------------------------------------
+   + Find home.js va file css. f12
+/----------------------------------------------------------------------------------------/
 
 // Phuc:
 Fix:
@@ -63,4 +62,4 @@ Fix:
  // Deploy lai
 /----------------------------------------------------------------------------------------/
 
- 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
+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

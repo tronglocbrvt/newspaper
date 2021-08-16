@@ -23,7 +23,7 @@
             {{redirect_message}}
         </div>
         {{/if}}
-        
+
 
         <form id="frmAdminAddUser" method="POST" action="/admin/users/add/">
             <div class="form-group">
@@ -39,9 +39,9 @@
 
                             <div class="col-11  col-md-8">
                                 <input type="text" class="form-control" id="username" placeholder="Nhập tài khoản"
-                                    maxlength="32" name="username">
+                                    minlength="5" maxlength="20" name="username">
                                 <div id="username_invalid" class="invalid-feedback">
-                                    Tài khoản không hợp lệ.
+                                    Tài khoản không hợp lệ. Tài khoản từ 5-20 kí tự in thường hoặc số.
                                 </div>
                                 <div id="username_duplicate" class="invalid-feedback">
                                     Tài khoản đã tồn tại.
@@ -59,7 +59,7 @@
 
                             <div class="col-11  col-md-8">
                                 <input class="form-control" id="email" type="text" name="email"
-                                    placeholder="abc@example.com" maxlength="100" />
+                                    placeholder="abc@example.com" maxlength="40" />
                                 <div id="email_invalid" class="invalid-feedback">
                                     Email không hợp lệ.
                                 </div>
@@ -78,9 +78,9 @@
                             </div>
                             <div class="col-11  col-md-8">
                                 <input type="text" class="form-control" id="name" placeholder="Họ và tên" name="name"
-                                    maxlength="100">
+                                    maxlength="40">
                                 <div id="name_invalid" class="invalid-feedback">
-                                    Tên không hợp lệ.
+                                    Tên không hợp lệ. Tên không được bỏ trống và chứa tối đa 40 kí tự.
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 <input readonly id="date_of_birth" width="276" name="raw_date_of_birth"
                                     placeholder="dd/mm/yyyy">
                                 <div id="date_of_birth_invalid" class="invalid-feedback">
-                                    Ngày sinh không hợp lệ.
+                                    Ngày sinh không hợp lệ. Người dùng cần lớn hơn 10 tuổi để đăng ký.
                                 </div>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                             <div class="col-11  col-md-8">
                                 <input readonly id="txtTimePremium" name="time_premium" placeholder="DD/MM/YYYY HH:mm">
                                 <div id="time_premium_invalid" class="invalid-feedback">
-                                    Thời gian không hợp lệ.
+                                    Thời gian không hợp lệ. Thời điểm hết hạn phải lớn hơn hiện tại.
                                 </div>
                             </div>
 
@@ -154,7 +154,7 @@
 
                         <div class="row">
                             <div class="col-11  col-md-3">
-                                <label style="fCollaont-weight:bold;">Phân quyền phóng viên:</label>
+                                <label style="font-weight:bold;">Phân quyền phóng viên:</label>
                             </div>
                             <div class="col-11  col-md-8">
                                 <input class="form-check-input" id="check_writer" name="check_writer" type="checkbox"
@@ -169,7 +169,10 @@
                                 <label style="font-weight:lighter;"><i>Bí danh</i></label>
                             </div>
                             <div class="col-11  col-md-8">
-                                <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con">
+                                <input id="nickname" name="nick_name" placeholder="Ví dụ: Sói Con" maxlength="40">
+                                <div id="nickname_invalid" class="invalid-feedback" >
+                                        Bí danh không hợp lệ. Bí danh phải từ 1-40 kí tự.
+                                </div>
                             </div>
                         </div>
 
