@@ -14,12 +14,12 @@
     </div>
     <div class="form-group">
         <label for="title">TIÊU ĐỀ</label>
-        <input type="text" class="form-control" name="article_title" id="title" maxlength="75"
+        <input type="text" class="form-control" name="article_title" id="title" maxlength="90" minlength="10"
             value="{{this.article.article_title}}" required>
     </div>
     <div class="form-group">
         <label for="abstract">TÓM TẮT</label>
-        <textarea class="form-control" name="article_abstract" id="abstract" rows="5"
+        <textarea class="form-control" name="article_abstract" id="abstract" rows="5" maxlength="300"
             required>{{article.article_abstract}}</textarea>
     </div>
     <div class="form-group">
@@ -32,7 +32,8 @@
     <div id="avatar_container">
         <div class="btn btn-outline-primary mb-3" id="btn_edit_avatar"><i class="fa fa-pencil"></i> Đổi ảnh bìa</div>
         <br>
-        <img src="{{article.avatar_url}}" alt="Ảnh bìa" class="pb-4" style="max-width: 100%; height: auto;">
+        <img src="{{article.avatar_url}}" alt="Ảnh bìa" class="pb-4" style="max-width: 100%; height: auto;"
+            onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';">
     </div>
 
     <div class="form-group">
@@ -60,9 +61,6 @@
         <div class="input-group col-md-5">
             <input type="text" list="tag-list" class="form-control" id="tags" />
             <datalist id="tag-list">
-                {{#each tags}}
-                <option value="{{tag_name}}">{{tag_name}}</option>
-                {{/each}}
             </datalist>
             <div class="input-group-append">
                 <div class="btn btn-primary" id="btn-add-tag">
@@ -72,10 +70,17 @@
         </div>
         <div class="col-md-5" id="alert-area" style="color: red;"></div>
     </div>
-    <div class="mb-2" id="tag-area"></div>
+    <div class="mb-2" id="tag-area">
+        {{#each tags}}
+        <div class="btn-group mr-3 mb-3" role="group">
+            <div class="btn btn-outline-primary tag_ori">{{tag_name}}</div>
+            <div class="btn btn-outline-danger delete-btn" value="{{tag_name}}"><i class="fa fa-trash"></i></div>
+        </div>
+        {{/each}}
+    </div>
     <div class="form-group">
         <label for="content">NỘI DUNG</label>
-        <textarea id="content" name="article_content" required></textarea>
+        <textarea id="content" name="article_content" required>{{{article.article_content}}}</textarea>
     </div>
     {{#if is_admin}}
     <div class="text-center mb-3">
@@ -101,16 +106,14 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/writer/writer.edit.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#content').summernote({
-            placeholder: 'Nhập nội dung',
-            tabsize: 2,
-            height: 300
-        });
-    });
+    var avatar_url = "{{article.avatar_url}}";
+    var main_cat = "{{parent_cat.id}}";
+    var main_cat_name = "{{parent_cat.name}}";
+    var sub_cat = "{{sub_cat.category_id}}";
+    var sub_cat_name = "{{sub_cat.category_name}}"
 </script>
+<script src="/static/js/writer/writer.edit.js"></script>
 {{/section}}
 
 {{#section 'css'}}

@@ -41,6 +41,7 @@ module.exports={
         where category_id = ?`;
         return db.raw(sql, cat_id);
     },
+
     // get name and id of parent category
     get_name_by_cat_id(cat_id) {
         const sql = `select if(c2.category_name is null, c1.category_name, c2.category_name) as name,
@@ -54,9 +55,9 @@ module.exports={
 
     //get name by cat id
     get_name_by_id(cat_id){
-        const sql = `select c.category_name as category_name
-        from categories c
-        where c.category_id = ?`
+        const sql = `select category_name, category_id
+        from categories
+        where category_id = ?`
         return db.raw(sql, cat_id);
     },
     

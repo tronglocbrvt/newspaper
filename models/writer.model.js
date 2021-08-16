@@ -91,7 +91,9 @@ module.exports = {
     get_rejected_comment(article_id) {
         const sql = `select editor_comments
         from rejected_articles
-        where article_id = ${article_id}`;
+        where article_id = ${article_id}
+        order by rejected_articles_id desc
+        limit 1`;
 
         return db.raw(sql);
     },

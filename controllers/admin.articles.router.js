@@ -107,11 +107,17 @@
             comment = comment[0][0].editor_comments;
             is_rejected = true;
         }
-
+        
+        const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+        const sub_cat = await category_model.get_name_by_id(article[0][0].category_id);
+        const tags = await tag_model.get_names_by_art_id(article_id);
         res.render("vwWriters/view_article", {
             article: article[0][0],
             is_rejected: is_rejected,
-            comment: comment
+            comment: comment,
+            parent_cat: parent_cat[0][0],
+            sub_cat: sub_cat[0][0],
+            tags: tags[0]
         })
     })
 
@@ -138,12 +144,14 @@
         const article = await writer_model.load_article_by_id(article_id);
         const main_cats = await category_model.get_main_cats();
         const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+        const sub_cat = await category_model.get_name_by_id(article[0][0].category_id);
         const tags = await tag_model.get_names_by_art_id(article[0][0].article_id);
 
         res.render("vwAdmin/vwArticle/publish_article", {
             article: article[0][0],
             main_cats: main_cats[0],
             parent_cat: parent_cat[0][0],
+            sub_cat: sub_cat[0][0],
             tags: tags[0]
         })
     })

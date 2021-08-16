@@ -19,7 +19,8 @@
     <div id="avatar_container" class="form-group">
         <label for="avatar">ẢNH BÌA</label>
         <br>
-        <img src="{{article.avatar_url}}" alt="Ảnh bìa" class="pb-4" style="max-width: 100%; height: auto;">
+        <img src="{{article.avatar_url}}" alt="Ảnh bìa" class="pb-4" style="max-width: 100%; height: auto;"
+            onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';">
     </div>
 
     <div class="form-group">
@@ -30,24 +31,25 @@
         <div class="form-group col-md-5">
             <label for="category">CHUYÊN MỤC</label>
             <input type="text" class="form-control" id="category" readonly>
-            {{!-- <option value="0">---------</option> --}}
-            {{!-- {{#each main_cats}}
-            <option value="{{category_id}}">{{category_name}}</option>
-            {{/each}} --}}
             </input>
         </div>
         <div class="form-group col-md-5">
             <label for="sub_category">CHUYÊN MỤC CON</label>
             <input type="text" class="form-control" id="sub_category" readonly>
-            {{!-- <option value="0">---------</option> --}}
             </input>
         </div>
     </div>
     <label for="tags">TAGS</label>
-    <div class="mb-2" id="tag-area"></div>
+    <div class="mb-2" id="tag-area">
+        {{#each tags}}
+        <div class="btn-group mr-3 mb-3" role="group">
+            <div class="btn btn-outline-primary">{{tag_name}}</div>
+        </div>
+        {{/each}}
+    </div>
     <div class="form-group">
         <label for="content">NỘI DUNG</label>
-        <div id="content" readonly></div>
+        <div id="content" readonly>{{{article.article_content}}}</div>
     </div>
 </form>
 <hr>
@@ -84,9 +86,6 @@
                     <div class="input-group" id="tag-group" hidden>
                         <input type="text" list="tag-list" class="form-control" id="tags" />
                         <datalist id="tag-list">
-                            {{#each tags}}
-                            <option value="{{tag_name}}">{{tag_name}}</option>
-                            {{/each}}
                         </datalist>
                         <div class="input-group-append">
                             <div class="btn btn-primary" id="btn-add-tag">
@@ -115,8 +114,8 @@
             </div>
             <div class="reject-div p-3">
                 <label for="comment" class="text-dark">Lí do từ chối:</label>
-                <textarea class="form-control" id="comment" name="comment" placeholder="Vui lòng nhập lí do..." rows="10"
-                    disabled></textarea>
+                <textarea class="form-control" id="comment" name="comment" placeholder="Vui lòng nhập lí do..."
+                    rows="10" disabled></textarea>
             </div>
         </div>
     </div>
@@ -132,11 +131,16 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
-<script src="/static/js/editor/editor.view.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
     integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script>
+    var main_cat = "{{parent_cat.id}}";
+    var main_cat_name = "{{parent_cat.name}}";
+    var sub_cat = "{{sub_cat.category_id}}";
+    var sub_cat_name = "{{sub_cat.category_name}}"
+</script>
+<script src="/static/js/editor/editor.view.js"></script>
 {{/section}}
 
 {{#section 'css'}}

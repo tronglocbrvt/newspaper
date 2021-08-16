@@ -3,13 +3,13 @@ $(document).ready(function () {
     var tags = [];
 
     $('#category').val(main_cat_name);
-    $('#sub_category').val(main_cat_name);
+    $('#sub_category').val(sub_cat_name);
     $('#main_cat_reset').find(`option[value="${+main_cat}"]`).attr('selected', 'selected');
 
     $.ajax({
         url: '/categories/getsubcats'
     }).done(function (data) {
-        set_sub_cats(main_cat, data);
+        set_sub_cats(+main_cat, data);
         $('#main_cat_reset').on('change', function () {
             set_sub_cats(+this.value, data);
         });
@@ -22,6 +22,7 @@ $(document).ready(function () {
     }).done(function (data) {
         data.map(function (tag) {
             tags.push(tag.tag_name);
+            $("#tag-list").append($(`<option value="${tag.tag_name}">${tag.tag_name}</option>`));
         });
 
         $('.btn-outline-primary').map(function () {
@@ -45,7 +46,7 @@ $(document).ready(function () {
     })
 
     jQuery('#publish-time').datetimepicker({
-        format: 'd/m/Y H:i'
+        format: 'd/m/Y H'
     });
 
 
@@ -125,7 +126,7 @@ $(document).ready(function () {
         let datePieces = dateComponents[0].split("/");
         let timePieces = dateComponents[1].split(":");
         return (new Date(datePieces[2], (datePieces[1] - 1), datePieces[0],
-            timePieces[0], timePieces[1]))
+            timePieces[0]))
     }
 
     function isValidDate(date) {

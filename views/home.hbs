@@ -9,7 +9,8 @@
         <span class="badge badge-danger week-point">ĐIỂM TUẦN</span>
         <div class="img-containter">
           <a href="/articles/{{article_id}}">
-            <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}" width="100%">
+            <img class="img-fluid lazy loaded" src="{{avatar_url}}" data-src="{{avatar_url}}" width="100%"
+              onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';">
           </a>
         </div>
         <div class="big-title">
@@ -33,63 +34,74 @@
     </div>
     <br>
   </div>
-  <div class="col-lg-5 col-sm-12 col-12">
-    <ul class="nav nav-pills" role="tablist">
+  <div class="col-lg-5 col-12">
+    <ul class="nav nav-pills mb-3" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="tab-javascript" data-toggle="tab" href="#content-javascript" role="tab"
-          aria-controls="content-javascript">
+        <a class="nav-link active" id="tab-javascript" data-toggle="tab" href="#content-latest" role="tab"
+          aria-controls="content-latest">
           MỚI NHẤT
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="tab-css" data-toggle="tab" href="#content-css" role="tab" aria-controls="content-css">
+        <a class="nav-link" id="tab-css" data-toggle="tab" href="#content-most" role="tab" aria-controls="content-most">
           ĐỌC NHIỀU
         </a>
       </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="content-javascript" role="tabpanel" aria-labelledby="tab-javascript">
+      <div class="tab-pane fade show active" id="content-latest" role="tabpanel">
         <div class="hot-news-container">
           {{#each latest_news}}
-          <div class="card" style="height: 100px; margin: 10px 0px">
-            <div class="card-horizontal">
-              <a href="/articles/{{article_id}}">
-                <img src="{{avatar_url}}" alt="Card image cap" height="100px" width="150px">
-              </a>
-              <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
-              <div class="h-time">
-                {{#if is_premium}}
-                <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
-                {{/if}}
-                <span class="d-none d-sm-inline me-1">
-                  <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
-                </span>
-                <span class="date">&nbsp;{{formatTime time_published}}</span>
+          <div class="card mb-3 p-2">
+            <div class="row">
+              <div class="col-5 px-3">
+                <a href="/articles/{{article_id}}">
+                  <img src="{{avatar_url}}" alt="Card image cap" width="100%" height="100%"
+                    style="max-height: 130px; object-fit: cover;"
+                    onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';">
+                </a>
+              </div>
+              <div class="col-7 pl-0 pr-3">
+                <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
+                <div class="time">
+                  {{#if is_premium}}
+                  <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
+                  {{/if}}
+                  <span class="d-none d-sm-inline me-1">
+                    <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
+                  </span>
+                  <span class="date">&nbsp;{{formatTime time_published}}</span>
+                </div>
               </div>
             </div>
           </div>
           {{/each}}
         </div>
       </div>
-      <div class="tab-pane fade" id="content-css" role="tabpanel" aria-labelledby="tab-css">
+      <div class="tab-pane fade" id="content-most" role="tabpanel" aria-labelledby="tab-css">
         <div class="hot-news-container">
           {{#each most_news}}
-          <div class="card" style="height: 100px; margin: 10px 0px">
-            <div class="card-horizontal">
-              <a href="/articles/{{article_id}}">
-                <img src="{{avatar_url}}" alt="Card image cap" height="100px" width="150px">
-              </a>
-              <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
-              <div class="h-time">
-                {{#if is_premium}}
-                <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
-                {{/if}}
-                <span class="d-none d-sm-inline me-1">
-                  <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
-                </span>
-                <span class="date">&nbsp;{{formatTime time_published}} &nbsp;</span>
-                <i class="fa fa-eye" aria-hidden="true"> {{views}}</i>
+          <div class="card mb-3 p-2">
+            <div class="row">
+              <div class="col-5 px-3">
+                <a href="/articles/{{article_id}}">
+                  <img src="{{avatar_url}}" alt="Card image cap" class="w-100 h-100" style="max-height: 130px;"
+                    onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';">
+                </a>
+              </div>
+              <div class="col-7 pl-0 pr-3">
+                <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
+                <div class="time">
+                  {{#if is_premium}}
+                  <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
+                  {{/if}}
+                  <span class="d-none d-sm-inline me-1">
+                    <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
+                  </span>
+                  <span class="date">&nbsp;{{formatTime time_published}} &nbsp;</span>
+                  <i class="fa fa-eye" aria-hidden="true"></i> {{views}}
+                </div>
               </div>
             </div>
           </div>
@@ -100,23 +112,29 @@
     </ul>
   </div>
 </div>
-<div class="row" style="margin: 20px 0px;">
+<div class="row my-3">
   <h3>CHUYÊN MỤC NỔI BẬT</h3>
 </div>
 <div class="row" style="margin-bottom: 20px;">
   {{#each hot_categories}}
-  <div class="col-sm-6 col-lg-3 v-article">
+  <div class="col-sm-6 col-lg-3 mb-4 pl-0">
     <a href="/categories/{{parent_cat_id}}" class="cat-link text-uppercase btn btn-primary border mb-2 article-category"
-      style="font-size: medium;">{{category_name}}</a>
-    <div class="card v-card">
+      style="font-size: medium;">{{parent_cat_name}}</a>
+    <div class="card w-100 p-3">
       <a href="/articles/{{article_id}}">
-        <img class="card-img-top" src="{{avatar_url}}" alt="Nổi bật" style="width: 100%; height: 140px;"></a>
-      <a href="/articles/{{article_id}}" class="title-link v-card-content">{{article_title}}</a>
-      <div class="v-time">
-        {{#if is_premium}}
-        <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
-        {{/if}}
-        {{formatTime time_published}}
+        <img class="card-img-top w-100" src="{{avatar_url}}" alt="Nổi bật" style="height: 140px;"
+          onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';"></a>
+      <div class="pt-3 px-1">
+        <a href="/articles/{{article_id}}" class="title-link v-card-content">{{article_title}}</a>
+        <div class="time">
+          {{#if is_premium}}
+          <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
+          {{/if}}
+          <span class="d-none d-sm-inline me-1">
+            <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
+          </span>
+          &nbsp;{{formatTime time_published}}
+        </div>
       </div>
     </div>
   </div>

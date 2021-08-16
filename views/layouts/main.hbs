@@ -51,6 +51,17 @@
                     </li>
                     {{/each}}
                     <hr>
+                    <form action="/search" style="width: 100%">
+                        <div class="input-group">
+                            <input type="hidden" class="form-control input-lg" style="height: 45px" name="criteria"
+                                value="0">
+                            <input type="text" class="form-control input-lg" style="height: 45px"
+                                placeholder="Tìm kiếm..." name="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
                     {{#if auth}}
                     <li class="nav-item">
                         <a class="nav-link1" href="/profile"><i class="fa fa-user fa-lg"></i><span> PROFILES</span></a>
@@ -94,15 +105,13 @@
                         {{/each}}
                     </div>
                 </li>
-            </ul>
-            <a class="navbar-brand" href="/"><img src="/static/images/logo.png" alt="Logo" style="height: 45px"></a>
-            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link1 text-center" id="search"><i class="fa fa-search fa-lg"></i><br><span>TÌM
                             KIẾM</span></a>
                 </li>
-
-
+            </ul>
+            <a class="navbar-brand" href="/"><img src="/static/images/logo.png" alt="Logo" style="height: 45px"></a>
+            <ul class="navbar-nav ml-auto">
                 {{#if auth}}
                 <li class="nav-item">
                     <a class="nav-link1 text-center" href="/profile"><i
@@ -129,7 +138,6 @@
                             NHẬP</span></a>
                 </li>
                 {{/if}}
-
 
             </ul>
         </div>
@@ -168,7 +176,7 @@
     </nav>
 
 
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5 pb-3">
         <div class="row">
             <div class="col-sm-12">
                 {{{body}}}
@@ -176,33 +184,39 @@
         </div>
     </div>
 
-    {{!-- <footer class="page-footer font-small bg-primary pt-4">
+    <footer class="page-footer font-small">
         <!-- Footer Links -->
-        <div class="container-fluid text-center text-md-left text-light">
-            <!-- Grid row -->
-            <div class="row">
-                <!-- Grid column -->
-                <div class="col-md-4 mt-md-0 mt-3">
-                    <!-- Content -->
-                    <h5 class="text-uppercase">Lê Hạnh Linh</h5>
-                    <p>18120052</p>
+        <div class="container-fluid">
+            <div class="row px-3 pt-3" style="background-color: #eeeeee;">
+                <div class="col-md-3">
+                    <p><b>Đồ án môn học</b>
+                        <br> Phát triển ứng dụng web
+                        <br> Giáo viên: Ngô Ngọc Đăng Khoa
+                        <br> Lớp 18CNTN
+                    </p>
                 </div>
-                <!-- Grid column -->
-                <div class="col-md-4 mt-md-0 mt-3">
-                    <!-- Content -->
-                    <h5 class="text-uppercase">Trương Trọng Lộc</h5>
-                    <p>18120197</p>
+                <div class="col-md-5">
+                    <p><b>Thông tin liên hệ</b>
+                        <br> <i class="fa fa-map-marker"></i> 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Thành phố Hồ Chí Minh
+                        <br> <i class="fa fa-phone"></i> (+84) 077 111 0000
+                        <br> <i class="fa fa-envelope"></i> 181520197@student.hcmus.edu.vn
+                    </p>
                 </div>
-                <!-- Grid column -->
-                <div class="col-md-4 mt-md-0 mt-3">
-                    <!-- Content -->
-                    <h5 class="text-uppercase">Nguyễn Đình Hoàng Phúc</h5>
-                    <p>18120513</p>
+                <div class="col-md-4">
+                    <p><b>Thành viên</b>
+                        <br> Lê Hạnh Linh - 18120052
+                        <br> Nguyễn Đình Hoàng Phúc - 18120143
+                        <br> Trương Trọng Lộc - 18120197
+                    </p>
                 </div>
-                <!-- Grid row -->
+            </div>
+            <div class="row text-center" style="background-color: #2596be;">
+                <ul class="navbar-nav mx-auto text-center text-light">
+                    <li class="d-inline navbar-text">Copyright &copy; 2021 LLP News - All rights reserved.</li>
+                </ul>
             </div>
             <!-- Footer Links -->
-    </footer> --}}
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"

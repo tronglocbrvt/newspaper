@@ -1,50 +1,43 @@
 $(document).ready(function () {
     var tag_list = [];
     var tags = [];
-    const url = window.location.href;
-    const id = url.substr(url.lastIndexOf('/') + 1, url.length);
 
+    $('#category').find(`option[value="${main_cat}"]`).attr('selected', 'selected');
     $.ajax({
-        url: '/writers/get_content_cat_tag/' + id
-    }).done(function (data1) {
-        $("#content").summernote("code", data1.article_content);
-        $('#category').find(`option[value="${data1.main_category}"]`).attr('selected', 'selected');
-
-        $.ajax({
-            url: '/categories/getsubcats'
-        }).done(function (data2) {
-            set_sub_cats(data1.main_category, data2);
-            $('#category').on('change', function () {
-                set_sub_cats(+this.value, data2);
-            });
-
-            $('#sub_category').find(`option[value=${data1.sub_category}]`).attr('selected', 'selected');
+        url: '/categories/getsubcats'
+    }).done(function (data) {
+        set_sub_cats(main_cat, data);
+        $('#category').on('change', function () {
+            set_sub_cats(+this.value, data);
         });
 
-        $.ajax({
-            url: '/tags'
-        }).done(function (data3) {
+        $('#sub_category').find(`option[value=${sub_cat}]`).attr('selected', 'selected');
+    });
 
-            data3.map(function (tag) {
-                tags.push(tag.tag_name);
-            });
+    $.ajax({
+        url: '/tags'
+    }).done(function (data) {
+        data.map(function (tag) {
+            tags.push(tag.tag_name);
+            $("#tag-list").append($(`<option value="${tag.tag_name}">${tag.tag_name}</option>`));
+        });
 
-            data1.tags.map(function (tag) {
-                add_tag(tag.tag_name);
-            })
+        $('.tag_ori').map(function () {
+            tag_list.push(this.innerHTML);
+        })
 
-            const ori_tags = tag_list.toString();
-            $("<input />").attr("type", "hidden")
-                .attr("name", "original_tags")
-                .attr("value", ori_tags)
-                .appendTo("#form1");
+        const ori_tags = tag_list.toString();
+        $("<input />").attr("type", "hidden")
+            .attr("name", "original_tags")
+            .attr("value", ori_tags)
+            .appendTo("#form1");
 
-            $('#title').focus();
+        $('#title').focus();
 
-            $('#btn-add-tag').click(function () {
-                var input_tag = $('#tags').val();
-                add_tag(input_tag);
-            });
+        $('#btn-add-tag').click(function () {
+            var input_tag = $('#tags').val();
+            add_tag(input_tag);
+            tag_list.push(input_tag);
         });
     });
 
@@ -57,6 +50,12 @@ $(document).ready(function () {
         $(this).attr('hidden', true);
         $("#avatar_container").attr('hidden', true);
     })
+
+    $('#content').summernote({
+        placeholder: 'Nhập nội dung',
+        tabsize: 2,
+        height: 300
+    });
 
     function set_sub_cats(id, data) {
         $('#sub_category').empty();
@@ -84,7 +83,6 @@ $(document).ready(function () {
                         .append(delete_icon);
                     element.append(tag_btn).append(delete_btn);
                     $('#tag-area').append(element);
-                    tag_list.push(input_tag);
                 }
             }
         }
@@ -103,11 +101,16 @@ $(document).ready(function () {
         });
     }
 
-    $("#form1").submit(function () {
+    $("#form1").submit(function (e) {
         const tags = tag_list.toString();
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", tags)
+            .appendTo("#form1");
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "ori_avatar_url")
+            .attr("value", avatar_url)
             .appendTo("#form1");
 
         return true;

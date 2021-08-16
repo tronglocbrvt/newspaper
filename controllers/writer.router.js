@@ -6,6 +6,7 @@ const path = require('path');
 const auth = require('../middlewares/auth.mdw');
 const article_model = require('../models/article.model');
 const writer_model = require('../models/writer.model');
+const fs = require('fs');
 
 router.get('/add', auth.auth, auth.auth_writer, async function (req, res) {
     //check if writer has been added to writers table
@@ -193,7 +194,10 @@ router.get('/edit/:article_id', auth.auth, auth.auth_writer, async function (req
 
     const article = await writer_model.load_article_by_id(article_id);
     const main_cats = await category_model.get_main_cats();
-    const tags = await tag_model.get_tags();
+    const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+    const sub_cat = await category_model.get_name_by_id(article[0][0].category_id);
+    const tags = await tag_model.get_names_by_art_id(article_id);
+
     var is_rejected = false, comment;
     if (article[0][0].is_rejected) {
         comment = await writer_model.get_rejected_comment(article_id);
@@ -204,6 +208,8 @@ router.get('/edit/:article_id', auth.auth, auth.auth_writer, async function (req
         article: article[0][0],
         main_cats: main_cats[0],
         tags: tags[0],
+        parent_cat: parent_cat[0][0],
+        sub_cat: sub_cat[0][0],
         is_rejected: is_rejected,
         comment: comment
     })
@@ -260,7 +266,12 @@ router.post('/edit/:article_id', auth.auth, auth.auth_writer, async function (re
         const savePath = Date.now() + '.png';
         await file.mv('./static/images/' + savePath);
         article['avatar_url'] = '/static/images/' + savePath;
+        fs.unlink('.'+ article['ori_avatar_url'], function (err) {
+            if (err) throw err;
+        })
     }
+
+    delete article['ori_avatar_url'];
 
     //is_premium
     if ('is_premium' in article) {
@@ -269,8 +280,7 @@ router.post('/edit/:article_id', auth.auth, auth.auth_writer, async function (re
         article['is_premium'] = 0;
     }
 
-    //delete rejected article if any
-    await writer_model.delete_rejected_article(article['article_id']);
+    //set is_rejected if orginal article is draft
     article['is_rejected'] = false;
 
     //set is_draft to true
@@ -424,8 +434,15 @@ router.get('/submitted/:article_id', auth.auth, auth.auth_writer, async function
     }
 
     const article = await writer_model.load_article_by_id(article_id);
+    const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+    const sub_cat = await category_model.get_name_by_id(article[0][0].category_id);
+    const tags = await tag_model.get_names_by_art_id(article_id);
+
     res.render("vwWriters/view_article", {
-        article: article[0][0]
+        article: article[0][0],
+        parent_cat: parent_cat[0][0],
+        sub_cat: sub_cat[0][0],
+        tags: tags[0]
     })
 })
 
@@ -455,9 +472,15 @@ router.get('/published/:article_id', auth.auth, auth.auth_writer, async function
     }
 
     const article = await writer_model.load_article_by_id(article_id);
+    const parent_cat = await category_model.get_name_by_cat_id(article[0][0].category_id);
+    const sub_cat = await category_model.get_name_by_id(article[0][0].category_id);
+    const tags = await tag_model.get_names_by_art_id(article_id);
 
     res.render("vwWriters/view_article", {
-        article: article[0][0]
+        article: article[0][0],
+        parent_cat: parent_cat[0][0],
+        sub_cat: sub_cat[0][0],
+        tags: tags[0]
     })
 })
 
