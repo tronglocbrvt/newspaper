@@ -88,8 +88,11 @@ router.get('/', auth.auth, auth.auth_admin, async function (req, res) {
         sub_cats: sub_cats[0],
         //if is_submitted, publish button for admin
         is_publishable: +tab === 2,
-        is_published: +tab === 0 || +tab === 1
-    })
+        is_published: +tab === 0 || +tab === 1,
+        //message
+        message: req.session.redirect_message
+    });
+    delete req.session.redirect_message;
 })
 
 router.get('/view/:article_id', auth.auth, auth.auth_admin, async function (req, res) {
@@ -131,6 +134,7 @@ router.get('/delete/:article_id', auth.auth, auth.auth_admin, async function (re
     }
     const tab = req.query.tab || 0;
     await article_model.delete(article_id);
+    req.session.redirect_message = 'Xóa bài viết thành công';
     res.redirect(`/admin/articles?tab=${tab}`);
 })
 
@@ -254,6 +258,7 @@ router.post('/publish/:article_id', auth.auth, auth.auth_admin, async function (
         await tag_model.delete_tag_article_link(insert_tag);
     }
 
+    req.session.redirect_message = 'Xuất bản bài viết thành công';
     res.redirect(`/admin/articles`);
 })
 

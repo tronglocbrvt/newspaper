@@ -85,7 +85,10 @@ router.get('/reviews', auth.auth, auth.auth_editor, async function (req, res) {
         n_pages: n_pages,
         is_empty: articles[0].length === 0,
         is_show_pagination: n_pages > 0,
-    })
+        //message
+        message: req.session.redirect_message
+    });
+    delete req.session.redirect_message;
 });
 
 router.get('/rejects', auth.auth, auth.auth_editor, async function (req, res) {
@@ -429,6 +432,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
 
         //update status to article
         await writer_model.patch_article(article);
+        req.session.redirect_message = 'Từ chối bài viết thành công';
     } else {
         //set state
         article['is_published'] = true;
@@ -500,6 +504,8 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
             insert_tag['tag_id'] = tag_id;
             await tag_model.delete_tag_article_link(insert_tag);
         }
+
+        req.session.redirect_message = 'Chấp nhận bài viết thành công';
     }
 
     res.redirect(`/editors/reviews`);

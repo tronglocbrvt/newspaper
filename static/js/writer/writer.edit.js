@@ -103,17 +103,25 @@ $(document).ready(function () {
     }
 
     $("#form1").submit(function (e) {
-        const tags = tag_list.toString();
-        $("<input />").attr("type", "hidden")
-            .attr("name", "tags")
-            .attr("value", tags)
-            .appendTo("#form1");
+        var messageData = $('#content').summernote('code');
+        if (messageData === "<p><br></p>") {
+            alert("Vui lòng nhập nội dung")
+            e.preventDefault();
+            return false;
+        }
+        else {
+            const tags = tag_list.toString();
+            $("<input />").attr("type", "hidden")
+                .attr("name", "tags")
+                .attr("value", tags)
+                .appendTo("#form1");
 
-        $("<input />").attr("type", "hidden")
-            .attr("name", "ori_avatar_url")
-            .attr("value", avatar_url)
-            .appendTo("#form1");
+            $("<input />").attr("type", "hidden")
+                .attr("name", "ori_avatar_url")
+                .attr("value", avatar_url)
+                .appendTo("#form1");
 
-        return true;
+            return true;
+        }
     })
 });

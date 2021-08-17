@@ -10,7 +10,16 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link" aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ BÀI VIẾT</h3>
+                                <h3><a role="button" href="/admin/dashboard"><i class="fa fa-home fa-lg title-link"
+                                            aria-hidden="true"></i></a>&nbsp;&nbsp;QUẢN LÝ BÀI VIẾT</h3>
+                                {{#if message}}
+                                <center>
+                                    <div id="error_message" class="alert alert-success"
+                                        style="margin-top: 30px; text-align: left">
+                                        {{message}}
+                                    </div>
+                                </center>
+                                {{/if}}
                                 <span class="float-right" style="mr-auto"><a class="btn btn-outline-primary"
                                         href="/writers/add"><i class="fa fa-plus"></i> Viết bài mới</a></span>
                             </div>
@@ -27,33 +36,36 @@
                                 <label for="writer" class="text-primary"><b>TÁC GIẢ &nbsp;</b></label>
                                 <select name="category_id" class="form-control" id="writers"
                                     onchange="clickWriter(this.value)" />
-                                    <option value="0">Tất cả</option>
-                                    {{#each writers}}
-                                    <option value="{{writer_id}}">{{nick_name}}</option>
-                                    {{/each}}
+                                <option value="0">Tất cả</option>
+                                {{#each writers}}
+                                <option value="{{writer_id}}">{{nick_name}}</option>
+                                {{/each}}
                                 </select>
                             </div>
                             <div class="form-group pr-3">
                                 <label for="main_cat" class="text-primary"><b>CHUYÊN MỤC &nbsp;</b></label>
-                                <select name="category_id" class="form-control" id="main_cat" onchange="clickMainCat(this.value)" />
-                                    <option value="0">Tất cả</option>
-                                    {{#each main_cats}}
-                                    <option value="{{category_id}}">{{category_name}}</option>
-                                    {{/each}}
+                                <select name="category_id" class="form-control" id="main_cat"
+                                    onchange="clickMainCat(this.value)" />
+                                <option value="0">Tất cả</option>
+                                {{#each main_cats}}
+                                <option value="{{category_id}}">{{category_name}}</option>
+                                {{/each}}
                                 </select>
                             </div>
                             <div class="form-group pr-3">
                                 <label for="sub_cat" class="text-primary"><b>CHUYÊN MỤC CON &nbsp;</b></label>
-                                <select name="category_id" class="form-control" id="sub_cat" onchange="clickSubCat(this.value)" />
+                                <select name="category_id" class="form-control" id="sub_cat"
+                                    onchange="clickSubCat(this.value)" />
                                 <option value="0">Tất cả</option>
-                                    {{#each sub_cats}}
-                                    <option value="{{category_id}}">{{category_name}}</option>
-                                    {{/each}}
+                                {{#each sub_cats}}
+                                <option value="{{category_id}}">{{category_name}}</option>
+                                {{/each}}
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="tags" class="text-primary"><b>TAG &nbsp;</b></label>
-                                <select name="category_id" class="form-control" id="tags" onchange="clickTag(this.value)" />
+                                <select name="category_id" class="form-control" id="tags"
+                                    onchange="clickTag(this.value)" />
                                 <option value="0">Tất cả</option>
                                 {{#each tags}}
                                 <option value="{{tag_id}}">{{tag_name}}</option>
@@ -70,17 +82,23 @@
                                 <table class="table">
                                     <thead class="thead-light">
                                         <tr class="d-flex">
-                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0 col-8 col-md-4 text-center" scope="col">Tiêu đề</th>
-                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Chuyên mục</th>
-                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả</th>
+                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài
+                                            </th>
+                                            <th class="border-bottom-0 col-8 col-md-4" scope="col">Tiêu đề
+                                            </th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Chuyên
+                                                mục</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả
+                                            </th>
                                             {{#if is_published}}
-                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Ngày xuất bản</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Ngày xuất
+                                                bản</th>
                                             {{/if}}
                                             <th class="border-bottom-0 col-3 col-md-1 text-center" scope="col">Xem</th>
                                             <th class="border-bottom-0 col-3 col-md-1 text-center" scope="col">Xóa</th>
                                             {{#if is_publishable}}
-                                            <th class="border-bottom-0 col-3 col-md-2 text-center" scope="col">Xuất bản</th>
+                                            <th class="border-bottom-0 col-3 col-md-2 text-center" scope="col">Xuất bản
+                                            </th>
                                             {{/if}}
                                         </tr>
                                     </thead>
@@ -89,7 +107,7 @@
                                         <tr class="d-flex">
                                             <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
                                             <td class="col-8 col-md-4" style="font-weight: 600;">{{article_title}}</td>
-                                            <td class="col-4 col-md-2">{{category_name}}</td>
+                                            <td class="col-4 col-md-2 text-center">{{category_name}}</td>
                                             <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
                                             {{#if ../is_published}}
                                             <td class="col-4 col-md-2 text-center">{{formatTime time_published}}</td>
@@ -100,15 +118,44 @@
                                                         class="fa fa-eye"></i> Xem</a>
                                             </td>
                                             <td class="col-3 col-md-1 text-center">
-                                                <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/admin/articles/delete/{{article_id}}?tab={{../tab}}" title="Xem bài báo"><i
-                                                        class="fa fa-trash"></i> Xóa</a>
+                                                <!-- Button trigger modal -->
+                                                <button class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
+                                                    data-toggle="modal" data-target="#sure_delete">
+                                                    <i class="fa fa-trash"></i> Xóa
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="sure_delete" tabindex="-1" role="dialog"
+                                                    aria-labelledby="sure_delete_label" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="sure_delete_label">Bạn có
+                                                                    chắc muốn xóa bài báo</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary"
+                                                                    data-dismiss="modal">Đóng</button>
+                                                                <a class="btn btn-danger text-white"
+                                                                    href="/admin/articles/delete/{{article_id}}?tab={{../tab}}"
+                                                                    title="Xem bài báo">Đồng ý</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{!-- <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
+                                                    href="/admin/articles/delete/{{article_id}}?tab={{../tab}}"
+                                                    title="Xem bài báo"><i class="fa fa-trash"></i> Xóa</a> --}}
                                             </td>
                                             {{#if ../is_publishable}}
                                             <td class="col-3 col-md-2 text-center">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
                                                     href="/admin/articles/publish/{{article_id}}" title="Xem bài báo">
-                                                     Xuất bản</a>
+                                                    Xuất bản</a>
                                             </td>
                                             {{/if}}
                                         </tr>
@@ -123,7 +170,7 @@
                 </div>
             </div>
         </div>
-                <!--Pagination-->
+        <!--Pagination-->
         {{#if is_show_pagination}}
         <nav aria-label="..." class="d-flex justify-content-center" style="padding-top: 30px;">
             <ul class="pagination">

@@ -1,9 +1,5 @@
 $(document).ready(function () {
-    // $("input[required], select[required]").attr("oninvalid", "this.setCustomValidity('Vui lòng nhập vùng này')");
-
     var tag_list = [];
-    const url = window.location.href;
-    const id = url.substr(url.lastIndexOf('/') - 1, 1);
 
     $.ajax({
         url: '/categories/getsubcats'
@@ -59,14 +55,22 @@ $(document).ready(function () {
         })
     });
 
-    $("#form1").submit(function(){
-        const tags = tag_list.toString();
-        $("<input />").attr("type", "hidden")
-            .attr("name", "tags")
-            .attr("value", tags)
-            .appendTo("#form1");
+    $("#form1").submit(function (e) {
+        var messageData = $('#content').summernote('code');
+        if (messageData === "<p><br></p>") {
+            alert("Vui lòng nhập nội dung")
+            e.preventDefault();
+            return false;
+        }
+        else {
+            const tags = tag_list.toString();
+            $("<input />").attr("type", "hidden")
+                .attr("name", "tags")
+                .attr("value", tags)
+                .appendTo("#form1");
 
-        return true;
+            return true;
+        }
     })
 });
 

@@ -13,7 +13,15 @@
                                 <h3><a role="button" href="/editors/dashboard"><i class="fa fa-home fa-lg title-link"
                                             aria-hidden="true"></i></a>
                                     &nbsp;&nbsp;{{#if is_reject}}BÀI BÁO ĐÃ TỪ CHỐI{{else}}{{#if is_accept}}BÀI BÁO ĐÃ
-                                    TỪ CHỐI{{else}}BÀI BÁO CHỜ DUYỆT{{/if}}{{/if}}</h3>
+                                    DUYỆT{{else}}BÀI BÁO CHỜ DUYỆT{{/if}}{{/if}}</h3>
+                                {{#if message}}
+                                <center>
+                                    <div id="error_message" class="alert alert-success"
+                                        style="margin-top: 30px; text-align: left">
+                                        {{message}}
+                                    </div>
+                                </center>
+                                {{/if}}
                             </div>
                         </div>
                         <a class="btn btn-dark mb-3" id="btn-1" onclick="clickTab(this.id)">
@@ -35,8 +43,8 @@
                                         <tr class="d-flex">
                                             <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài
                                             </th>
-                                            <th class="border-bottom-0 col-8 col-md-5" scope="col">Tiêu đề</th>
-                                            <th class="border-bottom-0 col-5 col-md-2" scope="col">Chuyên mục</th>
+                                            <th class="border-bottom-0 col-8 col-md-4" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-5 col-md-2 text-center" scope="col">Chuyên mục</th>
                                             <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả
                                             </th>
                                             {{#if is_reject}}
@@ -47,7 +55,7 @@
                                             <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Thời gian
                                                 xuất bản</th>
                                             {{/if}}
-                                            <th class="border-bottom-0 col-2 col-md-2 text-center" scope="col">&nbsp;
+                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">&nbsp;
                                             </th>
                                         </tr>
                                     </thead>
@@ -55,8 +63,8 @@
                                         {{#each articles}}
                                         <tr class="d-flex">
                                             <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
-                                            <td class="col-8 col-md-5" style="font-weight: 600;">{{article_title}}</td>
-                                            <td class="col-4 col-md-2">{{category_name}}</td>
+                                            <td class="col-8 col-md-4" style="font-weight: 600;">{{article_title}}</td>
+                                            <td class="col-4 col-md-2 text-center">{{category_name}}</td>
                                             <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
                                             {{#if ../is_reject}}
                                             <td class="col-4 col-md-2 text-center">{{formatTime rejected_time}}</td>
@@ -64,7 +72,7 @@
                                             {{#if ../is_accept}}
                                             <td class="col-4 col-md-2 text-center">{{formatTime time_published}}</td>
                                             {{/if}}
-                                            <td class="col-2 col-md-2 text-center">
+                                            <td class="col-2 col-md-1 text-center">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
                                                     href="/editors/{{#if ../is_reject}}view_reject{{else}}{{#if ../is_accept}}view_accept{{else}}review{{/if}}{{/if}}/{{article_id}}"
                                                     title="Xem bài báo"><i class="fa fa-eye"></i> Xem</a>

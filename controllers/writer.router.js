@@ -99,6 +99,7 @@ router.post('/add', auth.auth, auth.auth_writer, async function (req, res) {
             await tag_model.add_tag(insert_tag);
         }
     }
+    req.session.redirect_message = 'Thêm bài viết thành công';
     res.redirect('/writers/articles');
 })
 
@@ -163,8 +164,11 @@ router.get('/articles', auth.auth, auth.auth_writer, async function (req, res) {
         page_last: parseInt(page) === parseInt(n_pages),
         next_page: parseInt(page) + 1,
         previous_page: parseInt(page) - 1,
-        is_show_pagination: n_pages > 0
+        is_show_pagination: n_pages > 0,
+        //message
+        message: req.session.redirect_message
     });
+    delete req.session.redirect_message;
 })
 
 router.get('/edit/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
@@ -336,77 +340,9 @@ router.post('/edit/:article_id', auth.auth, auth.auth_writer, async function (re
         await tag_model.delete_tag_article_link(insert_tag);
     }
 
+    req.session.redirect_message = 'Chỉnh sửa bài viết thành công';
     res.redirect('/writers/articles');
 })
-
-router.get('/get_content_cat_tag/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
-    //check if writer has been added to writers table
-    var writer_id = await writer_model.get_writerid_by_userid(req.session.authUser.user_id);
-    if (!writer_id[0][0]) {
-        res.redirect('/');
-        return;
-    }
-    writer_id = writer_id[0][0].writer_id;
-
-    //check if article param is numerical
-    const article_id = req.params.article_id || 0;
-    if (isNaN(parseInt(article_id))) {
-        res.status(404);
-        res.render('vwError/viewNotFound');
-        return;
-    }
-
-    //check if article belongs to writer
-    const if_exist = await writer_model.if_article_belong_writer(writer_id, article_id);
-    if (!if_exist[0][0]) {
-        res.status(404);
-        res.render('vwError/viewNotFound');
-        return;
-    }
-
-    const content_cat = await writer_model.get_content_cat(req.params.article_id || 0);
-    const tags = await tag_model.get_tags_by_id(req.params.article_id || 0);
-    var cat_id = content_cat[0][0].category_id;
-    var get_cats = await get_main_sub_cat(cat_id);
-
-    res.json({
-        article_content: content_cat[0][0].article_content,
-        main_category: get_cats.main_cat,
-        main_category_name: get_cats.main_cat_name,
-        sub_category: get_cats.sub_cat,
-        sub_category_name: get_cats.sub_cat_name,
-        tags: tags[0]
-    });
-})
-
-async function get_main_sub_cat(category_id) {
-    var parent_cat_id = await category_model.get_parent_cat_by_id(category_id);
-    parent_cat_id = parent_cat_id[0][0];
-    var main_cat_name = "";
-    var sub_cat_name = "";
-    var main_cat, sub_cat;
-
-    if (parent_cat_id.parent_category_id === null) {
-        main_cat = category_id;
-        sub_cat = 0;
-        sub_cat_name = '--------------';
-    } else {
-        main_cat = parent_cat_id.parent_category_id;
-        sub_cat = category_id;
-        var get_name = await category_model.get_name_by_id(sub_cat);
-        sub_cat_name = get_name[0][0].category_name;
-    }
-
-    var get_name2 = await category_model.get_name_by_id(main_cat);
-    main_cat_name = get_name2[0][0].category_name;
-
-    return {
-        main_cat: main_cat,
-        main_cat_name: main_cat_name,
-        sub_cat: sub_cat,
-        sub_cat_name: sub_cat_name
-    };
-}
 
 router.get('/submitted/:article_id', auth.auth, auth.auth_writer, async function (req, res) {
     //check if writer has been added to writers table
