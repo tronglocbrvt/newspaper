@@ -25,25 +25,25 @@
                         {{else}}
                         <!--table start-->
                         <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
-                                        <th class="border-bottom-0 col-md-5" scope="col">Tiêu đề</th>
-                                        <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục</th>
-                                        <th class="border-bottom-0 col-md-2" scope="col">Tình trạng</th>
-                                        <th class="border-bottom-0 text-center col-md-2" scope="col">&nbsp;</th>
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr class="d-flex">
+                                        <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
+                                        <th class="border-bottom-0 col-8 col-md-5" scope="col">Tiêu đề</th>
+                                        <th class="border-bottom-0 col-4 col-md-2" scope="col">Chuyên mục</th>
+                                        <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tình trạng</th>
+                                        <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {{#each articles}}
-                                    <tr>
-                                        <th scope="row" class="col-md-1">{{article_id}}</th>
-                                        <td style="font-weight: 600;" class="col-md-5">{{article_title}}</td>
-                                        <td class="col-md-2">{{category_name}}</td>
-                                        <td class="col-md-2"><span
+                                    <tr class="d-flex">
+                                        <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
+                                        <td class="col-8 col-md-5" style="font-weight: 600;">{{article_title}}</td>
+                                        <td class="col-4 col-md-2">{{category_name}}</td>
+                                        <td class="col-4 col-md-2 text-center"><span
                                                 class="text-{{get_status_color status}}">{{status}}</span></td>
-                                        <td class="text-center col-md-2">{{#if (is_editable status)}}
+                                        <td class="col-4 col-md-2 text-center">{{#if (is_editable status)}}
                                             <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
                                                 href="/writers/edit/{{article_id}}" title="Chỉnh sửa"><i
                                                     class="fa fa-pencil"></i> Chỉnh

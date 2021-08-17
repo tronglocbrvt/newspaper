@@ -64,7 +64,7 @@
               </div>
               <div class="col-7 pl-0 pr-3">
                 <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
-                <div class="time">
+                <div class="time pt-1">
                   {{#if is_premium}}
                   <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
                   {{/if}}
@@ -73,6 +73,11 @@
                   </span>
                   <span class="date">&nbsp;{{formatTime time_published}}</span>
                 </div>
+                {{#if is_premium}}
+                <div class="time">
+                  <span class="badge badge-primary"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</span>
+                </div>
+                {{/if}}
               </div>
             </div>
           </div>
@@ -92,15 +97,17 @@
               </div>
               <div class="col-7 pl-0 pr-3">
                 <a href="/articles/{{article_id}}" class="title-link h-card-content">{{article_title}}</a>
-                <div class="time">
-                  {{#if is_premium}}
-                  <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
-                  {{/if}}
+                <div class="time pt-1">
                   <span class="d-none d-sm-inline me-1">
                     <a class="fw-bold" href="/categories/{{parent_cat_id}}/subs/{{category_id}}">{{category_name}}</a>
-                  </span>
-                  <span class="date">&nbsp;{{formatTime time_published}} &nbsp;</span>
-                  <i class="fa fa-eye" aria-hidden="true"></i> {{views}}
+                  </span>&nbsp;
+                  <span class="date">&nbsp;{{formatTime time_published}}</span>
+                </div>
+                <div class="time">
+                  <i class="fa fa-eye" aria-hidden="true"></i> {{views}}&nbsp;
+                  {{#if is_premium}}
+                  <span class="badge badge-primary"><i class="fa fa-diamond" aria-hidden="true"></i> Premium</span>
+                  {{/if}}
                 </div>
               </div>
             </div>
@@ -115,18 +122,18 @@
 <div class="row my-3">
   <h3>CHUYÊN MỤC NỔI BẬT</h3>
 </div>
-<div class="row" style="margin-bottom: 20px;">
+<div class="row mb-4">
   {{#each hot_categories}}
   <div class="col-sm-6 col-lg-3 mb-4 pl-0">
     <a href="/categories/{{parent_cat_id}}" class="cat-link text-uppercase btn btn-primary border mb-2 article-category"
       style="font-size: medium;">{{parent_cat_name}}</a>
-    <div class="card w-100 p-3">
+    <div class="card p-3" style="height: 87%;">
       <a href="/articles/{{article_id}}">
-        <img class="card-img-top w-100" src="{{avatar_url}}" alt="Nổi bật" style="height: 140px;"
+        <img class="card-img-top w-100" src="{{avatar_url}}" style="height: 140px;"
           onerror="this.src='https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg';"></a>
       <div class="pt-3 px-1">
         <a href="/articles/{{article_id}}" class="title-link v-card-content">{{article_title}}</a>
-        <div class="time">
+        <div class="time pt-1">
           {{#if is_premium}}
           <i class="fa fa-diamond text-primary" aria-hidden="true"></i>
           {{/if}}

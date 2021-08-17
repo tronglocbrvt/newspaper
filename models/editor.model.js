@@ -3,18 +3,22 @@ const db = require("../utils/db");
 module.exports = {
     get_articles_by_editor_category(editor_id, category_id, limit, offset, is_total = false){
         var limit_offset = "";
+        var cat_constraint = "";
         if (is_total === false)
             limit_offset = `limit ${limit}
                             offset ${offset}`;
+
+        if (category_id !== -1)
+            cat_constraint = `and ecl.category_id = ${category_id}`;
 
         const sql = `select a.article_title as article_title, w.nick_name as writer_alias, a.article_id as article_id, c.category_name as category_name
         from articles a, editor_category_links ecl, writers w, categories c
         where a.is_submitted = true
         and w.writer_id = a.writer_id
         and a.category_id = c.category_id
-        and a.category_id in (select category_id from categories where parent_category_id = ${category_id})
-        and ecl.category_id = ${category_id}
-        and ecl.editor_id = ${editor_id}
+        and ecl.category_id in (select parent_category_id from categories where category_id = a.category_id)
+        and ecl.editor_id = ${editor_id} ${cat_constraint}
+        order by a.article_id desc
         ${limit_offset}`;
 
         return db.raw(sql);

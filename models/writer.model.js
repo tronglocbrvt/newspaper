@@ -15,7 +15,8 @@ module.exports = {
 
         return db.raw(sql);
     },
-    get_articles_by_writer(id, offset, limit, tab, is_total){
+
+    get_articles_by_writer(id, offset, limit, tab, is_total = false){
         var limit_offset = "";
         if (is_total === false)
             limit_offset = `limit ${limit}
@@ -60,6 +61,7 @@ module.exports = {
         from articles a, categories c
         where writer_id = ${id}
         and c.category_id = a.category_id ${tab_constraint}
+        order by a.article_id desc
         ${limit_offset}`;
 
         return db.raw(sql);

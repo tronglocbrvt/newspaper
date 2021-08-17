@@ -67,39 +67,45 @@
                         <div class="collapse show">
                             <!--table start-->
                             <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
+                                <table class="table">
+                                    <thead class="thead-light">
                                         <tr class="d-flex">
-                                            <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}4{{else}}5{{/if}}" scope="col">Tiêu đề</th>
-                                            <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
-                                            <th class="border-bottom-0 col-md-{{#if is_publishable}}1{{else}}2{{/if}}" scope="col">Tác giả</th>
-                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Xem</th>
-                                            <th class="border-bottom-0 col-md-1 text-center" scope="col">Xóa</th>
+                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
+                                            <th class="border-bottom-0 col-8 col-md-4 text-center" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Chuyên mục</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả</th>
+                                            {{#if is_published}}
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Ngày xuất bản</th>
+                                            {{/if}}
+                                            <th class="border-bottom-0 col-3 col-md-1 text-center" scope="col">Xem</th>
+                                            <th class="border-bottom-0 col-3 col-md-1 text-center" scope="col">Xóa</th>
                                             {{#if is_publishable}}
-                                            <th class="border-bottom-0 col-md-2 text-center" scope="col">Xuất bản</th>
+                                            <th class="border-bottom-0 col-3 col-md-2 text-center" scope="col">Xuất bản</th>
                                             {{/if}}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {{#each articles}}
                                         <tr class="d-flex">
-                                            <th scope="row" class="col-md-1">{{article_id}}</th>
-                                            <td style="font-weight: 600;" class="col-md-{{#if ../is_publishable}}4{{else}}5{{/if}}">{{article_title}}</td>
-                                            <td class="col-md-2">{{category_name}}</td>
-                                            <td class="col-md-{{#if ../is_publishable}}1{{else}}2{{/if}}">{{writer_alias}}</td>
-                                            <td class="text-center col-md-1">
+                                            <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
+                                            <td class="col-8 col-md-4" style="font-weight: 600;">{{article_title}}</td>
+                                            <td class="col-4 col-md-2">{{category_name}}</td>
+                                            <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
+                                            {{#if ../is_published}}
+                                            <td class="col-4 col-md-2 text-center">{{formatTime time_published}}</td>
+                                            {{/if}}
+                                            <td class="col-3 col-md-1 text-center">
                                                 <a class="btn btn-success btn-sm text-white mb-2 mb-lg-0"
                                                     href="/admin/articles/view/{{article_id}}" title="Xem bài báo"><i
                                                         class="fa fa-eye"></i> Xem</a>
                                             </td>
-                                            <td class="text-center col-md-1">
+                                            <td class="col-3 col-md-1 text-center">
                                                 <a class="btn btn-danger btn-sm text-white mb-2 mb-lg-0"
                                                     href="/admin/articles/delete/{{article_id}}?tab={{../tab}}" title="Xem bài báo"><i
                                                         class="fa fa-trash"></i> Xóa</a>
                                             </td>
                                             {{#if ../is_publishable}}
-                                            <td class="text-center col-md-2">
+                                            <td class="col-3 col-md-2 text-center">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
                                                     href="/admin/articles/publish/{{article_id}}" title="Xem bài báo">
                                                      Xuất bản</a>

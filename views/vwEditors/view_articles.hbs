@@ -13,6 +13,9 @@
                                 <h3>Bài báo chờ duyệt</h3>
                             </div>
                         </div>
+                        <a class="btn btn-dark mb-3" id="btn-1" onclick="clickTab(this.id)">
+                            Tất cả
+                        </a>
                         {{#each categories}}
                         <a class="btn btn-dark mb-3" id="btn{{@index}}" onclick="clickTab(this.id)">
                             {{category_name}}
@@ -24,24 +27,24 @@
                         <div class="collapse show">
                             <!--table start-->
                             <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-bottom-0 col-md-1" scope="col">Mã bài</th>
-                                            <th class="border-bottom-0 col-md-4" scope="col">Tiêu đề</th>
-                                            <th class="border-bottom-0 col-md-2" scope="col">Chuyên mục con</th>
-                                            <th class="border-bottom-0 col-md-2" scope="col">Tác giả</th>
-                                            <th class="border-bottom-0 text-center col-md-1" scope="col">&nbsp;</th>
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr class="d-flex">
+                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
+                                            <th class="border-bottom-0 col-8 col-md-5" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-5 col-md-2" scope="col">Chuyên mục</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả</th>
+                                            <th class="border-bottom-0 col-2 col-md-2 text-center" scope="col">&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {{#each articles}}
-                                        <tr>
-                                            <th class="col-md-1" scope="row">{{article_id}}</th>
-                                            <td class="col-md-4" style="font-weight: 600;">{{article_title}}</td>
-                                            <td class="col-md-2">{{category_name}}</td>
-                                            <td class="col-md-2">{{writer_alias}}</td>
-                                            <td class="text-center col-md-1">
+                                        <tr class="d-flex">
+                                            <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
+                                            <td class="col-8 col-md-5" style="font-weight: 600;">{{article_title}}</td>
+                                            <td class="col-4 col-md-2">{{category_name}}</td>
+                                            <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
+                                            <td class="col-2 col-md-2 text-center">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
                                                     href="/editors/review/{{article_id}}" title="Xem bài báo"><i
                                                         class="fa fa-eye"></i> Xem</a>
@@ -88,10 +91,10 @@
 {{#section 'js'}}
 <script>
     var tab = "{{tab}}";
-    $(`#btn${tab}`).removeClass('btn-dark').addClass('btn-success');
+    $(`#btn${+tab - 1}`).removeClass('btn-dark').addClass('btn-success');
 
     function clickTab(id) {
-        id = id.substr(3, id.length);
+        id = +id.substr(3, id.length) + 1;
         window.location.href = `/editors/reviews?tab=${id}`;
     }
 </script>

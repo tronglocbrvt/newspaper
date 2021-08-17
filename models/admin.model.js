@@ -22,23 +22,27 @@ module.exports = {
         var sql;
         switch (tab) {
             case 0:
-                sql = `select a.article_id as article_id, a.article_title as article_title, c.category_name as category_name, w.nick_name as writer_alias
+                sql = `select a.article_id as article_id, a.article_title as article_title, 
+                c.category_name as category_name, w.nick_name as writer_alias, time_published
                 from articles a, categories c, writers w, published_articles pa
                 where is_published = true
                 and w.writer_id = a.writer_id
                 and pa.article_id = a.article_id
                 and pa.time_published <= now()
                 and a.category_id = c.category_id ${writer_constraint} ${category_constraint} ${tag_constraint}
+                order by pa.time_published desc
                 ${limit_offset}`;
                 break;
             case 1:
-                sql = `select a.article_id as article_id, a.article_title as article_title, c.category_name as category_name, w.nick_name as writer_alias
+                sql = `select a.article_id as article_id, a.article_title as article_title, 
+                c.category_name as category_name, w.nick_name as writer_alias, time_published
                 from articles a, categories c, writers w, published_articles pa
                 where is_published = true
                 and w.writer_id = a.writer_id
                 and pa.article_id = a.article_id
                 and pa.time_published > now()
                 and a.category_id = c.category_id ${writer_constraint} ${category_constraint} ${tag_constraint}
+                order by pa.time_published desc
                 ${limit_offset}`;
                 break;
             case 2:
@@ -47,6 +51,7 @@ module.exports = {
                 where is_submitted = true
                 and w.writer_id = a.writer_id
                 and a.category_id = c.category_id ${writer_constraint} ${category_constraint} ${tag_constraint}
+                order by a.article_id desc
                 ${limit_offset}`;
                 break;
             case 3:
@@ -55,6 +60,7 @@ module.exports = {
                 where is_draft = true
                 and w.writer_id = a.writer_id
                 and a.category_id = c.category_id ${writer_constraint} ${category_constraint} ${tag_constraint}
+                order by a.article_id desc
                 ${limit_offset}`;
                 break;
             case 4:
@@ -63,6 +69,7 @@ module.exports = {
                 where is_rejected = true
                 and w.writer_id = a.writer_id
                 and a.category_id = c.category_id ${writer_constraint} ${category_constraint} ${tag_constraint}
+                order by a.article_id desc
                 ${limit_offset}`;
                 break;
             default:

@@ -45,7 +45,8 @@ $(document).ready(function () {
         $("#upload_conainter").attr('hidden', false);
         $("#avatar").fileinput({
             allowedFileExtensions: ['jpg', 'jpeg', 'png'],
-            dropZoneEnabled: false
+            dropZoneEnabled: false,
+            'showUpload': false
         });
         $(this).attr('hidden', true);
         $("#avatar_container").attr('hidden', true);

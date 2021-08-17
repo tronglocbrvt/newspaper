@@ -27,13 +27,12 @@ router.get('/reviews', auth.auth, auth.auth_editor, async function (req, res) {
         return;
     }
 
-    var cat_id = editor_cats[0][+tab].category_id;
-
-    var if_belong = await editor_model.if_category_belong_editor(editor_id, +cat_id);
-    if (!if_belong[0][0]) {
-        res.status(404);
-        res.render('vwError/viewNotFound');
-        return;
+    var cat_id;
+    if (+tab === 0) {
+        cat_id = -1;
+    }
+    else {
+        cat_id = editor_cats[0][+tab - 1].category_id;
     }
 
     //get page
@@ -188,15 +187,6 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
 
         //update status to article
         await writer_model.patch_article(article);
-
-        // //clone original article to keep a version for editor to trace back
-        // clone_art = await writer_model.load_article_by_id(article_id);
-        // delete clone_art[0][0]['article_id'];
-        // var ret = await article_model.add(clone_art[0][0]);
-
-        // //add comment of original article to rejected table
-        // article_reject['article_id'] = ret[0];
-        // await editor_model.add_reject_article(article_reject);
     } else {
         //set state
         article['is_published'] = true;
@@ -215,7 +205,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         article_publish['article_id'] = article_id;
         article_publish['time_published'] = time_zone_converter.GMT_7_to_server_time(moment(article['publish_time'], "DD/MM/YYYY HH")).format("YYYY-MM-DD HH");
         article_publish['views_numbers'] = 0;
-        article_publish['editor_id'] =  editor_id;
+        article_publish['editor_id'] = editor_id;
         await editor_model.add_publish_article(article_publish);
 
         //delete uneccessary fields
@@ -273,7 +263,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
     res.redirect(`/editors/reviews`);
 });
 
-router.get('/dashboard', auth.auth, auth.auth_editor, async function(req, res) {
+router.get('/dashboard', auth.auth, auth.auth_editor, async function (req, res) {
     res.render('vwEditors/dashboard');
 });
 

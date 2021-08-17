@@ -91,7 +91,7 @@ hbs.handlebars.registerHelper('date_time_format', function (str) {
 });
 
 hbs.handlebars.registerHelper('formatTime', function(s) {
-  return time_zone_converter.server_time_to_GMT_7(moment(s)).format("DD/MM/YYYY HH:mm:ss");
+  return time_zone_converter.server_time_to_GMT_7(moment(s)).format("DD/MM/YYYY HH:mm");
 });
 
 hbs.handlebars.registerHelper('is_editable', function (str) {
