@@ -157,6 +157,7 @@ router.get('/articles', auth.auth, auth.auth_writer, async function (req, res) {
         articles: articles[0],
         is_empty: articles[0].length === 0,
         tab: +tab,
+        is_published: +tab === 1 || +tab === 2,
         //pagination
         page_numbers,
         n_pages,

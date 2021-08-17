@@ -38,9 +38,14 @@
                                     <tr class="d-flex">
                                         <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
                                         <th class="border-bottom-0 col-8 col-md-5" scope="col">Tiêu đề</th>
-                                        <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Chuyên mục</th>
+                                        <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Chuyên mục
+                                        </th>
                                         <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tình trạng
                                         </th>
+                                        {{#if is_published}}
+                                        <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Ngày xuất bản
+                                        </th>
+                                        {{/if}}
                                         <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -52,6 +57,10 @@
                                         <td class="col-4 col-md-2 text-center">{{category_name}}</td>
                                         <td class="col-4 col-md-2 text-center"><span
                                                 class="text-{{get_status_color status}}">{{status}}</span></td>
+                                        {{#if ../is_published}}
+                                        <td class="col-4 col-md-2 text-center" scope="col">{{formatTime time_published}}
+                                        </td>
+                                        {{/if}}
                                         <td class="col-4 col-md-2 text-center">{{#if (is_editable status)}}
                                             <a class="btn btn-{{get_status_color status}} btn-sm text-white mb-2 mb-lg-0"
                                                 href="/writers/edit/{{article_id}}" title="Chỉnh sửa"><i

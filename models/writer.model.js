@@ -16,22 +16,29 @@ module.exports = {
         return db.raw(sql);
     },
 
-    get_articles_by_writer(id, offset, limit, tab, is_total = false){
+    get_articles_by_writer(id, offset, limit, tab, is_total = false) {
         var limit_offset = "";
         if (is_total === false)
             limit_offset = `limit ${limit}
                             offset ${offset}`;
         var tab_constraint = '';
-        switch (tab){
+        var select_constraint = '';
+        switch (tab) {
             case '1':
                 tab_constraint = `and is_published = true and article_id in (select pa.article_id
                     from published_articles pa
                     where pa.time_published <= now())`;
+                select_constraint = `, (select pa.time_published
+                    from published_articles pa
+                    where pa.article_id = a.article_id) as time_published`;
                 break;
             case '2':
                 tab_constraint = `and is_published = true and article_id in (select pa.article_id
                     from published_articles pa
                     where pa.time_published > now())`;
+                select_constraint = `, (select pa.time_published
+                        from published_articles pa
+                        where pa.article_id = a.article_id) as time_published`;
                 break;
             case '3':
                 tab_constraint = 'and is_submitted = true';
@@ -57,7 +64,7 @@ module.exports = {
             WHEN is_draft
                 THEN 'Bản nháp'
             ELSE 'Chờ xuất bản'
-         END AS status
+         END AS status ${select_constraint}
         from articles a, categories c
         where writer_id = ${id}
         and c.category_id = a.category_id ${tab_constraint}
@@ -129,7 +136,7 @@ module.exports = {
         where user_id = :user_id;`
         return db.raw(sql, { user_id: user_id });
     },
-    get_writerid_by_userid(user_id){
+    get_writerid_by_userid(user_id) {
         const sql = `select writer_id
         from writers
         where user_id = ${user_id}`;
