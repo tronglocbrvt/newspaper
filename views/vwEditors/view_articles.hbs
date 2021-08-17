@@ -10,7 +10,10 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-12 mb-4">
-                                <h3>Bài báo chờ duyệt</h3>
+                                <h3><a role="button" href="/editors/dashboard"><i class="fa fa-home fa-lg title-link"
+                                            aria-hidden="true"></i></a>
+                                    &nbsp;&nbsp;{{#if is_reject}}BÀI BÁO ĐÃ TỪ CHỐI{{else}}{{#if is_accept}}BÀI BÁO ĐÃ
+                                    TỪ CHỐI{{else}}BÀI BÁO CHỜ DUYỆT{{/if}}{{/if}}</h3>
                             </div>
                         </div>
                         <a class="btn btn-dark mb-3" id="btn-1" onclick="clickTab(this.id)">
@@ -30,11 +33,22 @@
                                 <table class="table">
                                     <thead class="thead-light">
                                         <tr class="d-flex">
-                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài</th>
+                                            <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài
+                                            </th>
                                             <th class="border-bottom-0 col-8 col-md-5" scope="col">Tiêu đề</th>
                                             <th class="border-bottom-0 col-5 col-md-2" scope="col">Chuyên mục</th>
-                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả</th>
-                                            <th class="border-bottom-0 col-2 col-md-2 text-center" scope="col">&nbsp;</th>
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả
+                                            </th>
+                                            {{#if is_reject}}
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Thời gian
+                                                từ chối</th>
+                                            {{/if}}
+                                            {{#if is_accept}}
+                                            <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Thời gian
+                                                xuất bản</th>
+                                            {{/if}}
+                                            <th class="border-bottom-0 col-2 col-md-2 text-center" scope="col">&nbsp;
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,10 +58,16 @@
                                             <td class="col-8 col-md-5" style="font-weight: 600;">{{article_title}}</td>
                                             <td class="col-4 col-md-2">{{category_name}}</td>
                                             <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
+                                            {{#if ../is_reject}}
+                                            <td class="col-4 col-md-2 text-center">{{formatTime rejected_time}}</td>
+                                            {{/if}}
+                                            {{#if ../is_accept}}
+                                            <td class="col-4 col-md-2 text-center">{{formatTime time_published}}</td>
+                                            {{/if}}
                                             <td class="col-2 col-md-2 text-center">
                                                 <a class="btn btn-primary btn-sm text-white mb-2 mb-lg-0"
-                                                    href="/editors/review/{{article_id}}" title="Xem bài báo"><i
-                                                        class="fa fa-eye"></i> Xem</a>
+                                                    href="/editors/{{#if ../is_reject}}view_reject{{else}}{{#if ../is_accept}}view_accept{{else}}review{{/if}}{{/if}}/{{article_id}}"
+                                                    title="Xem bài báo"><i class="fa fa-eye"></i> Xem</a>
                                             </td>
                                         </tr>
                                         {{/each}}
@@ -91,12 +111,19 @@
 {{#section 'js'}}
 <script>
     var tab = "{{tab}}";
+    var is_reject = "{{is_reject}}";
+    var is_accept = "{{is_accpt}}";
+    var action = 'reviews';
+    if (is_reject === "true")
+        action = 'rejects';
+    if (is_accept === "true")
+        action = 'accepts'
+
     $(`#btn${+tab - 1}`).removeClass('btn-dark').addClass('btn-success');
 
     function clickTab(id) {
         id = +id.substr(3, id.length) + 1;
-        window.location.href = `/editors/reviews?tab=${id}`;
+        window.location.href = `/editors/${action}?tab=${id}`;
     }
 </script>
-
 {{/section}}
