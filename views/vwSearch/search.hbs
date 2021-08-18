@@ -26,15 +26,15 @@
 
 <div class="container" style="margin-top: 30px; margin-bottom: 30px">
   <div class="row">
+    {{#if this.empty}}
+      <h5 class="card-title">Không có dữ liệu!</h5>
+    {{else}}
     <!--left column-->
     <div class="col-md-12">
       <!-- block start -->
       <div class="block-area">
         <div class="border-bottom-last-0 first-pt-0">
           <!--post start-->
-          {{#if this.empty}}
-          <h5 class="card-title">Không có dữ liệu!</h5>
-          {{else}}
           {{#each this.articles}}
           <article class="card card-full hover-a py-4">
             <div class="row">
