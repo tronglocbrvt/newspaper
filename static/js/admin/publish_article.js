@@ -57,6 +57,10 @@ $(document).ready(function () {
             if (!isValidDate(date_picked)) {
                 $("#date-alert-area").text('Ngày không hợp lệ!');
             }
+        } else {
+            $("#date-alert-area").text('Vui lòng chọn ngày!');
+            e.preventDefault();
+            return false;
         }
     })
 
@@ -69,7 +73,7 @@ $(document).ready(function () {
             e.preventDefault();
             return false;
         }
-        
+
         $("<input />").attr("type", "hidden")
             .attr("name", "tags")
             .attr("value", new_tags)

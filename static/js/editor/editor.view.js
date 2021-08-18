@@ -94,10 +94,14 @@ $(document).ready(function () {
             if ($("#publish-time").val() !== '') {
                 date_picked = stringToDatetime($("#publish-time").val());
                 if (!isValidDate(date_picked)) {
-                    alert('Vui lòng chọn ngày hợp lệ');
+                    $("#date-alert-area").text('Vui lòng chọn ngày hợp lệ!');
                     e.preventDefault();
                     return false;
                 }
+            } else {
+                $("#date-alert-area").text('Vui lòng chọn ngày!');
+                e.preventDefault();
+                return false;
             }
         }
 
