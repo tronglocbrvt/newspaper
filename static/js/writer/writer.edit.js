@@ -58,6 +58,15 @@ $(document).ready(function () {
         height: 300
     });
 
+    $('.delete-btn').click(function () {
+        const delete_tag = $(this).attr('value');
+        const index = tag_list.indexOf(delete_tag);
+        if (index > -1) {
+            tag_list.splice(index, 1);
+        }
+        $(this).parent().remove();
+    });
+
     function set_sub_cats(id, data) {
         $('#sub_category').empty();
         sub_cats = data.filter(cat => cat.parent_category_id === +id);

@@ -481,7 +481,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         //add tags
         var add_tags = [];
         for (let i = 0; i < tags.length; i++) {
-            if (original_tags.indexOf(tags[i]) === -1)
+            if (original_tags.indexOf(tags[i]) === -1  && tags[i] !== '')
                 add_tags.push(tags[i]);
         }
 
@@ -495,7 +495,7 @@ router.post('/review/:article_id', auth.auth, auth.auth_editor, async function (
         //delete tags
         var delete_tags = [];
         for (let i = 0; i < original_tags.length; i++) {
-            if (tags.indexOf(original_tags[i]) === -1)
+            if (tags.indexOf(original_tags[i]) === -1 && original_tags[i] !== '')
                 delete_tags.push(original_tags[i]);
         }
 

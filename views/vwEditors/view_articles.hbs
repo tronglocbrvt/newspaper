@@ -33,7 +33,7 @@
                         </a>
                         {{/each}}
                         {{#if is_empty}}
-                        <h4 class="collapse show text-primary">Không có bài báo chờ</h4>
+                        <h4 class="collapse show text-primary">Không có bài báo</h4>
                         {{else}}
                         <div class="collapse show">
                             <!--table start-->
@@ -43,7 +43,7 @@
                                         <tr class="d-flex">
                                             <th class="border-bottom-0 col-2 col-md-1 text-center" scope="col">Mã bài
                                             </th>
-                                            <th class="border-bottom-0 col-8 col-md-4" scope="col">Tiêu đề</th>
+                                            <th class="border-bottom-0 col-8 col-md-{{#if is_reject}}4{{else}}{{#if is_accept}}4{{else}}6{{/if}}{{/if}}" scope="col">Tiêu đề</th>
                                             <th class="border-bottom-0 col-5 col-md-2 text-center" scope="col">Chuyên mục</th>
                                             <th class="border-bottom-0 col-4 col-md-2 text-center" scope="col">Tác giả
                                             </th>
@@ -63,7 +63,7 @@
                                         {{#each articles}}
                                         <tr class="d-flex">
                                             <th class="col-2 col-md-1 text-center" scope="row">{{article_id}}</th>
-                                            <td class="col-8 col-md-4" style="font-weight: 600;">{{article_title}}</td>
+                                            <td class="col-8 col-md-{{#if ../is_reject}}4{{else}}{{#if ../is_accept}}4{{else}}6{{/if}}{{/if}}" style="font-weight: 600;">{{article_title}}</td>
                                             <td class="col-4 col-md-2 text-center">{{category_name}}</td>
                                             <td class="col-4 col-md-2 text-center">{{writer_alias}}</td>
                                             {{#if ../is_reject}}
